@@ -11,6 +11,6 @@ public class ListCompanyCmd extends ListCommand<Company> {
 
 	@Override
 	public String format(Company entity) {
-		return entity.toString();
+		return String.format("%3d : %s", entity.getId(), entity.getName());
 	}
 }

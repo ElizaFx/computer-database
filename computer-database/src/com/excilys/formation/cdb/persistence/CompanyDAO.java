@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import com.excilys.formation.cdb.model.Company;
 
 /**
- * 
+ *
  * @author Joxit
  */
 public class CompanyDAO extends AbstractDAO<Company> {

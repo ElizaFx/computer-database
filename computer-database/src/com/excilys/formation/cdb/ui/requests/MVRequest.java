@@ -59,11 +59,13 @@ public class MVRequest implements IRequest {
 					}
 					case INTRODUCED: {
 						try {
+							System.out.println(request.get(i + 1));
 							introduced = DateFormat.getInstance().parse(
 									request.get(i + 1));
 						} catch (ParseException e) {
 							throw new RequestNotFoundException(
-									"Introduced date malformed");
+									"Introduced date malformed"
+											+ e.getMessage());
 						}
 						break;
 					}
@@ -73,7 +75,8 @@ public class MVRequest implements IRequest {
 									request.get(i + 1));
 						} catch (ParseException e) {
 							throw new RequestNotFoundException(
-									"Discontinued date malformed");
+									"Discontinued date malformed "
+											+ e.getMessage());
 						}
 						break;
 					}

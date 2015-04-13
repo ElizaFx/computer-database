@@ -5,7 +5,7 @@ import java.util.Date;
 
 /**
  * This class is the object version of a Computer from the Database.
- * 
+ *
  * @author Joxit
  */
 public class Computer implements Serializable {

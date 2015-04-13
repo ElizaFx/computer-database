@@ -11,7 +11,7 @@ public class ListComputerCmd extends ListCommand<Computer> {
 
 	@Override
 	public String format(Computer entity) {
-		return entity.toString();
+		return String.format("%4d : %s", entity.getId(), entity.getName());
 	}
 
 }

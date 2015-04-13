@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * This class is the object version of a Company from the Database.
- * 
+ *
  * @author Joxit
  */
 public class Company implements Serializable {

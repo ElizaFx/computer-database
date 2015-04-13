@@ -13,6 +13,8 @@ import java.util.function.Predicate;
  * @author Joxit
  *
  * @param <T>
+ *            model type from the database. The name of the class must have the
+ *            same name as the table in DB
  */
 public abstract class AbstractDAO<T> {
 
@@ -88,25 +90,27 @@ public abstract class AbstractDAO<T> {
 
 	/**
 	 * Insert model in the table. Must call insertRequest with the right request
-	 * 
+	 *
 	 * @param model
-	 * @return
+	 * @return the row count inserted
 	 */
 	public abstract int insert(T model);
 
 	/**
 	 * Remove model from the table. Must call removeRequest with the right
 	 * request
-	 * 
+	 *
 	 * @param model
+	 * @return the row count removed
 	 */
 	public abstract int remove(T model);
 
 	/**
 	 * Update model from the table. Must call updateRequest with the right id
 	 * and request
-	 * 
+	 *
 	 * @param model
+	 * @return the row count updated
 	 */
 	public abstract int update(T model);
 

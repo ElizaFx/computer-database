@@ -5,7 +5,7 @@ import org.junit.Test;
 import com.excilys.formation.cdb.model.Computer;
 
 /**
- * 
+ *
  * @author Joxit
  */
 public class TestDAO {

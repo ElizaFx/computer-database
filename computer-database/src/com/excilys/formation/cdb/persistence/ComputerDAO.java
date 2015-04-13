@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import com.excilys.formation.cdb.model.Computer;
 
 /**
- * 
+ *
  * @author Joxit
  */
 public class ComputerDAO extends AbstractDAO<Computer> {
