@@ -12,16 +12,16 @@ public class TestDAO {
 
 	@Test
 	public void findAllTest() {
-		ComputerDAO crf = new ComputerDAO();
-		CompanyDAO cyf = new CompanyDAO();
+		ComputerDAO crf = ComputerDAO.getInstance();
+		CompanyDAO cyf = CompanyDAO.getInstance();
 		System.out.println(crf.findAll());
 		System.out.println(cyf.findAll());
 	}
 
 	@Test
 	public void findTest() {
-		ComputerDAO crf = new ComputerDAO();
-		CompanyDAO cyf = new CompanyDAO();
+		ComputerDAO crf = ComputerDAO.getInstance();
+		CompanyDAO cyf = CompanyDAO.getInstance();
 
 		System.out.println(crf.find(20l));
 		System.out.println(cyf.find(20l));
@@ -32,7 +32,7 @@ public class TestDAO {
 
 	@Test
 	public void createUpdateRemoveTest() {
-		ComputerDAO crf = new ComputerDAO();
+		ComputerDAO crf = ComputerDAO.getInstance();
 		crf.insert(new Computer("Joxit", null, null, 20l));
 		crf.findAll().stream().filter(c -> c.getName().startsWith("Joxit"))
 				.forEach(c -> System.out.println(c));

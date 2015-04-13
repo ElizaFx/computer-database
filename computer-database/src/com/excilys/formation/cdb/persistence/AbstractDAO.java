@@ -90,8 +90,9 @@ public abstract class AbstractDAO<T> {
 	 * Insert model in the table. Must call insertRequest with the right request
 	 * 
 	 * @param model
+	 * @return
 	 */
-	public abstract void insert(T model);
+	public abstract int insert(T model);
 
 	/**
 	 * Remove model from the table. Must call removeRequest with the right
@@ -99,7 +100,7 @@ public abstract class AbstractDAO<T> {
 	 * 
 	 * @param model
 	 */
-	public abstract void remove(T model);
+	public abstract int remove(T model);
 
 	/**
 	 * Update model from the table. Must call updateRequest with the right id
@@ -107,7 +108,7 @@ public abstract class AbstractDAO<T> {
 	 * 
 	 * @param model
 	 */
-	public abstract void update(T model);
+	public abstract int update(T model);
 
 	/**
 	 * @param id
@@ -126,11 +127,12 @@ public abstract class AbstractDAO<T> {
 	 * @param request
 	 *            in the form column1=data1, culumn2=data2...
 	 */
-	protected void insertRequest(String request) {
+	protected int insertRequest(String request) {
+		int res = 0;
 		Statement statement = null;
 		try {
 			statement = createStatement();
-			statement.executeUpdate("insert into `"
+			res = statement.executeUpdate("insert into `"
 					+ modelClass.getSimpleName().toLowerCase() + "` set "
 					+ request);
 		} catch (SQLException e) {
@@ -143,6 +145,7 @@ public abstract class AbstractDAO<T> {
 			} catch (SQLException e) {
 			}
 		}
+		return res;
 	}
 
 	/**
@@ -151,11 +154,12 @@ public abstract class AbstractDAO<T> {
 	 * @param request
 	 *            in the form column1=data1, culumn2=data2...
 	 */
-	protected void updateRequest(String id, String request) {
+	protected int updateRequest(String id, String request) {
+		int res = 0;
 		Statement statement = null;
 		try {
 			statement = createStatement();
-			statement.executeUpdate("update `"
+			res = statement.executeUpdate("update `"
 					+ modelClass.getSimpleName().toLowerCase() + "` set "
 					+ request + " where " + id + ";");
 		} catch (SQLException e) {
@@ -168,17 +172,19 @@ public abstract class AbstractDAO<T> {
 			} catch (SQLException e) {
 			}
 		}
+		return res;
 	}
 
 	/**
 	 * @param request
 	 *            in the form column1=data1 and culumn2=data2...
 	 */
-	protected void removeRequest(String request) {
+	protected int removeRequest(String request) {
 		Statement statement = null;
+		int res = 0;
 		try {
 			statement = createStatement();
-			statement.executeUpdate("delete from `"
+			res = statement.executeUpdate("delete from `"
 					+ modelClass.getSimpleName().toLowerCase() + "` where "
 					+ request + ";");
 		} catch (SQLException e) {
@@ -191,5 +197,6 @@ public abstract class AbstractDAO<T> {
 			} catch (SQLException e) {
 			}
 		}
+		return res;
 	}
 }

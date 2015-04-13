@@ -11,10 +11,9 @@ import com.excilys.formation.cdb.model.Computer;
  */
 public class ComputerDAO extends AbstractDAO<Computer> {
 
-	/**
-	 * 
-	 */
-	public ComputerDAO() {
+	private final static ComputerDAO _instance = new ComputerDAO();
+
+	private ComputerDAO() {
 		super(Computer.class);
 	}
 
@@ -39,7 +38,7 @@ public class ComputerDAO extends AbstractDAO<Computer> {
 	}
 
 	@Override
-	public void insert(Computer model) {
+	public int insert(Computer model) {
 		StringBuilder request = new StringBuilder();
 		boolean first = true;
 		if (model.getName() != null) {
@@ -73,12 +72,11 @@ public class ComputerDAO extends AbstractDAO<Computer> {
 			request.append("company_id=");
 			request.append(model.getCompanyId());
 		}
-		super.insertRequest(request.toString());
-
+		return super.insertRequest(request.toString());
 	}
 
 	@Override
-	public void remove(Computer model) {
+	public int remove(Computer model) {
 		StringBuilder request = new StringBuilder();
 		boolean first = true;
 		if (model.getId() != null) {
@@ -120,12 +118,12 @@ public class ComputerDAO extends AbstractDAO<Computer> {
 			request.append("company_id=");
 			request.append(model.getCompanyId());
 		}
-		super.removeRequest(request.toString());
+		return super.removeRequest(request.toString());
 
 	}
 
 	@Override
-	public void update(Computer model) {
+	public int update(Computer model) {
 		StringBuilder request = new StringBuilder();
 		boolean first = true;
 		if (model.getName() != null) {
@@ -162,6 +160,10 @@ public class ComputerDAO extends AbstractDAO<Computer> {
 			request.append("company_id=");
 			request.append(model.getCompanyId());
 		}
-		super.updateRequest("id=" + model.getId(), request.toString());
+		return super.updateRequest("id=" + model.getId(), request.toString());
+	}
+
+	public static ComputerDAO getInstance() {
+		return _instance;
 	}
 }

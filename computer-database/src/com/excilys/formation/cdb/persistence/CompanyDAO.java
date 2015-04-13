@@ -11,10 +11,9 @@ import com.excilys.formation.cdb.model.Company;
  */
 public class CompanyDAO extends AbstractDAO<Company> {
 
-	/**
-	 * 
-	 */
-	public CompanyDAO() {
+	private final static CompanyDAO _instance = new CompanyDAO();
+
+	private CompanyDAO() {
 		super(Company.class);
 	}
 
@@ -38,7 +37,7 @@ public class CompanyDAO extends AbstractDAO<Company> {
 	}
 
 	@Override
-	public void insert(Company model) {
+	public int insert(Company model) {
 		StringBuilder request = new StringBuilder();
 		boolean first = true;
 		if (model.getId() != null) {
@@ -54,11 +53,12 @@ public class CompanyDAO extends AbstractDAO<Company> {
 			request.append(model.getName());
 			request.append('\'');
 		}
+		return 0;
 		// super.insertRequest(request.toString());
 	}
 
 	@Override
-	public void remove(Company model) {
+	public int remove(Company model) {
 		StringBuilder request = new StringBuilder();
 		boolean first = true;
 		if (model.getId() != null) {
@@ -74,11 +74,12 @@ public class CompanyDAO extends AbstractDAO<Company> {
 			request.append(model.getName());
 			request.append('\'');
 		}
+		return 0;
 		// super.removeRequest(request.toString());
 	}
 
 	@Override
-	public void update(Company model) {
+	public int update(Company model) {
 		StringBuilder request = new StringBuilder();
 		boolean first = true;
 		if (model.getId() != null) {
@@ -94,6 +95,11 @@ public class CompanyDAO extends AbstractDAO<Company> {
 			request.append(model.getName());
 			request.append('\'');
 		}
+		return 0;
 		// super.updateRequest("id=" + model.getId(), request.toString());
+	}
+
+	public static CompanyDAO getInstance() {
+		return _instance;
 	}
 }
