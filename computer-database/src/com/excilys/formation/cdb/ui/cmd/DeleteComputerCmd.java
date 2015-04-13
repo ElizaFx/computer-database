@@ -3,7 +3,7 @@ package com.excilys.formation.cdb.ui.cmd;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.ComputerDAO;
 
-public class DeleteComputerCmd implements Command {
+public class DeleteComputerCmd implements ICommand {
 
 	private final Computer computer;
 

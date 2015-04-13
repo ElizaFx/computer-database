@@ -1,7 +1,6 @@
 package com.excilys.formation.cdb.model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -15,8 +14,8 @@ public class Computer implements Serializable {
 
 	private Long id;
 	private String name;
-	private Timestamp introduced;
-	private Timestamp discontinued;
+	private Date introduced;
+	private Date discontinued;
 	private Long companyId;
 
 	/**
@@ -36,7 +35,7 @@ public class Computer implements Serializable {
 	 * @param company_id
 	 *            of the computer
 	 */
-	public Computer(String name, Timestamp introduced, Timestamp discontinued,
+	public Computer(String name, Date introduced, Date discontinued,
 			Long companyId) {
 		super();
 		this.name = name;
@@ -57,8 +56,8 @@ public class Computer implements Serializable {
 	 * @param company_id
 	 *            of the computer
 	 */
-	public Computer(Long id, String name, Timestamp introduced,
-			Timestamp discontinued, Long companyId) {
+	public Computer(Long id, String name, Date introduced, Date discontinued,
+			Long companyId) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -108,7 +107,7 @@ public class Computer implements Serializable {
 	 * @param introduced
 	 *            when the computer was introduced
 	 */
-	public void setIntroduced(Timestamp introduced) {
+	public void setIntroduced(Date introduced) {
 		this.introduced = introduced;
 	}
 
@@ -123,7 +122,7 @@ public class Computer implements Serializable {
 	 * @param discontinued
 	 *            when the computer was discontinued
 	 */
-	public void setDiscontinued(Timestamp discontinued) {
+	public void setDiscontinued(Date discontinued) {
 		this.discontinued = discontinued;
 	}
 

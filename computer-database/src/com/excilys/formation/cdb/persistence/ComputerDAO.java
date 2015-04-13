@@ -65,7 +65,7 @@ public class ComputerDAO extends AbstractDAO<Computer> {
 			request.append('\'');
 			first = false;
 		}
-		if (model.getCompanyId() != null) {
+		if ((model.getCompanyId() != null) && (model.getCompanyId() != 0)) {
 			if (!first) {
 				request.append(", ");
 			}
@@ -111,7 +111,7 @@ public class ComputerDAO extends AbstractDAO<Computer> {
 			request.append('\'');
 			first = false;
 		}
-		if (model.getCompanyId() != null) {
+		if ((model.getCompanyId() != null) && (model.getCompanyId() != 0)) {
 			if (!first) {
 				request.append(" and ");
 			}
@@ -153,7 +153,7 @@ public class ComputerDAO extends AbstractDAO<Computer> {
 			request.append('\'');
 			first = false;
 		}
-		if (model.getCompanyId() != null) {
+		if ((model.getCompanyId() != null) && (model.getCompanyId() != 0)) {
 			if (!first) {
 				request.append(" , ");
 			}

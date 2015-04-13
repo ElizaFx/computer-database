@@ -1,5 +1,5 @@
 package com.excilys.formation.cdb.ui.cmd;
 
-public interface Command {
+public interface ICommand {
 	public void execute();
 }

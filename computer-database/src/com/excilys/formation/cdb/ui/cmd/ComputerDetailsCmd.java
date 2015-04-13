@@ -5,14 +5,9 @@ import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.CompanyDAO;
 import com.excilys.formation.cdb.persistence.ComputerDAO;
 
-public class ComputerDetailsCmd implements Command {
+public class ComputerDetailsCmd implements ICommand {
 
-	private String name;
 	private long id;
-
-	public ComputerDetailsCmd(String name) {
-		this.name = name;
-	}
 
 	public ComputerDetailsCmd(long id) {
 		this.id = id;
@@ -20,13 +15,13 @@ public class ComputerDetailsCmd implements Command {
 
 	@Override
 	public void execute() {
-		Computer computer = null;
-		if (name != null) {
-			computer = ComputerDAO.getInstance().find(
-					c -> c.getName().equals(name));
-		} else {
-			computer = ComputerDAO.getInstance().find(id);
+		Computer computer = ComputerDAO.getInstance().find(id);
+
+		if (computer == null) {
+			System.out.println("Computer not found");
+			return;
 		}
+
 		System.out.println("The choosen computer is : " + computer.getName());
 		System.out.println("Its id is : " + computer.getId());
 		Company company = CompanyDAO.getInstance()

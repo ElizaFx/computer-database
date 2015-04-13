@@ -1,19 +1,19 @@
 package com.excilys.formation.cdb.ui.cmd;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.ComputerDAO;
 
-public class UpdateComputerCmd implements Command {
+public class UpdateComputerCmd implements ICommand {
 	private final Computer computer;
 
 	public UpdateComputerCmd(Computer computer) {
 		this.computer = computer;
 	}
 
-	public UpdateComputerCmd(Long id, String name, Timestamp introduced,
-			Timestamp discontinued, Long companyId) {
+	public UpdateComputerCmd(Long id, String name, Date introduced,
+			Date discontinued, Long companyId) {
 		this(new Computer(id, name, introduced, discontinued, companyId));
 	}
 

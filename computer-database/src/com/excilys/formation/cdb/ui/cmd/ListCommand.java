@@ -2,7 +2,7 @@ package com.excilys.formation.cdb.ui.cmd;
 
 import com.excilys.formation.cdb.persistence.AbstractDAO;
 
-public abstract class ListCommand<T> implements Command {
+public abstract class ListCommand<T> implements ICommand {
 
 	private AbstractDAO<T> abstractDAO;
 
