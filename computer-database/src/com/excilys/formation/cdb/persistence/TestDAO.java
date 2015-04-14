@@ -33,10 +33,15 @@ public class TestDAO {
 	@Test
 	public void createUpdateRemoveTest() {
 		ComputerDAO crf = ComputerDAO.getInstance();
-		crf.insert(new Computer("Joxit", null, null, 20l));
-		crf.findAll().stream().filter(c -> c.getName().startsWith("Joxit"))
+		crf.insert(new Computer("Joxit", null, null, CompanyDAO.getInstance()
+				.find(20l)));
+		crf.findAll()
+				.stream()
+				.filter(c -> (c.getName() != null)
+						&& c.getName().startsWith("Joxit"))
 				.forEach(c -> System.out.println(c));
-		Computer jox = crf.find(c -> c.getName().equals("Joxit"));
+		Computer jox = crf.find(c -> (c.getName() != null)
+				&& c.getName().equals("Joxit"));
 		assert (jox != null);
 		System.out.println("jox1 " + jox);
 		assert (crf.find(c -> c.getName().equals("Joxit42")) == null);

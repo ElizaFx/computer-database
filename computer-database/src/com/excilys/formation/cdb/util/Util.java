@@ -25,4 +25,11 @@ public class Util {
 		return dateFormat.format(d);
 	}
 
+	public static java.sql.Date toSqlDate(Date d) {
+		if (d == null) {
+			return null;
+		}
+		return java.sql.Date.valueOf(Util.formatDate(d));
+	}
+
 }

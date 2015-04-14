@@ -1,8 +1,6 @@
 package com.excilys.formation.cdb.ui.cmd;
 
-import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.persistence.CompanyDAO;
 import com.excilys.formation.cdb.persistence.ComputerDAO;
 
 public class ComputerDetailsCmd implements ICommand {
@@ -24,10 +22,8 @@ public class ComputerDetailsCmd implements ICommand {
 
 		System.out.println("The choosen computer is : " + computer.getName());
 		System.out.println("Its id is : " + computer.getId());
-		Company company = CompanyDAO.getInstance()
-				.find(computer.getCompanyId());
-		if (company != null) {
-			System.out.println("The vendor is : " + company.getName());
+		if (computer.getCompany() != null) {
+			System.out.println("The vendor is : " + computer.getCompany());
 		} else {
 			System.out.println("Vendor unknown");
 			/*

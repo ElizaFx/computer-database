@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.excilys.formation.cdb.model.Company;
+import com.excilys.formation.cdb.persistence.CompanyDAO;
 import com.excilys.formation.cdb.ui.cmd.CreateComputerCmd;
 import com.excilys.formation.cdb.ui.cmd.ICommand;
 import com.excilys.formation.cdb.util.Util;
@@ -37,7 +39,7 @@ public class MKRequest implements IRequest {
 		String name = null;
 		Date introduced = null;
 		Date discontinued = null;
-		Long companyId = null;
+		Company company = null;
 		for (int i = 0; i < (request.size() - 1); i++) {
 			if (MK_ARGS.contains(request.get(i))) {
 				System.out.println(request.get(i));
@@ -68,7 +70,8 @@ public class MKRequest implements IRequest {
 					}
 					case COMPANY_ID: {
 						if (Util.isNumeric(request.get(i + 1))) {
-							companyId = Long.parseLong(request.get(i + 1));
+							Long companyId = Long.parseLong(request.get(i + 1));
+							company = CompanyDAO.getInstance().find(companyId);
 						} else {
 							throw new RequestNotFoundException(
 									"Company id malformed");
@@ -83,7 +86,7 @@ public class MKRequest implements IRequest {
 		if (name == null) {
 			throw new RequestNotFoundException("CREATION ERROR name not found");
 		}
-		return new CreateComputerCmd(name, introduced, discontinued, companyId);
+		return new CreateComputerCmd(name, introduced, discontinued, company);
 	}
 
 	/**

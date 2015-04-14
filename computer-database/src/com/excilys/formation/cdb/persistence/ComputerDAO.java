@@ -1,168 +1,169 @@
 package com.excilys.formation.cdb.persistence;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
 
 import com.excilys.formation.cdb.model.Computer;
+import com.excilys.formation.cdb.persistence.connection.ConnectionFactory;
 import com.excilys.formation.cdb.util.Util;
 
 /**
  *
  * @author Joxit
  */
-public class ComputerDAO extends AbstractDAO<Computer> {
+public enum ComputerDAO implements IComputerDAO {
 
-	private final static ComputerDAO _instance = new ComputerDAO();
-
-	private ComputerDAO() {
-		super(Computer.class);
-	}
+	_instance;
 
 	@Override
-	protected Computer getModel(ResultSet result) {
+	public Computer getModel(ResultSet result) {
 		Computer computer = new Computer();
 		try {
-			computer.setId(result.getLong("id"));
-			computer.setName(result.getString("name"));
-			computer.setIntroduced(result.getTimestamp("introduced"));
-			computer.setDiscontinued(result.getTimestamp("discontinued"));
-			computer.setCompanyId(result.getLong("company_id"));
+			if (!result.isBeforeFirst() || result.next()) {
+				computer.setId(result.getLong("computer.id"));
+				computer.setName(result.getString("computer.name"));
+				computer.setIntroduced(result
+						.getTimestamp("computer.introduced"));
+				computer.setDiscontinued(result
+						.getTimestamp("computer.discontinued"));
+				if (result.getLong("company_id") != 0l) {
+					computer.setCompany(CompanyDAO.getInstance().getModel(
+							result));
+				} else {
+					computer.setCompany(null);
+				}
+			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException(e);
 		}
 		return computer;
 	}
 
 	@Override
 	public Computer find(Object id) {
-		return super.find(c -> c.getId().equals(id));
+		Connection connection = null;
+		PreparedStatement ps = null;
+		ResultSet result = null;
+		Computer res = null;
+		try {
+			connection = ConnectionFactory.getConnection();
+			ps = connection
+					.prepareStatement("SELECT * FROM computer left outer join company on computer.company_id=company.id WHERE computer.ID=?");
+			ps.setObject(1, id);
+			result = ps.executeQuery();
+			res = getModel(result);
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			ConnectionFactory.closeConnection(connection, ps, result);
+		}
+		return res;
 	}
 
 	@Override
 	public int insert(Computer model) {
-		StringBuilder request = new StringBuilder();
-		boolean first = true;
-		if (model.getName() != null) {
-			request.append("name='");
-			request.append(model.getName());
-			request.append('\'');
-			first = false;
-		}
-		if (model.getIntroduced() != null) {
-			if (!first) {
-				request.append(", ");
+		int res = 0;
+		Connection connection = null;
+		PreparedStatement ps = null;
+		try {
+			connection = ConnectionFactory.getConnection();
+			ps = connection
+					.prepareStatement("INSERT INTO computer SET NAME=?, INTRODUCED=?, DISCONTINUED=?, COMPANY_ID=?");
+			ps.setString(1, model.getName());
+			ps.setDate(2, Util.toSqlDate(model.getIntroduced()));
+			ps.setDate(3, Util.toSqlDate(model.getDiscontinued()));
+			if (model.getCompany() == null) {
+				ps.setNull(4, Types.BIGINT);
+			} else {
+				ps.setLong(4, model.getCompany().getId());
 			}
-			request.append("introduced='");
-			request.append(Util.formatDate(model.getIntroduced()));
-			request.append('\'');
-			first = false;
+			res = ps.executeUpdate();
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			ConnectionFactory.closeConnection(connection, ps, null);
 		}
-		if (model.getDiscontinued() != null) {
-			if (!first) {
-				request.append(", ");
-			}
-			request.append("discontinued='");
-			request.append(Util.formatDate(model.getDiscontinued()));
-			request.append('\'');
-			first = false;
-		}
-		if ((model.getCompanyId() != null) && (model.getCompanyId() != 0)) {
-			if (!first) {
-				request.append(", ");
-			}
-			request.append("company_id=");
-			request.append(model.getCompanyId());
-		}
-		return super.insertRequest(request.toString());
+		return res;
 	}
 
 	@Override
 	public int remove(Computer model) {
-		StringBuilder request = new StringBuilder();
-		boolean first = true;
-		if (model.getId() != null) {
-			request.append("id=");
-			request.append(model.getId());
-			first = false;
+		int res = 0;
+		Connection connection = null;
+		PreparedStatement ps = null;
+		try {
+			connection = ConnectionFactory.getConnection();
+			ps = connection.prepareStatement("DELETE FROM computer WHERE ID=?");
+			ps.setLong(1, model.getId());
+			res = ps.executeUpdate();
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			ConnectionFactory.closeConnection(connection, ps, null);
 		}
-		if (model.getName() != null) {
-			if (!first) {
-				request.append(" and ");
-			}
-			request.append("name='");
-			request.append(model.getName());
-			request.append('\'');
-			first = false;
-		}
-		if (model.getIntroduced() != null) {
-			if (!first) {
-				request.append(" and ");
-			}
-			request.append("introduced='");
-			request.append(Util.formatDate(model.getIntroduced()));
-			request.append('\'');
-			first = false;
-		}
-		if (model.getDiscontinued() != null) {
-			if (!first) {
-				request.append(" and ");
-			}
-			request.append("discontinued='");
-			request.append(Util.formatDate(model.getDiscontinued()));
-			request.append('\'');
-			first = false;
-		}
-		if ((model.getCompanyId() != null) && (model.getCompanyId() != 0)) {
-			if (!first) {
-				request.append(" and ");
-			}
-			request.append("company_id=");
-			request.append(model.getCompanyId());
-		}
-		return super.removeRequest(request.toString());
+		return res;
 
 	}
 
 	@Override
 	public int update(Computer model) {
-		StringBuilder request = new StringBuilder();
-		boolean first = true;
-		if (model.getName() != null) {
-			if (!first) {
-				request.append(" , ");
+		int res = 0;
+		Connection connection = null;
+		PreparedStatement ps = null;
+		try {
+			connection = ConnectionFactory.getConnection();
+			ps = connection
+					.prepareStatement("UPDATE computer SET NAME=?, INTRODUCED=?, DISCONTINUED=?, COMPANY_ID=? WHERE ID=?");
+			ps.setObject(1, model.getName());
+			ps.setDate(2, Util.toSqlDate(model.getIntroduced()));
+			ps.setDate(3, Util.toSqlDate(model.getDiscontinued()));
+			if (model.getCompany() == null) {
+				ps.setNull(4, Types.BIGINT);
+			} else {
+				ps.setLong(4, model.getCompany().getId());
 			}
-			request.append("name='");
-			request.append(model.getName());
-			request.append('\'');
-			first = false;
+			ps.setLong(5, model.getId());
+			res = ps.executeUpdate();
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			ConnectionFactory.closeConnection(connection, ps, null);
 		}
-		if (model.getIntroduced() != null) {
-			if (!first) {
-				request.append(" , ");
+		return res;
+	}
+
+	@Override
+	public List<Computer> findAll() {
+		List<Computer> res = new ArrayList<>();
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		try {
+			connection = ConnectionFactory.getConnection();
+			statement = connection.createStatement();
+			result = statement
+					.executeQuery("SELECT * FROM computer left outer join company on computer.company_id=company.id");
+			while (result.next()) {
+				res.add(getModel(result));
 			}
-			request.append("introduced='");
-			request.append(Util.formatDate(model.getIntroduced()));
-			request.append('\'');
-			first = false;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			ConnectionFactory.closeConnection(connection, statement, result);
 		}
-		if (model.getDiscontinued() != null) {
-			if (!first) {
-				request.append(" , ");
-			}
-			request.append("discontinued='");
-			request.append(Util.formatDate(model.getDiscontinued()));
-			request.append('\'');
-			first = false;
-		}
-		if ((model.getCompanyId() != null) && (model.getCompanyId() != 0)) {
-			if (!first) {
-				request.append(" , ");
-			}
-			request.append("company_id=");
-			request.append(model.getCompanyId());
-		}
-		System.out.println(request.toString());
-		return super.updateRequest("id=" + model.getId(), request.toString());
+		return res;
+	}
+
+	@Override
+	public Computer find(Predicate<? super Computer> predicate) {
+		return findAll().stream().filter(predicate).findFirst().orElse(null);
 	}
 
 	public static ComputerDAO getInstance() {

@@ -1,105 +1,87 @@
 package com.excilys.formation.cdb.persistence;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
 
 import com.excilys.formation.cdb.model.Company;
+import com.excilys.formation.cdb.persistence.connection.ConnectionFactory;
 
 /**
  *
  * @author Joxit
  */
-public class CompanyDAO extends AbstractDAO<Company> {
+public enum CompanyDAO implements ICompanyDAO {
 
-	private final static CompanyDAO _instance = new CompanyDAO();
-
-	private CompanyDAO() {
-		super(Company.class);
-	}
-
+	_instance;
 	@Override
-	protected Company getModel(ResultSet result) {
-		Company company = new Company();
+	public Company getModel(ResultSet result) {
+		Company company = null;
 		try {
-			company.setId(result.getLong("id"));
+			if (!result.isBeforeFirst() || result.next()) {
+				company = new Company();
+				company.setId(result.getLong("company.id"));
+				company.setName(result.getString("company.name"));
+			}
 		} catch (SQLException e) {
-		}
-		try {
-			company.setName(result.getString("name"));
-		} catch (SQLException e) {
+			throw new DAOException(e);
 		}
 		return company;
 	}
 
 	@Override
 	public Company find(Object id) {
-		return super.find(c -> c.getId().equals(id));
-	}
-
-	@Override
-	public int insert(Company model) {
-		StringBuilder request = new StringBuilder();
-		boolean first = true;
-		if (model.getId() != null) {
-			request.append("id=");
-			request.append(model.getId());
-			first = false;
+		Connection connection = null;
+		PreparedStatement ps = null;
+		ResultSet result = null;
+		Company res = null;
+		try {
+			connection = ConnectionFactory.getConnection();
+			ps = connection
+					.prepareStatement("SELECT * FROM company WHERE ID=?");
+			ps.setObject(1, id);
+			result = ps.executeQuery();
+			res = getModel(result);
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			ConnectionFactory.closeConnection(connection, ps, result);
 		}
-		if (model.getName() != null) {
-			if (!first) {
-				request.append(", ");
-			}
-			request.append("name='");
-			request.append(model.getName());
-			request.append('\'');
-		}
-		return 0;
-		// super.insertRequest(request.toString());
-	}
-
-	@Override
-	public int remove(Company model) {
-		StringBuilder request = new StringBuilder();
-		boolean first = true;
-		if (model.getId() != null) {
-			request.append("id=");
-			request.append(model.getId());
-			first = false;
-		}
-		if (model.getName() != null) {
-			if (!first) {
-				request.append(" and ");
-			}
-			request.append("name='");
-			request.append(model.getName());
-			request.append('\'');
-		}
-		return 0;
-		// super.removeRequest(request.toString());
-	}
-
-	@Override
-	public int update(Company model) {
-		StringBuilder request = new StringBuilder();
-		boolean first = true;
-		if (model.getId() != null) {
-			request.append("id=");
-			request.append(model.getId());
-			first = false;
-		}
-		if (model.getName() != null) {
-			if (!first) {
-				request.append(" and ");
-			}
-			request.append("name='");
-			request.append(model.getName());
-			request.append('\'');
-		}
-		return 0;
-		// super.updateRequest("id=" + model.getId(), request.toString());
+		return res;
 	}
 
 	public static CompanyDAO getInstance() {
 		return _instance;
+	}
+
+	@Override
+	public List<Company> findAll() {
+		List<Company> res = new ArrayList<>();
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		try {
+			connection = ConnectionFactory.getConnection();
+			statement = connection.createStatement();
+			result = statement.executeQuery("select * from company");
+			while (result.next()) {
+				res.add(getModel(result));
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			ConnectionFactory.closeConnection(connection, statement, result);
+		}
+		return res;
+	}
+
+	@Override
+	public Company find(Predicate<? super Company> predicate) {
+		return findAll().stream().filter(predicate).findFirst().orElse(null);
 	}
 }

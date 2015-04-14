@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.excilys.formation.cdb.model.Computer;
+import com.excilys.formation.cdb.persistence.CompanyDAO;
 import com.excilys.formation.cdb.persistence.ComputerDAO;
 import com.excilys.formation.cdb.ui.cmd.ICommand;
 import com.excilys.formation.cdb.ui.cmd.UpdateComputerCmd;
@@ -113,12 +114,11 @@ public class MVRequest implements IRequest {
 			hasChanges = true;
 		}
 		if ((companyId != null) && (companyId != 0)) {
-			computer.setCompanyId(companyId);
+			computer.setCompany(CompanyDAO.getInstance().find(companyId));
 			hasChanges = true;
 		}
 		if (hasChanges) {
-			return new UpdateComputerCmd(id, name, introduced, discontinued,
-					companyId);
+			return new UpdateComputerCmd(computer);
 		} else {
 			throw new RequestNotFoundException("No updates to do");
 		}

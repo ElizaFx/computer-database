@@ -5,6 +5,7 @@ import java.util.List;
 import org.junit.Test;
 
 import com.excilys.formation.cdb.model.Computer;
+import com.excilys.formation.cdb.persistence.CompanyDAO;
 import com.excilys.formation.cdb.persistence.ComputerDAO;
 
 public class TestCmd {
@@ -32,10 +33,10 @@ public class TestCmd {
 	@Test
 	public void CreateUpdateDeleteComputerTest() {
 		ICommand cmd1 = new CreateComputerCmd(new Computer("Joxit", null, null,
-				17l));
+				CompanyDAO.getInstance().find(17l)));
 		cmd1.execute();
 		Computer computer = ComputerDAO.getInstance().find(
-				c -> c.getName().equals("Joxit"));
+				c -> (c.getName() != null) && c.getName().equals("Joxit"));
 		assert (computer != null);
 		computer.setName("Joxit42");
 		ICommand cmd2 = new UpdateComputerCmd(computer);

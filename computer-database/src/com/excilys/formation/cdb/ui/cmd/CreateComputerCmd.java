@@ -2,6 +2,7 @@ package com.excilys.formation.cdb.ui.cmd;
 
 import java.util.Date;
 
+import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.ComputerDAO;
 
@@ -14,8 +15,8 @@ public class CreateComputerCmd implements ICommand {
 	}
 
 	public CreateComputerCmd(String name, Date introduced, Date discontinued,
-			Long companyId) {
-		this(new Computer(name, introduced, discontinued, companyId));
+			Company company) {
+		this(new Computer(name, introduced, discontinued, company));
 	}
 
 	@Override
