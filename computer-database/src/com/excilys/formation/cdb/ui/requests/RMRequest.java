@@ -30,6 +30,9 @@ public class RMRequest implements IRequest {
 		return new DeleteComputerCmd(id);
 	}
 
+	/**
+	 * Print help message on stdout
+	 */
 	public static void help() {
 		System.out.println(CMD + " <computer id>");
 	}

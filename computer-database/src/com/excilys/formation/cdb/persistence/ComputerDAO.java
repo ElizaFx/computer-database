@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.excilys.formation.cdb.model.Computer;
+import com.excilys.formation.cdb.util.Util;
 
 /**
  *
@@ -52,7 +53,7 @@ public class ComputerDAO extends AbstractDAO<Computer> {
 				request.append(", ");
 			}
 			request.append("introduced='");
-			request.append(model.getIntroduced());
+			request.append(Util.formatDate(model.getIntroduced()));
 			request.append('\'');
 			first = false;
 		}
@@ -61,7 +62,7 @@ public class ComputerDAO extends AbstractDAO<Computer> {
 				request.append(", ");
 			}
 			request.append("discontinued='");
-			request.append(model.getDiscontinued());
+			request.append(Util.formatDate(model.getDiscontinued()));
 			request.append('\'');
 			first = false;
 		}
@@ -98,7 +99,7 @@ public class ComputerDAO extends AbstractDAO<Computer> {
 				request.append(" and ");
 			}
 			request.append("introduced='");
-			request.append(model.getIntroduced());
+			request.append(Util.formatDate(model.getIntroduced()));
 			request.append('\'');
 			first = false;
 		}
@@ -107,7 +108,7 @@ public class ComputerDAO extends AbstractDAO<Computer> {
 				request.append(" and ");
 			}
 			request.append("discontinued='");
-			request.append(model.getDiscontinued());
+			request.append(Util.formatDate(model.getDiscontinued()));
 			request.append('\'');
 			first = false;
 		}
@@ -140,7 +141,7 @@ public class ComputerDAO extends AbstractDAO<Computer> {
 				request.append(" , ");
 			}
 			request.append("introduced='");
-			request.append(model.getIntroduced());
+			request.append(Util.formatDate(model.getIntroduced()));
 			request.append('\'');
 			first = false;
 		}
@@ -149,7 +150,7 @@ public class ComputerDAO extends AbstractDAO<Computer> {
 				request.append(" , ");
 			}
 			request.append("discontinued='");
-			request.append(model.getDiscontinued());
+			request.append(Util.formatDate(model.getDiscontinued()));
 			request.append('\'');
 			first = false;
 		}
@@ -160,6 +161,7 @@ public class ComputerDAO extends AbstractDAO<Computer> {
 			request.append("company_id=");
 			request.append(model.getCompanyId());
 		}
+		System.out.println(request.toString());
 		return super.updateRequest("id=" + model.getId(), request.toString());
 	}
 

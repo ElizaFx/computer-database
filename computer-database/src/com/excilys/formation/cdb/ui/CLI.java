@@ -23,7 +23,7 @@ public class CLI {
 	}
 
 	public void run() throws IOException {
-		quit: while (true) {
+		while (true) {
 			BufferedReader ir = new BufferedReader(new InputStreamReader(
 					System.in));
 			try {
@@ -31,7 +31,7 @@ public class CLI {
 				if (request != null) {
 					switch (request) {
 						case "exit":
-							break quit;
+							return;
 						case "help":
 							Request.help();
 							break;
@@ -42,8 +42,6 @@ public class CLI {
 							command.execute();
 							break;
 					}
-				} else {
-					System.err.println("ERROR: request null");
 				}
 			} catch (RequestNotFoundException e) {
 				System.out.println(e.getMessage());

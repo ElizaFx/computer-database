@@ -32,7 +32,6 @@ public class Request implements IRequest {
 		while (regexMatcher.find()) {
 			this.request.add(regexMatcher.group().replace("\"", ""));
 		}
-		System.out.println(this.request);
 	}
 
 	@Override
@@ -113,6 +112,9 @@ public class Request implements IRequest {
 		}
 	}
 
+	/**
+	 * Print help message on stdout
+	 */
 	public static void help() {
 		System.out.println("List of valid commands : ");
 		LSRequest.help();

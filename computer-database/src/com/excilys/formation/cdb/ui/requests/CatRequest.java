@@ -26,6 +26,9 @@ public class CatRequest implements IRequest {
 		return new ComputerDetailsCmd(id);
 	}
 
+	/**
+	 * Print help message on stdout
+	 */
 	public static void help() {
 		System.out.println(CMD + " <computer id>");
 	}

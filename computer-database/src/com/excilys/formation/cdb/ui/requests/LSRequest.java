@@ -38,11 +38,13 @@ public class LSRequest implements IRequest {
 			case LIST_COMPUTER:
 				command = new ListComputerCmd();
 				break;
-
 		}
 		return command;
 	}
 
+	/**
+	 * Print help message on stdout
+	 */
 	public static void help() {
 		System.out.println(CMD + " [" + LIST_COMPUTER + "|" + LIST_COMPANIES
 				+ "]");

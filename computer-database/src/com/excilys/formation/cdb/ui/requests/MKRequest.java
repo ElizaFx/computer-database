@@ -1,6 +1,5 @@
 package com.excilys.formation.cdb.ui.requests;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashSet;
@@ -49,21 +48,21 @@ public class MKRequest implements IRequest {
 					}
 					case INTRODUCED: {
 						try {
-							introduced = DateFormat.getInstance().parse(
-									request.get(i + 1));
+							introduced = Util.parseDate(request.get(i + 1));
 						} catch (ParseException e) {
 							throw new RequestNotFoundException(
-									"Introduced date malformed");
+									"Introduced date malformed! "
+											+ e.getMessage());
 						}
 						break;
 					}
 					case DISCONTINUED: {
 						try {
-							discontinued = DateFormat.getInstance().parse(
-									request.get(i + 1));
+							discontinued = Util.parseDate(request.get(i + 1));
 						} catch (ParseException e) {
 							throw new RequestNotFoundException(
-									"Discontinued date malformed");
+									"Discontinued date malformed! "
+											+ e.getMessage());
 						}
 						break;
 					}
@@ -84,15 +83,16 @@ public class MKRequest implements IRequest {
 		if (name == null) {
 			throw new RequestNotFoundException("CREATION ERROR name not found");
 		}
-		System.out.printf("%s %s %s %s\n", name, introduced, discontinued,
-				companyId);
 		return new CreateComputerCmd(name, introduced, discontinued, companyId);
 	}
 
+	/**
+	 * Print help message on stdout
+	 */
 	public static void help() {
 		System.out.println(CMD + " [" + NAME + " <name>] [" + INTRODUCED
-				+ " <iso date>] [" + DISCONTINUED + " <iso date>] ["
-				+ COMPANY_ID + " <company id>]");
+				+ " <date>] [" + DISCONTINUED + " <date>] [" + COMPANY_ID
+				+ " <company id>]");
 
 		System.out
 				.println("    "
@@ -101,11 +101,11 @@ public class MKRequest implements IRequest {
 		System.out
 				.println("    "
 						+ INTRODUCED
-						+ " <iso date> : date when it was introduced (iso date YYYY-MM-JJ)");
+						+ " <date> : date when it was introduced (iso date YYYY-MM-JJ or dd-MM-yyyy)");
 		System.out
 				.println("    "
 						+ DISCONTINUED
-						+ " <iso date> : date when it was discontinued (iso date YYYY-MM-JJ)");
+						+ " <date> : date when it was discontinued (iso date YYYY-MM-JJ or dd-MM-yyyy)");
 		System.out.println("    " + COMPANY_ID
 				+ " <company id> : id of the company, must be in the DataBase");
 	}
