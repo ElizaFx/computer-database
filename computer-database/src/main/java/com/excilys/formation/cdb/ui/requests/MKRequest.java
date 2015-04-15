@@ -1,6 +1,5 @@
 package com.excilys.formation.cdb.ui.requests;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -17,10 +16,10 @@ public class MKRequest implements IRequest {
 
 	public final static String CMD = "mk";
 
-	private static final String NAME = "-n";
-	private static final String INTRODUCED = "-i";
-	private static final String DISCONTINUED = "-d";
-	private static final String COMPANY_ID = "-c";
+	public static final String NAME = "-n";
+	public static final String INTRODUCED = "-i";
+	public static final String DISCONTINUED = "-d";
+	public static final String COMPANY_ID = "-c";
 
 	private static final Set<String> MK_ARGS = new HashSet<>();
 	static {
@@ -42,29 +41,24 @@ public class MKRequest implements IRequest {
 		Company company = null;
 		for (int i = 0; i < (request.size() - 1); i++) {
 			if (MK_ARGS.contains(request.get(i))) {
-				System.out.println(request.get(i));
 				switch (request.get(i)) {
 					case NAME: {
 						name = request.get(i + 1);
 						break;
 					}
 					case INTRODUCED: {
-						try {
-							introduced = Util.parseDate(request.get(i + 1));
-						} catch (ParseException e) {
+						introduced = Util.parseDate(request.get(i + 1));
+						if (introduced == null) {
 							throw new RequestNotFoundException(
-									"Introduced date malformed! "
-											+ e.getMessage());
+									"Introduced date malformed!");
 						}
 						break;
 					}
 					case DISCONTINUED: {
-						try {
-							discontinued = Util.parseDate(request.get(i + 1));
-						} catch (ParseException e) {
+						discontinued = Util.parseDate(request.get(i + 1));
+						if (discontinued == null) {
 							throw new RequestNotFoundException(
-									"Discontinued date malformed! "
-											+ e.getMessage());
+									"Discontinued date malformed!");
 						}
 						break;
 					}

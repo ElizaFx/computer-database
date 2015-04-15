@@ -10,9 +10,9 @@ import com.excilys.formation.cdb.ui.cmd.ListComputerCmd;
 public class LSRequest implements IRequest {
 
 	public final static String CMD = "ls";
-	private final static Set<String> LIST_ARGS = new HashSet<String>();
-	private final static String LIST_COMPUTER = "computer";
-	private final static String LIST_COMPANIES = "companies";
+	public final static Set<String> LIST_ARGS = new HashSet<String>();
+	public final static String LIST_COMPUTER = "computer";
+	public final static String LIST_COMPANIES = "companies";
 	static {
 		LIST_ARGS.add(LIST_COMPANIES);
 		LIST_ARGS.add(LIST_COMPUTER);

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.connection.ConnectionFactory;
 import com.excilys.formation.cdb.util.Util;
@@ -23,42 +24,23 @@ public enum ComputerDAO implements IComputerDAO {
 	_instance;
 
 	@Override
-	public Computer getModel(ResultSet result) {
-		Computer computer = new Computer();
-		try {
-			if (!result.isBeforeFirst() || result.next()) {
-				computer.setId(result.getLong("computer.id"));
-				computer.setName(result.getString("computer.name"));
-				computer.setIntroduced(result
-						.getTimestamp("computer.introduced"));
-				computer.setDiscontinued(result
-						.getTimestamp("computer.discontinued"));
-				if (result.getLong("company_id") != 0l) {
-					computer.setCompany(CompanyDAO.getInstance().getModel(
-							result));
-				} else {
-					computer.setCompany(null);
-				}
-			}
-		} catch (SQLException e) {
-			throw new DAOException(e);
-		}
-		return computer;
-	}
-
-	@Override
 	public Computer find(Object id) {
 		Connection connection = null;
 		PreparedStatement ps = null;
 		ResultSet result = null;
 		Computer res = null;
+		if (id == null) {
+			throw new DAOException("NullPointerException: ID null!");
+		}
 		try {
 			connection = ConnectionFactory.getConnection();
 			ps = connection
 					.prepareStatement("SELECT * FROM computer left outer join company on computer.company_id=company.id WHERE computer.ID=?");
 			ps.setObject(1, id);
 			result = ps.executeQuery();
-			res = getModel(result);
+			if (result.next()) {
+				res = ComputerMapper.getModel(result);
+			}
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		} finally {
@@ -72,6 +54,9 @@ public enum ComputerDAO implements IComputerDAO {
 		int res = 0;
 		Connection connection = null;
 		PreparedStatement ps = null;
+		if (model == null) {
+			throw new DAOException("NullPointerException: Model null!");
+		}
 		try {
 			connection = ConnectionFactory.getConnection();
 			ps = connection
@@ -98,6 +83,9 @@ public enum ComputerDAO implements IComputerDAO {
 		int res = 0;
 		Connection connection = null;
 		PreparedStatement ps = null;
+		if (model == null) {
+			throw new DAOException("NullPointerException: Model null!");
+		}
 		try {
 			connection = ConnectionFactory.getConnection();
 			ps = connection.prepareStatement("DELETE FROM computer WHERE ID=?");
@@ -117,6 +105,9 @@ public enum ComputerDAO implements IComputerDAO {
 		int res = 0;
 		Connection connection = null;
 		PreparedStatement ps = null;
+		if (model == null) {
+			throw new DAOException("NullPointerException: Model null!");
+		}
 		try {
 			connection = ConnectionFactory.getConnection();
 			ps = connection
@@ -151,7 +142,7 @@ public enum ComputerDAO implements IComputerDAO {
 			result = statement
 					.executeQuery("SELECT * FROM computer left outer join company on computer.company_id=company.id");
 			while (result.next()) {
-				res.add(getModel(result));
+				res.add(ComputerMapper.getModel(result));
 			}
 		} catch (SQLException e) {
 			throw new DAOException(e);
@@ -163,6 +154,9 @@ public enum ComputerDAO implements IComputerDAO {
 
 	@Override
 	public Computer find(Predicate<? super Computer> predicate) {
+		if (predicate == null) {
+			throw new DAOException("NullPointerException: Predicate null!");
+		}
 		return findAll().stream().filter(predicate).findFirst().orElse(null);
 	}
 

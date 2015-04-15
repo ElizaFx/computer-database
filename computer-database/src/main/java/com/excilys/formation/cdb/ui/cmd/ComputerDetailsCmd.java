@@ -26,10 +26,6 @@ public class ComputerDetailsCmd implements ICommand {
 			System.out.println("The vendor is : " + computer.getCompany());
 		} else {
 			System.out.println("Vendor unknown");
-			/*
-			 * throw new NullPointerException("FATAL ERROR: Company id " +
-			 * computer.getCompanyId() + " is not valid. Check the database!!");
-			 */
 		}
 
 		if (computer.getIntroduced() != null) {

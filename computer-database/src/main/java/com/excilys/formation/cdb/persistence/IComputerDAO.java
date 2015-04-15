@@ -1,6 +1,5 @@
 package com.excilys.formation.cdb.persistence;
 
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -51,9 +50,4 @@ public interface IComputerDAO {
 	 */
 	public abstract Computer find(Object id);
 
-	/**
-	 * @param result
-	 * @return result translated in the model
-	 */
-	public abstract Computer getModel(ResultSet result);
 }

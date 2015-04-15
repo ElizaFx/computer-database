@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.persistence.connection.ConnectionFactory;
 
@@ -19,20 +20,6 @@ import com.excilys.formation.cdb.persistence.connection.ConnectionFactory;
 public enum CompanyDAO implements ICompanyDAO {
 
 	_instance;
-	@Override
-	public Company getModel(ResultSet result) {
-		Company company = null;
-		try {
-			if (!result.isBeforeFirst() || result.next()) {
-				company = new Company();
-				company.setId(result.getLong("company.id"));
-				company.setName(result.getString("company.name"));
-			}
-		} catch (SQLException e) {
-			throw new DAOException(e);
-		}
-		return company;
-	}
 
 	@Override
 	public Company find(Object id) {
@@ -40,13 +27,18 @@ public enum CompanyDAO implements ICompanyDAO {
 		PreparedStatement ps = null;
 		ResultSet result = null;
 		Company res = null;
+		if (id == null) {
+			throw new DAOException("NullPointerException: Model null!");
+		}
 		try {
 			connection = ConnectionFactory.getConnection();
 			ps = connection
 					.prepareStatement("SELECT * FROM company WHERE ID=?");
 			ps.setObject(1, id);
 			result = ps.executeQuery();
-			res = getModel(result);
+			if (result.next()) {
+				res = CompanyMapper.getModel(result);
+			}
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		} finally {
@@ -70,7 +62,7 @@ public enum CompanyDAO implements ICompanyDAO {
 			statement = connection.createStatement();
 			result = statement.executeQuery("select * from company");
 			while (result.next()) {
-				res.add(getModel(result));
+				res.add(CompanyMapper.getModel(result));
 			}
 		} catch (SQLException e) {
 			throw new DAOException(e);
@@ -82,6 +74,9 @@ public enum CompanyDAO implements ICompanyDAO {
 
 	@Override
 	public Company find(Predicate<? super Company> predicate) {
+		if (predicate == null) {
+			throw new DAOException("NullPointerException: Predicate null!");
+		}
 		return findAll().stream().filter(predicate).findFirst().orElse(null);
 	}
 }

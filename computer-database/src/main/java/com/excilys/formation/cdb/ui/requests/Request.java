@@ -11,9 +11,9 @@ import com.excilys.formation.cdb.ui.cmd.ICommand;
 
 public class Request implements IRequest {
 
-	private final static String HELP = "help";
+	public final static String HELP = "help";
 
-	private final static Set<String> FIRST_ARGS = new HashSet<String>();
+	public final static Set<String> FIRST_ARGS = new HashSet<String>();
 
 	static {
 		FIRST_ARGS.add(LSRequest.CMD);
@@ -92,7 +92,8 @@ public class Request implements IRequest {
 		if (request != null) {
 			return request.processCommand();
 		} else {
-			return null;
+			throw new RequestNotFoundException(getFirstCmd()
+					+ " is not a valid command");
 		}
 	}
 

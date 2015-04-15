@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.persistence;
+package com.excilys.formation.cdb.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -10,34 +10,29 @@ import java.text.ParseException;
 
 import org.junit.Test;
 
-import com.excilys.formation.cdb.mapper.CompanyMapper;
-import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
+import com.excilys.formation.cdb.persistence.DAOException;
 import com.excilys.formation.cdb.util.Util;
 
-/**
- *
- * @author Joxit
- */
-public class TestDAO {
-
+public class TestService {
 	@Test
 	public void findAllComputer() {
-		ComputerDAO crf = ComputerDAO.getInstance();
+		ComputerService crf = ComputerService.getInstance();
+
 		assertEquals(574, crf.findAll().size());
 	}
 
 	@Test
 	public void findAllCompanies() {
-		CompanyDAO cyf = CompanyDAO.getInstance();
+		CompanyService cyf = CompanyService.getInstance();
 
 		assertEquals(42, cyf.findAll().size());
 	}
 
 	@Test
 	public void findComputer() throws ParseException {
-		ComputerDAO crf = ComputerDAO.getInstance();
+		ComputerService crf = ComputerService.getInstance();
 		Computer elfII = new Computer();
 		elfII.setId(20l);
 		elfII.setName("ELF II");
@@ -54,7 +49,7 @@ public class TestDAO {
 
 	@Test
 	public void findCompany() {
-		CompanyDAO cyf = CompanyDAO.getInstance();
+		CompanyService cyf = CompanyService.getInstance();
 
 		Company sony = new Company();
 		sony.setId(17l);
@@ -69,9 +64,9 @@ public class TestDAO {
 
 	@Test
 	public void createUpdateRemoveComputer() {
-		ComputerDAO crf = ComputerDAO.getInstance();
-		crf.insert(new Computer("Joxit", null, null, CompanyDAO.getInstance()
-				.find(17l)));
+		ComputerService crf = ComputerService.getInstance();
+		crf.insert(new Computer("Joxit", null, null, CompanyService
+				.getInstance().find(17l)));
 
 		Computer jox = crf.find(c -> (c.getName() != null)
 				&& c.getName().equals("Joxit"));
@@ -79,7 +74,6 @@ public class TestDAO {
 		assertNotNull(jox);
 		assertNull(crf.find(c -> c.getName().equals("Joxit42")));
 		jox.setName("Joxit42");
-
 		crf.update(jox);
 		assertNotNull(crf.find(c -> c.equals(jox)));
 
@@ -90,36 +84,26 @@ public class TestDAO {
 
 	@Test(expected = DAOException.class)
 	public void invalidCreation() {
-		ComputerDAO.getInstance().insert(null);
+		ComputerService.getInstance().insert(null);
 	}
 
 	@Test(expected = DAOException.class)
 	public void invalidComputerFind() {
-		ComputerDAO.getInstance().find(null);
-	}
-
-	@Test(expected = DAOException.class)
-	public void invalidUpdate() {
-		ComputerDAO.getInstance().update(null);
-	}
-
-	@Test(expected = DAOException.class)
-	public void invalidRemove() {
-		ComputerDAO.getInstance().remove(null);
+		ComputerService.getInstance().find(null);
 	}
 
 	@Test(expected = DAOException.class)
 	public void invalidCompanyFind() {
-		CompanyDAO.getInstance().find(null);
+		CompanyService.getInstance().find(null);
 	}
 
-	@Test
-	public void invalidCompanyModel() {
-		CompanyMapper.getModel(null);
+	@Test(expected = DAOException.class)
+	public void invalidUpdate() {
+		ComputerService.getInstance().update(null);
 	}
 
-	@Test
-	public void invalidComputerModel() {
-		assertNull(ComputerMapper.getModel(null));
+	@Test(expected = DAOException.class)
+	public void invalidRemove() {
+		ComputerService.getInstance().remove(null);
 	}
 }

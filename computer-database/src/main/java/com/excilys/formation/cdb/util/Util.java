@@ -9,15 +9,20 @@ public class Util {
 		return s.matches("\\d+");
 	}
 
-	public static Date parseDate(String s) throws ParseException {
-		if (s.matches("\\d{4}[/.-]\\d{2}[/.-]\\d{2}")) {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			return dateFormat.parse(s.replaceAll("[/.]", "-"));
-		} else if (s.matches("\\d{2}[/.-]\\d{2}[/.-]\\d{4}")) {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-			return dateFormat.parse(s.replaceAll("[/.]", "-"));
+	public static Date parseDate(String s) {
+		try {
+			if (s.matches("\\d{4}[/.-]\\d{2}[/.-]\\d{2}")) {
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+				return dateFormat.parse(s.replaceAll("[/.]", "-"));
+
+			} else if (s.matches("\\d{2}[/.-]\\d{2}[/.-]\\d{4}")) {
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+				return dateFormat.parse(s.replaceAll("[/.]", "-"));
+			}
+			return null;
+		} catch (ParseException e) {
+			throw new RuntimeException("FATAL ERORO in parsing date " + s);
 		}
-		return null;
 	}
 
 	public static String formatDate(Date d) {

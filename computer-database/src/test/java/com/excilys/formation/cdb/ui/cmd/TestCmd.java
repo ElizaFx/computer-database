@@ -50,4 +50,12 @@ public class TestCmd {
 		assert (ComputerService.getInstance().find(
 				c -> c.getName().equals("Joxit42")) == null);
 	}
+
+	@Test
+	public void invalidComputerDetail() {
+		Long l = -1l;
+		ICommand cmd = new ComputerDetailsCmd(l);
+		cmd.execute();
+	}
+
 }

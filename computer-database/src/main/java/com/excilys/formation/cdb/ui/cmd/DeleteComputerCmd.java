@@ -12,15 +12,14 @@ public class DeleteComputerCmd implements ICommand {
 	}
 
 	public DeleteComputerCmd(Long id) {
-		this(ComputerService.getInstance().find(id));
+		computer = ComputerService.getInstance().find(id);
 	}
 
 	@Override
 	public void execute() {
 		if (computer == null) {
 			System.out.println("Delete failed : Computer is null");
-		}
-		if (ComputerService.getInstance().remove(computer) == 1) {
+		} else if (ComputerService.getInstance().remove(computer) == 1) {
 			System.out.println("Entry deleted." + computer);
 		} else {
 			System.out
