@@ -1,7 +1,7 @@
 package com.excilys.formation.cdb.ui.cmd;
 
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.persistence.ComputerDAO;
+import com.excilys.formation.cdb.service.ComputerService;
 
 public class DeleteComputerCmd implements ICommand {
 
@@ -12,7 +12,7 @@ public class DeleteComputerCmd implements ICommand {
 	}
 
 	public DeleteComputerCmd(Long id) {
-		this(ComputerDAO.getInstance().find(id));
+		this(ComputerService.getInstance().find(id));
 	}
 
 	@Override
@@ -20,7 +20,7 @@ public class DeleteComputerCmd implements ICommand {
 		if (computer == null) {
 			System.out.println("Delete failed : Computer is null");
 		}
-		if (ComputerDAO.getInstance().remove(computer) == 1) {
+		if (ComputerService.getInstance().remove(computer) == 1) {
 			System.out.println("Entry deleted." + computer);
 		} else {
 			System.out

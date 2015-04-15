@@ -1,14 +1,14 @@
 package com.excilys.formation.cdb.ui.cmd;
 
 import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.persistence.CompanyDAO;
+import com.excilys.formation.cdb.service.CompanyService;
 
 public class ListCompanyCmd implements ICommand {
 
 	@Override
 	public void execute() {
 		System.out.println("Début de la liste des elements :");
-		CompanyDAO.getInstance().findAll()
+		CompanyService.getInstance().findAll()
 				.forEach(e -> System.out.println(format(e)));
 		System.out.println("Fin de la liste des elements");
 	}

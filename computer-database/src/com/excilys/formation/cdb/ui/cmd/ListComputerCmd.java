@@ -1,14 +1,14 @@
 package com.excilys.formation.cdb.ui.cmd;
 
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.persistence.ComputerDAO;
+import com.excilys.formation.cdb.service.ComputerService;
 
 public class ListComputerCmd implements ICommand {
 
 	@Override
 	public void execute() {
 		System.out.println("Début de la liste des elements :");
-		ComputerDAO.getInstance().findAll()
+		ComputerService.getInstance().findAll()
 				.forEach(e -> System.out.println(format(e)));
 		System.out.println("Fin de la liste des elements");
 	}

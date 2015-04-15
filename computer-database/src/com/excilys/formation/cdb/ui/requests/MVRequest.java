@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.persistence.CompanyDAO;
-import com.excilys.formation.cdb.persistence.ComputerDAO;
+import com.excilys.formation.cdb.service.CompanyService;
+import com.excilys.formation.cdb.service.ComputerService;
 import com.excilys.formation.cdb.ui.cmd.ICommand;
 import com.excilys.formation.cdb.ui.cmd.UpdateComputerCmd;
 import com.excilys.formation.cdb.util.Util;
@@ -96,7 +96,7 @@ public class MVRequest implements IRequest {
 		if (id == null) {
 			throw new RequestNotFoundException("UPDATE ERROR id not found");
 		}
-		Computer computer = ComputerDAO.getInstance().find(id);
+		Computer computer = ComputerService.getInstance().find(id);
 		if (computer == null) {
 			throw new RequestNotFoundException(
 					"UPDATE ERROR no computer for this id");
@@ -114,7 +114,7 @@ public class MVRequest implements IRequest {
 			hasChanges = true;
 		}
 		if ((companyId != null) && (companyId != 0)) {
-			computer.setCompany(CompanyDAO.getInstance().find(companyId));
+			computer.setCompany(CompanyService.getInstance().find(companyId));
 			hasChanges = true;
 		}
 		if (hasChanges) {

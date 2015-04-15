@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.persistence.ComputerDAO;
+import com.excilys.formation.cdb.service.ComputerService;
 
 public class CreateComputerCmd implements ICommand {
 
@@ -24,7 +24,7 @@ public class CreateComputerCmd implements ICommand {
 		if (computer == null) {
 			System.out.println("Create failed : Computer is null");
 		}
-		if (ComputerDAO.getInstance().insert(computer) == 1) {
+		if (ComputerService.getInstance().insert(computer) == 1) {
 			System.out.println("Entry insered." + computer);
 		} else {
 			System.out.println("An error has occured, entry not insered");

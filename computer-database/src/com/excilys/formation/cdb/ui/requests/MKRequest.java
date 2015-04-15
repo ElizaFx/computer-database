@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.persistence.CompanyDAO;
+import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.ui.cmd.CreateComputerCmd;
 import com.excilys.formation.cdb.ui.cmd.ICommand;
 import com.excilys.formation.cdb.util.Util;
@@ -71,7 +71,8 @@ public class MKRequest implements IRequest {
 					case COMPANY_ID: {
 						if (Util.isNumeric(request.get(i + 1))) {
 							Long companyId = Long.parseLong(request.get(i + 1));
-							company = CompanyDAO.getInstance().find(companyId);
+							company = CompanyService.getInstance().find(
+									companyId);
 						} else {
 							throw new RequestNotFoundException(
 									"Company id malformed");

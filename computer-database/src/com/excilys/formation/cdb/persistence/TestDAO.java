@@ -3,6 +3,8 @@ package com.excilys.formation.cdb.persistence;
 import org.junit.Test;
 
 import com.excilys.formation.cdb.model.Computer;
+import com.excilys.formation.cdb.service.CompanyService;
+import com.excilys.formation.cdb.service.ComputerService;
 
 /**
  *
@@ -12,16 +14,16 @@ public class TestDAO {
 
 	@Test
 	public void findAllTest() {
-		ComputerDAO crf = ComputerDAO.getInstance();
-		CompanyDAO cyf = CompanyDAO.getInstance();
+		ComputerService crf = ComputerService.getInstance();
+		CompanyService cyf = CompanyService.getInstance();
 		System.out.println(crf.findAll());
 		System.out.println(cyf.findAll());
 	}
 
 	@Test
 	public void findTest() {
-		ComputerDAO crf = ComputerDAO.getInstance();
-		CompanyDAO cyf = CompanyDAO.getInstance();
+		ComputerService crf = ComputerService.getInstance();
+		CompanyService cyf = CompanyService.getInstance();
 
 		System.out.println(crf.find(20l));
 		System.out.println(cyf.find(20l));
@@ -32,9 +34,9 @@ public class TestDAO {
 
 	@Test
 	public void createUpdateRemoveTest() {
-		ComputerDAO crf = ComputerDAO.getInstance();
-		crf.insert(new Computer("Joxit", null, null, CompanyDAO.getInstance()
-				.find(20l)));
+		ComputerService crf = ComputerService.getInstance();
+		crf.insert(new Computer("Joxit", null, null, CompanyService
+				.getInstance().find(20l)));
 		crf.findAll()
 				.stream()
 				.filter(c -> (c.getName() != null)

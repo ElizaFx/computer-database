@@ -5,8 +5,8 @@ import java.util.List;
 import org.junit.Test;
 
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.persistence.CompanyDAO;
-import com.excilys.formation.cdb.persistence.ComputerDAO;
+import com.excilys.formation.cdb.service.CompanyService;
+import com.excilys.formation.cdb.service.ComputerService;
 
 public class TestCmd {
 
@@ -24,7 +24,7 @@ public class TestCmd {
 
 	@Test
 	public void ShowComputerTest() {
-		List<Computer> l = ComputerDAO.getInstance().findAll();
+		List<Computer> l = ComputerService.getInstance().findAll();
 		ICommand cmd = new ComputerDetailsCmd(l.get(
 				(int) (Math.random() * l.size())).getId());
 		cmd.execute();
@@ -33,21 +33,21 @@ public class TestCmd {
 	@Test
 	public void CreateUpdateDeleteComputerTest() {
 		ICommand cmd1 = new CreateComputerCmd(new Computer("Joxit", null, null,
-				CompanyDAO.getInstance().find(17l)));
+				CompanyService.getInstance().find(17l)));
 		cmd1.execute();
-		Computer computer = ComputerDAO.getInstance().find(
+		Computer computer = ComputerService.getInstance().find(
 				c -> (c.getName() != null) && c.getName().equals("Joxit"));
 		assert (computer != null);
 		computer.setName("Joxit42");
 		ICommand cmd2 = new UpdateComputerCmd(computer);
 		cmd2.execute();
-		assert (ComputerDAO.getInstance().find(
+		assert (ComputerService.getInstance().find(
 				c -> c.getName().equals("Joxit42")) != null);
-		assert (ComputerDAO.getInstance()
-				.find(c -> c.getName().equals("Joxit")) == null);
+		assert (ComputerService.getInstance().find(
+				c -> c.getName().equals("Joxit")) == null);
 		ICommand cmd3 = new DeleteComputerCmd(computer.getId());
 		cmd3.execute();
-		assert (ComputerDAO.getInstance().find(
+		assert (ComputerService.getInstance().find(
 				c -> c.getName().equals("Joxit42")) == null);
 	}
 }

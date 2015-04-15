@@ -1,7 +1,7 @@
 package com.excilys.formation.cdb.ui.cmd;
 
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.persistence.ComputerDAO;
+import com.excilys.formation.cdb.service.ComputerService;
 
 public class ComputerDetailsCmd implements ICommand {
 
@@ -13,7 +13,7 @@ public class ComputerDetailsCmd implements ICommand {
 
 	@Override
 	public void execute() {
-		Computer computer = ComputerDAO.getInstance().find(id);
+		Computer computer = ComputerService.getInstance().find(id);
 
 		if (computer == null) {
 			System.out.println("Computer not found");
