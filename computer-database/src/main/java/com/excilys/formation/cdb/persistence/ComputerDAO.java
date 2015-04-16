@@ -163,4 +163,51 @@ public enum ComputerDAO implements IComputerDAO {
 	public static ComputerDAO getInstance() {
 		return _instance;
 	}
+
+	@Override
+	public int count() {
+		int res = 0;
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		try {
+			connection = ConnectionFactory.getConnection();
+			statement = connection.createStatement();
+			result = statement
+					.executeQuery("SELECT count(*) as size FROM computer");
+			if (result.next()) {
+				res = result.getInt("size");
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			ConnectionFactory.closeConnection(connection, statement, result);
+		}
+		return res;
+	}
+
+	@Override
+	public List<Computer> pagination(int limit, int offset) {
+		List<Computer> res = new ArrayList<>();
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet result = null;
+		try {
+			connection = ConnectionFactory.getConnection();
+			statement = connection
+					.prepareStatement("SELECT * from computer left outer join company on computer.company_id=company.id order by computer.id limit ? offset ?;");
+			statement.setInt(1, limit);
+			statement.setInt(2, offset);
+			result = statement.executeQuery();
+
+			while (result.next()) {
+				res.add(ComputerMapper.getModel(result));
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			ConnectionFactory.closeConnection(connection, statement, result);
+		}
+		return res;
+	}
 }

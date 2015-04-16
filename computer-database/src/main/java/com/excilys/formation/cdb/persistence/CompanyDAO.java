@@ -79,4 +79,26 @@ public enum CompanyDAO implements ICompanyDAO {
 		}
 		return findAll().stream().filter(predicate).findFirst().orElse(null);
 	}
+
+	@Override
+	public int count() {
+		int res = 0;
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		try {
+			connection = ConnectionFactory.getConnection();
+			statement = connection.createStatement();
+			result = statement
+					.executeQuery("SELECT count(*) as size FROM company");
+			if (result.next()) {
+				res = result.getInt("size");
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			ConnectionFactory.closeConnection(connection, statement, result);
+		}
+		return res;
+	}
 }

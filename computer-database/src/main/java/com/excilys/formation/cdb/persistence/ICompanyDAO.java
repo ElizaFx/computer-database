@@ -23,4 +23,10 @@ public interface ICompanyDAO {
 	 * @return element with this id
 	 */
 	public Company find(Object id);
+
+	/**
+	 * 
+	 * @return count the number of companies
+	 */
+	public int count();
 }

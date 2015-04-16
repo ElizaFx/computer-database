@@ -36,6 +36,10 @@ public enum CompanyService implements ICompanyService {
 		return CompanyDAO.getInstance().find(id);
 	}
 
+	public int count() {
+		return CompanyDAO.getInstance().count();
+	}
+
 	public static CompanyService getInstance() {
 		return _instance;
 	}

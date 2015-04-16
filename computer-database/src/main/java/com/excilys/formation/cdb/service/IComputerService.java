@@ -49,4 +49,20 @@ public interface IComputerService {
 	 * @return element with this id
 	 */
 	public Computer find(Object id);
+
+	/**
+	 * 
+	 * @return count the number of computers
+	 */
+	public int count();
+
+	/**
+	 * 
+	 * @param limit
+	 *            number of elements
+	 * @param offset
+	 *            first element
+	 * @return list of limit element started by offset
+	 */
+	public List<Computer> pagination(int limit, int offset);
 }

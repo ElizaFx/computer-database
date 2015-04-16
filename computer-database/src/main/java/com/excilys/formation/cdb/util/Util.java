@@ -6,6 +6,9 @@ import java.util.Date;
 
 public class Util {
 	public static boolean isNumeric(String s) {
+		if (s == null) {
+			return false;
+		}
 		return s.matches("\\d+");
 	}
 
@@ -26,6 +29,9 @@ public class Util {
 	}
 
 	public static String formatDate(Date d) {
+		if (d == null) {
+			return null;
+		}
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		return dateFormat.format(d);
 	}

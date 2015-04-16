@@ -34,4 +34,11 @@ public class ComputerMapper {
 		}
 		return computer;
 	}
+
+	public static String getCompanyName(Computer c) {
+		if ((c == null) || (c.getCompany() == null)) {
+			return "";
+		}
+		return c.getCompany().getName();
+	}
 }

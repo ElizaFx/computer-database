@@ -23,7 +23,7 @@ public interface IComputerDAO {
 	 * @param model
 	 * @return the row count inserted
 	 */
-	public abstract int insert(Computer model);
+	public int insert(Computer model);
 
 	/**
 	 * Remove model from the table. Must call removeRequest with the right
@@ -32,7 +32,7 @@ public interface IComputerDAO {
 	 * @param model
 	 * @return the row count removed
 	 */
-	public abstract int remove(Computer model);
+	public int remove(Computer model);
 
 	/**
 	 * Update model from the table. Must call updateRequest with the right id
@@ -41,13 +41,28 @@ public interface IComputerDAO {
 	 * @param model
 	 * @return the row count updated
 	 */
-	public abstract int update(Computer model);
+	public int update(Computer model);
 
 	/**
 	 * @param id
 	 *            of T model
 	 * @return element with this id
 	 */
-	public abstract Computer find(Object id);
+	public Computer find(Object id);
 
+	/**
+	 * 
+	 * @return count the number of computers
+	 */
+	public int count();
+
+	/**
+	 * 
+	 * @param limit
+	 *            number of elements
+	 * @param offset
+	 *            first element
+	 * @return list of limit element started by offset
+	 */
+	public List<Computer> pagination(int limit, int offset);
 }

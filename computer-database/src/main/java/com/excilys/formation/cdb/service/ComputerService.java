@@ -72,7 +72,18 @@ public enum ComputerService implements IComputerService {
 		return ComputerDAO.getInstance().find(id);
 	}
 
+	@Override
+	public int count() {
+		return ComputerDAO.getInstance().count();
+	}
+
 	public static ComputerService getInstance() {
 		return _instance;
 	}
+
+	@Override
+	public List<Computer> pagination(int limit, int offset) {
+		return ComputerDAO.getInstance().pagination(limit, offset);
+	}
+
 }
