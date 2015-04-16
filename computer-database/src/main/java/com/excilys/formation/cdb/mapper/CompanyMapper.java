@@ -2,7 +2,10 @@ package com.excilys.formation.cdb.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.excilys.formation.cdb.dto.CompanyDTO;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.persistence.DAOException;
 
@@ -25,4 +28,34 @@ public class CompanyMapper {
 		}
 		return company;
 	}
+
+	public static CompanyDTO companyModelToDTO(Company company) {
+		if (company == null) {
+			return null;
+		}
+		return new CompanyDTO(company.getId(), company.getName());
+	}
+
+	public static List<CompanyDTO> companyModelToDTO(List<Company> companies) {
+		List<CompanyDTO> res = new ArrayList<CompanyDTO>();
+		companies.forEach(c -> res.add(companyModelToDTO(c)));
+		return res;
+	}
+
+	public static Company companyDTOToModel(CompanyDTO dto) {
+		if (dto == null) {
+			return null;
+		}
+		Company res = new Company();
+		res.setId(dto.getId());
+		res.setName(dto.getName());
+		return res;
+	}
+
+	public static List<Company> companyDTOToModel(List<CompanyDTO> companies) {
+		List<Company> res = new ArrayList<Company>();
+		companies.forEach(c -> res.add(companyDTOToModel(c)));
+		return res;
+	}
+
 }

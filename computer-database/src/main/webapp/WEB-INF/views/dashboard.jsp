@@ -19,7 +19,7 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="dashboard.html"> Application - Computer Database </a>
+            <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
         </div>
     </header>
 
@@ -38,7 +38,7 @@
                     </form>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-success" id="addComputer" href="addComputer.html">Add Computer</a> 
+                    <a class="btn btn-success" id="addComputer" href="addComputer">Add Computer</a> 
                     <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
                 </div>
             </div>
@@ -90,11 +90,11 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                       	  </td>
                       	  <td>
-                            <a href="editComputer.html" onclick="">${computer.getName()}</a>
+                            <a href="editComputer" onclick="">${computer.getName()}</a>
                        	 </td>
-                       	 <td>${Util.formatDate(computer.getIntroduced())}</td>
-                       	 <td>${Util.formatDate(computer.getDiscontinued())}</td>
-                      	  <td>${Mapper.getCompanyName(computer.getCompany())}</td>
+                       	 <td>${computer.getIntroduced()}</td>
+                       	 <td>${computer.getDiscontinued()}</td>
+                      	  <td>${computer.getCompanyName()}</td>
                     </tr>
                 	
 					</c:forEach>
@@ -110,7 +110,7 @@
               		<a href=
               			<c:choose>
               				<c:when test="${previousPage == curPage}">"#"</c:when>
- 							<c:otherwise>"?page=${previousPage}"</c:otherwise>
+ 							<c:otherwise>"?page=${previousPage}&limit=${curLimit}"</c:otherwise>
                 		</c:choose>aria-label="Previous">
                 	    <span aria-hidden="true">&laquo;</span>
                		</a>
@@ -121,7 +121,7 @@
    						<li class="disabled"><a href="#">${page}</a></li>
   					</c:when>
  					<c:otherwise>
-              			<li><a href="?page=${page}">${page}</a></li>
+              			<li><a href="?page=${page}&limit=${curLimit}">${page}</a></li>
  					</c:otherwise>
 				</c:choose>
               </c:forEach>
@@ -129,7 +129,7 @@
               		<a href=
               			<c:choose>
               				<c:when test="${nextPage == curPage}">"#"</c:when>
- 							<c:otherwise>"?page=${nextPage}"</c:otherwise>
+ 							<c:otherwise>"?page=${nextPage}&limit=${curLimit}"</c:otherwise>
                 		</c:choose>aria-label="Next">
                 	    <span aria-hidden="true">&raquo;</span>
                		</a>
@@ -137,9 +137,9 @@
         </ul>
 
         <div class="btn-group btn-group-sm pull-right" role="group" >
-            <button type="button" class="btn btn-default" id="limit10">10</button>
-            <button type="button" class="btn btn-default" id="limit50">50</button>
-            <button type="button" class="btn btn-default" id="limit100">100</button>
+            <a href="?page=${curPage}&limit=10" class="btn btn-default">10</a>
+            <a href="?page=${curPage}&limit=50" class="btn btn-default">50</a>
+            <a href="?page=${curPage}&limit=100" class="btn btn-default">100</a>
         </div>
     	</div>
 

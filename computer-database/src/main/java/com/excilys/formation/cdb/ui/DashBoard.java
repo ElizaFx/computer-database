@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.service.ComputerService;
 import com.excilys.formation.cdb.util.Util;
 
@@ -74,8 +75,9 @@ public class DashBoard extends HttpServlet {
 		request.setAttribute("curLimit", limit);
 		request.setAttribute("nbComputers", count);
 		request.setAttribute("lPages", lPages);
-		request.setAttribute("lComputers", ComputerService.getInstance()
-				.pagination(limit, ((curPage - 1) * limit)));
+		request.setAttribute("lComputers", ComputerMapper
+				.computerModelToDTO(ComputerService.getInstance().pagination(
+						limit, ((curPage - 1) * limit))));
 		request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/dashboard.jsp")
 				.forward(request, response);

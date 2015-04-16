@@ -28,6 +28,16 @@ public class Util {
 		}
 	}
 
+	public static boolean isDate(String s) {
+		if ((s != null)
+				&& (s.matches("\\d{4}[/.-]\\d{2}[/.-]\\d{2}") || s
+						.matches("\\d{2}[/.-]\\d{2}[/.-]\\d{4}"))) {
+			return true;
+
+		}
+		return false;
+	}
+
 	public static String formatDate(Date d) {
 		if (d == null) {
 			return null;
