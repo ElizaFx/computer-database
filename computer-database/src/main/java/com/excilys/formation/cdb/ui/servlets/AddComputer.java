@@ -2,6 +2,7 @@ package com.excilys.formation.cdb.ui.servlets;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.excilys.formation.cdb.dto.CompanyDTO;
 import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.CompanyService;
@@ -21,19 +23,18 @@ import com.excilys.formation.cdb.util.Util;
 @WebServlet("/addComputer")
 public class AddComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final List<CompanyDTO> lCompany = CompanyMapper
+			.companyModelToDTO(CompanyService.getInstance().findAll());
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public AddComputer() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	protected void doGetAndPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("lCompanies", CompanyMapper
-				.companyModelToDTO(CompanyService.getInstance().findAll()));
+		request.setAttribute("lCompanies", lCompany);
 
 		getServletContext().getRequestDispatcher(
 				"/WEB-INF/views/addComputer.jsp").forward(request, response);
@@ -97,6 +98,11 @@ public class AddComputer extends HttpServlet {
 		if (Util.isNumeric(sCompanyId)) {
 			System.out.println(sCompanyId);
 			companyId = Integer.parseInt(sCompanyId);
+			if ((companyId != 0)
+					&& (CompanyService.getInstance().find(companyId) == null)) {
+				fail = true;
+				request.setAttribute("companyIdClass", "has-error");
+			}
 		} else if ((sCompanyId != null) && !sCompanyId.isEmpty()) {
 			fail = true;
 			request.setAttribute("companyIdClass", "has-error");
@@ -108,6 +114,17 @@ public class AddComputer extends HttpServlet {
 			computer.setDiscontinued(discontinued);
 			computer.setCompany(CompanyService.getInstance().find(companyId));
 			ComputerService.getInstance().insert(computer);
+			request.setAttribute("success", "Computer " + sComputerName
+					+ " added");
+		} else {
+			request.setAttribute("computerName",
+					request.getParameter("computerName"));
+			request.setAttribute("introduced",
+					request.getParameter("introduced"));
+			request.setAttribute("discontinued",
+					request.getParameter("discontinued"));
+			request.setAttribute("companyId", request.getParameter("companyId"));
+			request.setAttribute("danger", "Error: Check red labels!");
 		}
 		System.out.println(fail);
 		doGetAndPost(request, response);

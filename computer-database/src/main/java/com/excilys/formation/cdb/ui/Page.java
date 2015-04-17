@@ -30,29 +30,31 @@ public class Page<T> {
 
 		lPages = new ArrayList<Integer>();
 
-		if (limit < 1) {
-			limit = 10;
+		if (this.limit < 1) {
+			this.limit = 10;
 		}
 
-		if (((curPage - 1) * limit) > nbItems) {
-			curPage = 1;
+		if (((this.curPage - 1) * this.limit) > this.nbItems) {
+			this.curPage = 1;
 		}
 
-		pageMax = (nbItems / limit) + 1;
-		firstPage = ((curPage - 2) < 1) ? 1 : (curPage - 2);
+		pageMax = (this.nbItems / this.limit) + 1;
+		firstPage = ((this.curPage - 2) < 1) ? 1 : (this.curPage - 2);
 		lastPage = (firstPage + (pageLimit - 1)) > pageMax ? pageMax
 				: (firstPage + (pageLimit - 1));
 		firstPage = lastPage - (pageLimit - 1);
-
-		System.out.println(firstPage + " " + pageMax + " " + lastPage + " "
-				+ curPage + " " + limit);
+		if (firstPage < 1) {
+			firstPage = 1;
+		}
+		System.out.println(this.firstPage + " " + this.pageMax + " "
+				+ this.lastPage + " " + this.curPage + " " + this.limit);
 
 		for (; firstPage <= lastPage; firstPage++) {
 			lPages.add(firstPage);
 		}
 
-		previous = (curPage - 1) < 1 ? 1 : curPage - 1;
-		next = (curPage + 1) > pageMax ? pageMax : curPage + 1;
+		previous = (this.curPage - 1) < 1 ? 1 : this.curPage - 1;
+		next = (this.curPage + 1) > pageMax ? pageMax : this.curPage + 1;
 	}
 
 	public int getNbItems() {

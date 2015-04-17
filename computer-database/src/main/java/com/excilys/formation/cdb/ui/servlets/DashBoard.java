@@ -48,12 +48,12 @@ public class DashBoard extends HttpServlet {
 			limit = Integer.parseInt(sLimit);
 		}
 
-		Page<Computer> page = new Page<>(ComputerService.getInstance(), count,
-				curPage, limit, 5);
+		Page<Computer> pagined = new Page<>(ComputerService.getInstance(),
+				count, curPage, limit, 5);
 		System.out.println(request.getParameterMap());
-		request.setAttribute("page", page);
+		request.setAttribute("pagined", pagined);
 		request.setAttribute("lComputers",
-				ComputerMapper.computerModelToDTO(page.getPage()));
+				ComputerMapper.computerModelToDTO(pagined.getPage()));
 		request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/dashboard.jsp")
 				.forward(request, response);
