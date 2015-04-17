@@ -50,7 +50,7 @@ public class DashBoard extends HttpServlet {
 
 		Page<Computer> pagined = new Page<>(ComputerService.getInstance(),
 				count, curPage, limit, 5);
-		System.out.println(request.getParameterMap());
+
 		request.setAttribute("pagined", pagined);
 		request.setAttribute("lComputers",
 				ComputerMapper.computerModelToDTO(pagined.getPage()));

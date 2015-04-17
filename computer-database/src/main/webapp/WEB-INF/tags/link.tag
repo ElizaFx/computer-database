@@ -8,9 +8,9 @@
 
 <c:choose>
 	<c:when test="${disabled != null && disabled == true }">
-		<a href="#" aria-label="${label}" class="${myClass}"><jsp:doBody/></a>
+		<a href="#" aria-label="${label}" class="${myClass}"><jsp:doBody /></a>
 	</c:when>
-	<c:when test="${page == null && limit != null }">
+	<c:when test="${(page == null || page == 0) && limit != null}">
 		<a href="dashboard?page=1&limit=${limit}" aria-label="${label}" class="${myClass}"><jsp:doBody/></a>
 	</c:when>
 	<c:when test="${page != null && limit == null }">

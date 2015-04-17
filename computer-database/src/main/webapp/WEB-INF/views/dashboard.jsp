@@ -22,7 +22,7 @@
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${page.getNbItems()}Computersfound</h1>
+			<h1 id="homeTitle">${pagined.getNbItems()} Computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -80,8 +80,8 @@
 		</div>
 	</section>
 	<footer class="navbar-fixed-bottom">
-		<mylib:page start="${page.getFirstPage()}" end="${page.getLastPage()}"
-			current="${page.getCurPage()}" />
+		<mylib:page begin="${pagined.getFirstPage()}" end="${pagined.getLastPage()}"
+			current="${pagined.getCurPage()}" />
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

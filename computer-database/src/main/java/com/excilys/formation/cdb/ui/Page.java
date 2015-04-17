@@ -1,6 +1,5 @@
 package com.excilys.formation.cdb.ui;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.formation.cdb.service.Paginable;
@@ -15,7 +14,6 @@ public class Page<T> {
 	private int pageMax;
 	private int firstPage;
 	private int lastPage;
-	private List<Integer> lPages;
 
 	public Page(Paginable<T> paginable) {
 		this(paginable, 0, 1, 10, 5);
@@ -28,29 +26,22 @@ public class Page<T> {
 		this.curPage = curPage;
 		this.limit = limit;
 
-		lPages = new ArrayList<Integer>();
-
 		if (this.limit < 1) {
 			this.limit = 10;
 		}
 
-		if (((this.curPage - 1) * this.limit) > this.nbItems) {
+		if ((((this.curPage - 1) * this.limit) > this.nbItems)
+				|| (this.curPage < 1)) {
 			this.curPage = 1;
 		}
 
-		pageMax = (this.nbItems / this.limit) + 1;
-		firstPage = ((this.curPage - 2) < 1) ? 1 : (this.curPage - 2);
-		lastPage = (firstPage + (pageLimit - 1)) > pageMax ? pageMax
-				: (firstPage + (pageLimit - 1));
+		pageMax = (this.nbItems / this.limit)
+				+ ((this.nbItems % this.limit) == 0 ? 0 : 1);
+		firstPage = Integer.max(this.curPage - 2, 1);
+		lastPage = Integer.min(firstPage + (pageLimit - 1), pageMax);
 		firstPage = lastPage - (pageLimit - 1);
 		if (firstPage < 1) {
 			firstPage = 1;
-		}
-		System.out.println(this.firstPage + " " + this.pageMax + " "
-				+ this.lastPage + " " + this.curPage + " " + this.limit);
-
-		for (; firstPage <= lastPage; firstPage++) {
-			lPages.add(firstPage);
 		}
 
 		previous = (this.curPage - 1) < 1 ? 1 : this.curPage - 1;
@@ -95,10 +86,6 @@ public class Page<T> {
 
 	public int getLastPage() {
 		return lastPage;
-	}
-
-	public List<Integer> getlPages() {
-		return lPages;
 	}
 
 	public List<T> getPage() {
