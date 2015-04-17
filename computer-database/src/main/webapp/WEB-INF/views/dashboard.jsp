@@ -26,7 +26,7 @@
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                ${nbComputers} Computers found
+                ${page.getNbItems()} Computers found
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
@@ -106,30 +106,30 @@
     <footer class="navbar-fixed-bottom">
         <div class="container text-center">
             <ul class="pagination">
-				<li <c:if test="${previousPage == curPage}">class="disabled"</c:if>>
+				<li <c:if test="${page.isFirst()}">class="disabled"</c:if>>
               		<a href=
               			<c:choose>
-              				<c:when test="${previousPage == curPage}">"#"</c:when>
- 							<c:otherwise>"?page=${previousPage}&limit=${curLimit}"</c:otherwise>
+              				<c:when test="${page.isFirst()}">"#"</c:when>
+ 							<c:otherwise>"?page=${page.getPrevious()}&limit=${page.getLimit()}"</c:otherwise>
                 		</c:choose>aria-label="Previous">
                 	    <span aria-hidden="true">&laquo;</span>
                		</a>
             	</li>
-              <c:forEach items="${lPages}" var="page">
+              <c:forEach items="${page.getlPages()}" var="myPage">
               	<c:choose>
-  					<c:when test="${page == curPage}">
-   						<li class="disabled"><a href="#">${page}</a></li>
+  					<c:when test="${myPage == page.getCurPage()}">
+   						<li class="disabled"><a href="#">${myPage}</a></li>
   					</c:when>
  					<c:otherwise>
-              			<li><a href="?page=${page}&limit=${curLimit}">${page}</a></li>
+              			<li><a href="?page=${myPage}&limit=${page.getLimit()}">${myPage}</a></li>
  					</c:otherwise>
 				</c:choose>
               </c:forEach>
-            	<li <c:if test="${nextPage == curPage}">class="disabled"</c:if>>
+            	<li <c:if test="${page.isLast()}">class="disabled"</c:if>>
               		<a href=
               			<c:choose>
-              				<c:when test="${nextPage == curPage}">"#"</c:when>
- 							<c:otherwise>"?page=${nextPage}&limit=${curLimit}"</c:otherwise>
+              				<c:when test="${page.isLast()}">"#"</c:when>
+ 							<c:otherwise>"?page=${page.getNext()}&limit=${page.getLimit()}"</c:otherwise>
                 		</c:choose>aria-label="Next">
                 	    <span aria-hidden="true">&raquo;</span>
                		</a>
@@ -137,9 +137,9 @@
         </ul>
 
         <div class="btn-group btn-group-sm pull-right" role="group" >
-            <a href="?page=${curPage}&limit=10" class="btn btn-default">10</a>
-            <a href="?page=${curPage}&limit=50" class="btn btn-default">50</a>
-            <a href="?page=${curPage}&limit=100" class="btn btn-default">100</a>
+            <a href="?page=${page.getCurPage()}&limit=10" class="btn btn-default">10</a>
+            <a href="?page=${page.getCurPage()}&limit=50" class="btn btn-default">50</a>
+            <a href="?page=${page.getCurPage()}&limit=100" class="btn btn-default">100</a>
         </div>
     	</div>
 

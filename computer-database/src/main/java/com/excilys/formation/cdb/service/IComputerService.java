@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 
 import com.excilys.formation.cdb.model.Computer;
 
-public interface IComputerService {
+public interface IComputerService extends Paginable<Computer> {
 	/**
 	 * @return all row of the table of Computer
 	 */
@@ -56,13 +56,4 @@ public interface IComputerService {
 	 */
 	public int count();
 
-	/**
-	 * 
-	 * @param limit
-	 *            number of elements
-	 * @param offset
-	 *            first element
-	 * @return list of limit element started by offset
-	 */
-	public List<Computer> pagination(int limit, int offset);
 }

@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.ui;
+package com.excilys.formation.cdb.ui.servlets;
 
 import java.io.IOException;
 import java.util.Date;

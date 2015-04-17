@@ -1,8 +1,6 @@
-package com.excilys.formation.cdb.ui;
+package com.excilys.formation.cdb.ui.servlets;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.formation.cdb.mapper.ComputerMapper;
+import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.ComputerService;
+import com.excilys.formation.cdb.ui.Page;
 import com.excilys.formation.cdb.util.Util;
 
 /**
@@ -38,7 +38,6 @@ public class DashBoard extends HttpServlet {
 
 		String sPage = request.getParameter("page");
 		String sLimit = request.getParameter("limit");
-		List<Integer> lPages = new ArrayList<Integer>();
 		int count = ComputerService.getInstance().count();
 		int curPage = 1;
 		int limit = 10;
@@ -47,37 +46,14 @@ public class DashBoard extends HttpServlet {
 		}
 		if (Util.isNumeric(sLimit)) {
 			limit = Integer.parseInt(sLimit);
-			if (limit < 1) {
-				limit = 10;
-			}
-		}
-		if (((curPage - 1) * limit) > count) {
-			curPage = 1;
 		}
 
-		int pageMax = (count / limit) + 1;
-		int firstPage = ((curPage - 2) < 1) ? 1 : (curPage - 2);
-		int lastPage = (firstPage + 4) > pageMax ? pageMax : (firstPage + 4);
-		firstPage = lastPage - 4;
-		System.out.println(firstPage + " " + pageMax + " " + lastPage + " "
-				+ curPage + " " + limit);
-		for (; firstPage <= lastPage; firstPage++) {
-			lPages.add(firstPage);
-		}
-		int previousPage = (curPage - 1) < 1 ? 1 : curPage - 1;
-		int next = (curPage + 1) > pageMax ? pageMax : curPage + 1;
+		Page<Computer> page = new Page<>(ComputerService.getInstance(), count,
+				curPage, limit, 5);
 		System.out.println(request.getParameterMap());
-
-		request.setAttribute("debug", request.getParameterMap());
-		request.setAttribute("previousPage", previousPage);
-		request.setAttribute("curPage", curPage);
-		request.setAttribute("nextPage", next);
-		request.setAttribute("curLimit", limit);
-		request.setAttribute("nbComputers", count);
-		request.setAttribute("lPages", lPages);
-		request.setAttribute("lComputers", ComputerMapper
-				.computerModelToDTO(ComputerService.getInstance().pagination(
-						limit, ((curPage - 1) * limit))));
+		request.setAttribute("page", page);
+		request.setAttribute("lComputers",
+				ComputerMapper.computerModelToDTO(page.getPage()));
 		request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/dashboard.jsp")
 				.forward(request, response);
