@@ -81,7 +81,7 @@
 	</section>
 	<footer class="navbar-fixed-bottom">
 		<mylib:page begin="${pagined.getFirstPage()}" end="${pagined.getLastPage()}"
-			current="${pagined.getCurPage()}" />
+			current="${pagined.getCurPage()}" limit="${pagined.getLimit()}" pagemax="${pagined.getPageMax()}"/>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
