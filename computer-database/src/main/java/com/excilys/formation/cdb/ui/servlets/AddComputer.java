@@ -59,11 +59,6 @@ public class AddComputer extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		if (request.getParameter("addComputer") != null) {
-			System.out.println("je suis le roi du monde ? ");
-		}
-		System.out.println(request.getParameterMap());
-
 		String sComputerName = request.getParameter("computerName");
 		String sIntroduced = request.getParameter("introduced");
 		String sDiscontinued = request.getParameter("discontinued");
@@ -93,7 +88,7 @@ public class AddComputer extends HttpServlet {
 			discontinued = Util.parseDate(sDiscontinued);
 		} else if ((sDiscontinued != null) && !sDiscontinued.isEmpty()) {
 			fail = true;
-			request.setAttribute("introducedClass", "has-error");
+			request.setAttribute("discontinuedClass", "has-error");
 		}
 		if (Util.isNumeric(sCompanyId)) {
 			System.out.println(sCompanyId);
