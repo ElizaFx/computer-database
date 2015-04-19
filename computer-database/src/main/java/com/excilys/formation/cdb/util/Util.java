@@ -14,11 +14,11 @@ public class Util {
 
 	public static Date parseDate(String s) {
 		try {
-			if (s.matches("\\d{4}[/.-]\\d{2}[/.-]\\d{2}")) {
+			if (s.matches("^\\d{4}([/.-])\\d{2}\\1\\d{2}$")) {
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 				return dateFormat.parse(s.replaceAll("[/.]", "-"));
 
-			} else if (s.matches("\\d{2}[/.-]\\d{2}[/.-]\\d{4}")) {
+			} else if (s.matches("^\\d{2}([/.-])\\d{2}\\1\\d{4}$")) {
 				SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 				return dateFormat.parse(s.replaceAll("[/.]", "-"));
 			}
@@ -30,8 +30,8 @@ public class Util {
 
 	public static boolean isDate(String s) {
 		if ((s != null)
-				&& (s.matches("\\d{4}[/.-]\\d{2}[/.-]\\d{2}") || s
-						.matches("\\d{2}[/.-]\\d{2}[/.-]\\d{4}"))) {
+				&& (s.matches("^\\d{4}([/.-])\\d{2}\\1\\d{2}$") || s
+						.matches("^\\d{2}([/.-])\\d{2}\\1\\d{4}$"))) {
 			return true;
 
 		}
