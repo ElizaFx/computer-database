@@ -71,27 +71,23 @@ public class AddComputer extends HttpServlet {
 		long companyId = 0;
 
 		if ((sComputerName == null) || sComputerName.isEmpty()) {
-			System.out.println(sComputerName);
 			fail = true;
 			request.setAttribute("computerNameClass", "has-error");
 		}
 
 		if (Util.isDate(sIntroduced)) {
-			System.out.println(sIntroduced);
 			introduced = Util.parseDate(sIntroduced);
 		} else if ((sIntroduced != null) && !sIntroduced.isEmpty()) {
 			fail = true;
 			request.setAttribute("introducedClass", "has-error");
 		}
 		if (Util.isDate(sDiscontinued)) {
-			System.out.println(sDiscontinued);
 			discontinued = Util.parseDate(sDiscontinued);
 		} else if ((sDiscontinued != null) && !sDiscontinued.isEmpty()) {
 			fail = true;
 			request.setAttribute("discontinuedClass", "has-error");
 		}
 		if (Util.isNumeric(sCompanyId)) {
-			System.out.println(sCompanyId);
 			companyId = Integer.parseInt(sCompanyId);
 			if ((companyId != 0)
 					&& (CompanyService.getInstance().find(companyId) == null)) {
@@ -121,7 +117,7 @@ public class AddComputer extends HttpServlet {
 			request.setAttribute("companyId", request.getParameter("companyId"));
 			request.setAttribute("danger", "Error: Check red labels!");
 		}
-		System.out.println(fail);
+
 		doGetAndPost(request, response);
 	}
 }

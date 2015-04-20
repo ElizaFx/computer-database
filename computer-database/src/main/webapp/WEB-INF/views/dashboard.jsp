@@ -80,7 +80,7 @@
 		</div>
 	</section>
 	<footer class="navbar-fixed-bottom">
-		<mylib:page begin="${pagined.getFirstPage()}" end="${pagined.getLastPage()}"
+		<mylib:page begin="${pagined.getFirstPage()}" end="${pagined.getLastPage()}" search="${pagined.getSearch()}"
 			current="${pagined.getCurPage()}" limit="${pagined.getLimit()}" pagemax="${pagined.getPageMax()}"/>
 	</footer>
 	<script src="js/jquery.min.js"></script>

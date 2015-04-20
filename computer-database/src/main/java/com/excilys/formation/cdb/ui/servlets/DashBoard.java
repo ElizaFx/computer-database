@@ -1,6 +1,7 @@
 package com.excilys.formation.cdb.ui.servlets;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,7 +39,11 @@ public class DashBoard extends HttpServlet {
 
 		String sPage = request.getParameter("page");
 		String sLimit = request.getParameter("limit");
-		int count = ComputerService.getInstance().count();
+		String search = request.getParameter("search");
+		if (search == null) {
+			search = "";
+		}
+		int count = ComputerService.getInstance().count(search);
 		int curPage = 1;
 		int limit = 10;
 		if (Util.isNumeric(sPage)) {
@@ -49,7 +54,7 @@ public class DashBoard extends HttpServlet {
 		}
 
 		Page<Computer> pagined = new Page<>(ComputerService.getInstance(),
-				count, curPage, limit, 5);
+				search, count, curPage, limit, 5);
 
 		request.setAttribute("pagined", pagined);
 		request.setAttribute("lComputers",
@@ -66,7 +71,8 @@ public class DashBoard extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		request.getParameterMap().forEach(
+				(k, v) -> System.out.println("(" + k + ";" + Arrays.toString(v)
+						+ ")"));
 	}
-
 }

@@ -56,4 +56,11 @@ public interface IComputerService extends Paginable<Computer> {
 	 */
 	public int count();
 
+	/**
+	 * @param search
+	 *            name of the computer to search
+	 * @return count the number of computers
+	 */
+	int count(String search);
+
 }

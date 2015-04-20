@@ -57,6 +57,13 @@ public interface IComputerDAO {
 	public int count();
 
 	/**
+	 * @param search
+	 *            name of the computer to search
+	 * @return count the number of computers
+	 */
+	int count(String search);
+
+	/**
 	 * 
 	 * @param limit
 	 *            number of elements
@@ -65,4 +72,17 @@ public interface IComputerDAO {
 	 * @return list of limit element started by offset
 	 */
 	public List<Computer> pagination(int limit, int offset);
+
+	/**
+	 * 
+	 * @param search
+	 *            name of the computer to search
+	 * @param limit
+	 *            number of elements
+	 * @param offset
+	 *            first element
+	 * @return list of limit element started by offset
+	 */
+	public List<Computer> pagination(String search, int limit, int offset);
+
 }

@@ -165,16 +165,21 @@ public enum ComputerDAO implements IComputerDAO {
 	}
 
 	@Override
-	public int count() {
+	public int count(String search) {
 		int res = 0;
 		Connection connection = null;
-		Statement statement = null;
+		PreparedStatement statement = null;
 		ResultSet result = null;
 		try {
 			connection = ConnectionFactory.getConnection();
-			statement = connection.createStatement();
-			result = statement
-					.executeQuery("SELECT count(*) as size FROM computer");
+			statement = connection
+					.prepareStatement("SELECT count(*) as size FROM computer where computer.name like ?;");
+			if (search != null) {
+				statement.setString(1, "%" + search + "%");
+			} else {
+				statement.setString(1, "%");
+			}
+			result = statement.executeQuery();
 			if (result.next()) {
 				res = result.getInt("size");
 			}
@@ -187,7 +192,17 @@ public enum ComputerDAO implements IComputerDAO {
 	}
 
 	@Override
+	public int count() {
+		return count("");
+	}
+
+	@Override
 	public List<Computer> pagination(int limit, int offset) {
+		return pagination("", limit, offset);
+	}
+
+	@Override
+	public List<Computer> pagination(String search, int limit, int offset) {
 		List<Computer> res = new ArrayList<>();
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -195,9 +210,14 @@ public enum ComputerDAO implements IComputerDAO {
 		try {
 			connection = ConnectionFactory.getConnection();
 			statement = connection
-					.prepareStatement("SELECT * from computer left outer join company on computer.company_id=company.id order by computer.id limit ? offset ?;");
-			statement.setInt(1, limit);
-			statement.setInt(2, offset);
+					.prepareStatement("SELECT * from computer left outer join company on computer.company_id=company.id where computer.name like ? order by computer.id limit ? offset ?;");
+			if (search != null) {
+				statement.setString(1, "%" + search + "%");
+			} else {
+				statement.setString(1, "%");
+			}
+			statement.setInt(2, limit);
+			statement.setInt(3, offset);
 			result = statement.executeQuery();
 
 			while (result.next()) {
@@ -210,4 +230,5 @@ public enum ComputerDAO implements IComputerDAO {
 		}
 		return res;
 	}
+
 }

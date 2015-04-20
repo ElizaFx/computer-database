@@ -13,4 +13,16 @@ public interface Paginable<T> {
 	 * @return list of limit element started by offset
 	 */
 	public List<T> pagination(int limit, int offset);
+
+	/**
+	 * 
+	 * @param search
+	 *            filter to show elements
+	 * @param limit
+	 *            number of elements
+	 * @param offset
+	 *            first element
+	 * @return list of limit element started by offset
+	 */
+	public List<T> pagination(String search, int limit, int offset);
 }

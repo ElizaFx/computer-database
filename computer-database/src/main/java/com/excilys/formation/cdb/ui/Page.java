@@ -14,18 +14,24 @@ public class Page<T> {
 	private int pageMax;
 	private int firstPage;
 	private int lastPage;
+	private String search;
 
 	public Page(Paginable<T> paginable) {
-		this(paginable, 0, 1, 10, 5);
+		this(paginable, "", 0, 1, 10, 5);
 	}
 
 	public Page(Paginable<T> paginable, int nbItems, int curPage, int limit,
 			int pageLimit) {
+		this(paginable, "", nbItems, curPage, limit, pageLimit);
+	}
+
+	public Page(Paginable<T> paginable, String search, int nbItems,
+			int curPage, int limit, int pageLimit) {
 		this.paginable = paginable;
 		this.nbItems = nbItems;
 		this.curPage = curPage;
 		this.limit = limit;
-
+		this.search = search == null ? "" : search;
 		if (this.limit < 1) {
 			this.limit = 10;
 		}
@@ -89,6 +95,19 @@ public class Page<T> {
 	}
 
 	public List<T> getPage() {
-		return paginable.pagination(limit, ((curPage - 1) * limit));
+		return paginable.pagination(search, limit, ((curPage - 1) * limit));
+	}
+
+	public String getSearch() {
+		return search;
+	}
+
+	@Override
+	public String toString() {
+		return "Page [paginable=" + paginable + ", nbItems=" + nbItems
+				+ ", curPage=" + curPage + ", limit=" + limit + ", previous="
+				+ previous + ", next=" + next + ", pageMax=" + pageMax
+				+ ", firstPage=" + firstPage + ", lastPage=" + lastPage
+				+ ", search=" + search + "]";
 	}
 }
