@@ -70,9 +70,11 @@ public class AddComputer extends HttpServlet {
 		Date discontinued = null;
 		long companyId = 0;
 
-		if ((sComputerName == null) || sComputerName.isEmpty()) {
+		if ((sComputerName == null) || sComputerName.trim().isEmpty()) {
 			fail = true;
 			request.setAttribute("computerNameClass", "has-error");
+		} else {
+			sComputerName = sComputerName.trim();
 		}
 
 		if (Util.isDate(sIntroduced)) {
