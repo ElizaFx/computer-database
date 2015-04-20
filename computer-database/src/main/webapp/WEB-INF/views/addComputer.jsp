@@ -43,14 +43,14 @@
 									type="date" class="form-control" id="introduced"
 									name="introduced" placeholder="Introduced date"
 									value="${introduced}"> <span class="help-block">Pattern
-									YYYY[/.-]MM[/.-]dd or dd[/.-]MM[/.-]YYYY</span>
+									YYYY-MM-dd or dd-MM-YYYY. Delimiters can be - or . or /</span>
 							</div>
 							<div class="form-group ${discontinuedClass}">
 								<label for="discontinued">Discontinued date</label> <input
 									type="date" class="form-control" id="discontinued"
 									name="discontinued" placeholder="Discontinued date"
 									value="${discontinued}"> <span class="help-block">Pattern
-									YYYY[/.-]MM[/.-]dd or dd[/.-]MM[/.-]YYYY</span>
+									YYYY-MM-dd or dd-MM-YYYY. Delimiters can be - or . or /</span>
 							</div>
 							<div class="form-group ${companyIdClass}">
 								<label for="companyId">Company</label> <select
@@ -72,5 +72,8 @@
 			</div>
 		</div>
 	</section>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/addcomputer.js"></script>
 </body>
 </html>
