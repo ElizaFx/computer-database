@@ -63,15 +63,14 @@ public class AddComputer extends HttpServlet {
 		String sIntroduced = request.getParameter("introduced");
 		String sDiscontinued = request.getParameter("discontinued");
 		String sCompanyId = request.getParameter("companyId");
-
-		boolean fail = false;
+		StringBuilder messageError = new StringBuilder();
 
 		Date introduced = null;
 		Date discontinued = null;
 		long companyId = 0;
 
 		if ((sComputerName == null) || sComputerName.trim().isEmpty()) {
-			fail = true;
+			messageError.append("Incorrect Name").append("<br />");
 			request.setAttribute("computerNameClass", "has-error");
 		} else {
 			sComputerName = sComputerName.trim();
@@ -79,28 +78,47 @@ public class AddComputer extends HttpServlet {
 
 		if (Util.isDate(sIntroduced)) {
 			introduced = Util.parseDate(sIntroduced);
+			if ((introduced.getTime() < 0)
+					|| (introduced.getTime() > (Integer.MAX_VALUE * 1000))) {
+				messageError.append("Incorrect introduced date : ")
+						.append("range 1970-01-01 to 2038-01-19")
+						.append("<br />");
+				request.setAttribute("introducedClass", "has-error");
+			}
 		} else if ((sIntroduced != null) && !sIntroduced.isEmpty()) {
-			fail = true;
+			messageError.append("Incorrect introduced date : ")
+					.append("Malformed date").append("<br />");
 			request.setAttribute("introducedClass", "has-error");
 		}
 		if (Util.isDate(sDiscontinued)) {
 			discontinued = Util.parseDate(sDiscontinued);
+			if ((discontinued.getTime() < 0)
+					|| (discontinued.getTime() > (Integer.MAX_VALUE * 1000))) {
+				messageError.append("Incorrect discontinued date : ")
+						.append("range 1970-01-01 to 2038-01-19")
+						.append("<br />");
+				request.setAttribute("discontinuedClass", "has-error");
+			}
 		} else if ((sDiscontinued != null) && !sDiscontinued.isEmpty()) {
-			fail = true;
+			messageError.append("Incorrect discontinued date : ")
+					.append("Malformed date").append("<br />");
 			request.setAttribute("discontinuedClass", "has-error");
 		}
 		if (Util.isNumeric(sCompanyId)) {
 			companyId = Integer.parseInt(sCompanyId);
 			if ((companyId != 0)
 					&& (CompanyService.getInstance().find(companyId) == null)) {
-				fail = true;
+				messageError.append("Incorrect company ID : ")
+						.append("This company doesn't exist").append("<br />");
 				request.setAttribute("companyIdClass", "has-error");
 			}
 		} else if ((sCompanyId != null) && !sCompanyId.isEmpty()) {
-			fail = true;
+			messageError.append("Incorrect company ID : ")
+					.append("Malformed company ID").append("<br />");
 			request.setAttribute("companyIdClass", "has-error");
 		}
-		if (!fail) {
+		System.out.println(introduced != null ? introduced.getTime() : "");
+		if (messageError.length() == 0) {
 			Computer computer = new Computer();
 			computer.setName(sComputerName);
 			computer.setIntroduced(introduced);
@@ -117,7 +135,8 @@ public class AddComputer extends HttpServlet {
 			request.setAttribute("discontinued",
 					request.getParameter("discontinued"));
 			request.setAttribute("companyId", request.getParameter("companyId"));
-			request.setAttribute("danger", "Error: Check red labels!");
+			request.setAttribute("danger", "Error: Check red labels!<br />"
+					+ messageError.toString());
 		}
 
 		doGetAndPost(request, response);
