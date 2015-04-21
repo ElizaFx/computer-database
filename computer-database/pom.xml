@@ -3,22 +3,35 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>computer-database</groupId>
 	<artifactId>computer-database</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
+	<properties>
+		<java.version>1.8</java.version>
+		<maven.compiler.plugin.version>3.1</maven.compiler.plugin.version>
+		<maven.war.plugin.version>2.4</maven.war.plugin.version>
+		<javax.servlet.version>3.1.0</javax.servlet.version>
+		<javax.version>7.0</javax.version>
+		<mysql.version>5.1.35</mysql.version>
+		<junit.version>4.12</junit.version>
+		<org.mockito.version>1.10.19</org.mockito.version>
+		<org.slf4j.version>1.7.12</org.slf4j.version>
+		<jstl.version>1.2</jstl.version>
+		<org.seleniumhq.selenium.version>2.45.0</org.seleniumhq.selenium.version>
+	</properties>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>${maven.compiler.plugin.version}</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.4</version>
+				<version>${maven.war.plugin.version}</version>
 				<configuration>
 					<warSourceDirectory>src/main/webapp/</warSourceDirectory>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
@@ -30,49 +43,49 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
+			<version>${javax.servlet.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
-			<version>7.0</version>
-			<scope>runetime</scope>
+			<version>${javax.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.35</version>
+			<version>${mysql.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<version>1.10.19</version>
+			<version>${org.mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-site</artifactId>
-			<version>1.7.12</version>
+			<version>${org.slf4j.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
-			<version>1.2</version>
+			<version>${jstl.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>2.45.0</version>
+			<version>${org.seleniumhq.selenium.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

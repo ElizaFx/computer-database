@@ -10,9 +10,8 @@ import com.excilys.formation.cdb.persistence.DAOException;
 
 public class ConnectionFactory {
 
-	private static final String url = "jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull";
-	private static final String user = "admincdb";
-	private static final String password = "qwerty1234";
+	private static final ConnectionProperties conf = new ConnectionProperties(
+			"/config.properties");
 
 	static {
 		try {
@@ -29,7 +28,8 @@ public class ConnectionFactory {
 	 */
 	public static Connection getConnection() {
 		try {
-			return DriverManager.getConnection(url, user, password);
+			return DriverManager.getConnection(conf.getUrl(), conf.getUser(),
+					conf.getPassword());
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}
