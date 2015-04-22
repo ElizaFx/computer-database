@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.ComputerDAO;
+import com.excilys.formation.cdb.persistence.IComputerDAO.OrderBy;
 
 public enum ComputerService implements IComputerService {
 
@@ -93,7 +94,29 @@ public enum ComputerService implements IComputerService {
 
 	@Override
 	public List<Computer> pagination(String search, int limit, int offset) {
+		if (search == null) {
+			search = "";
+		}
 		return ComputerDAO.getInstance().pagination(search, limit, offset);
+	}
+
+	@Override
+	public List<Computer> pagination(String search, int limit, int offset,
+			OrderBy ob, boolean asc) {
+		if (ob == null) {
+			ob = OrderBy.ID;
+		}
+		if (search == null) {
+			search = "";
+		}
+		return ComputerDAO.getInstance().pagination(search, limit, offset, ob,
+				asc);
+	}
+
+	@Override
+	public List<Computer> pagination(int limit, int offset, OrderBy ob,
+			boolean asc) {
+		return ComputerDAO.getInstance().pagination(limit, offset, ob, asc);
 	}
 
 }

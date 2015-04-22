@@ -2,6 +2,7 @@ package com.excilys.formation.cdb.ui;
 
 import java.util.List;
 
+import com.excilys.formation.cdb.persistence.IComputerDAO.OrderBy;
 import com.excilys.formation.cdb.service.Paginable;
 
 public class Page<T> {
@@ -15,6 +16,8 @@ public class Page<T> {
 	private int firstPage;
 	private int lastPage;
 	private String search;
+	private OrderBy ob;
+	private boolean asc;
 
 	public Page(Paginable<T> paginable) {
 		this(paginable, "", 0, 1, 10, 5);
@@ -27,11 +30,19 @@ public class Page<T> {
 
 	public Page(Paginable<T> paginable, String search, int nbItems,
 			int curPage, int limit, int pageLimit) {
+		this(paginable, search, nbItems, curPage, limit, pageLimit, OrderBy.ID,
+				true);
+	}
+
+	public Page(Paginable<T> paginable, String search, int nbItems,
+			int curPage, int limit, int pageLimit, OrderBy ob, boolean asc) {
 		this.paginable = paginable;
 		this.nbItems = nbItems;
 		this.curPage = curPage;
 		this.limit = limit;
 		this.search = search == null ? "" : search;
+		this.ob = ob == null ? OrderBy.ID : ob;
+		this.asc = asc;
 		if (this.limit < 1) {
 			this.limit = 10;
 		}
@@ -95,11 +106,24 @@ public class Page<T> {
 	}
 
 	public List<T> getPage() {
-		return paginable.pagination(search, limit, ((curPage - 1) * limit));
+		return paginable.pagination(search, limit, ((curPage - 1) * limit), ob,
+				asc);
 	}
 
 	public String getSearch() {
 		return search;
+	}
+
+	public OrderBy getOb() {
+		return ob;
+	}
+
+	public String getObName() {
+		return ob.name().toLowerCase();
+	}
+
+	public boolean isAsc() {
+		return asc;
 	}
 
 	@Override

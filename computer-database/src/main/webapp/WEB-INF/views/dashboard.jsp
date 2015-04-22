@@ -61,12 +61,32 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name</th>
-						<th>Introduced date</th>
+						<th><mylib:link search="${pagined.getSearch()}"
+								page="${pagined.getCurPage()}" limit="${pagined.getLimit()}"
+								orderBy="name" asc="${!pagined.isAsc()}">
+								Computer name <mylib:caret name="name"
+									orderBy="${pagined.getObName()}" asc="${pagined.isAsc()}" />
+							</mylib:link></th>
+						<th><mylib:link search="${pagined.getSearch()}"
+								page="${pagined.getCurPage()}" limit="${pagined.getLimit()}"
+								orderBy="introduced" asc="${!pagined.isAsc()}">Introduced date<mylib:caret
+									name="introduced" orderBy="${pagined.getObName()}"
+									asc="${pagined.isAsc()}" />
+							</mylib:link></th>
 						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date</th>
+						<th><mylib:link search="${pagined.getSearch()}"
+								page="${pagined.getCurPage()}" limit="${pagined.getLimit()}"
+								orderBy="discontinued" asc="${!pagined.isAsc()}">Discontinued date<mylib:caret
+									name="discontinued" orderBy="${pagined.getObName()}"
+									asc="${pagined.isAsc()}" />
+							</mylib:link></th>
 						<!-- Table header for Company -->
-						<th>Company</th>
+						<th><mylib:link search="${pagined.getSearch()}"
+								page="${pagined.getCurPage()}" limit="${pagined.getLimit()}"
+								orderBy="company" asc="${!pagined.isAsc()}">Company<mylib:caret
+									name="company" orderBy="${pagined.getObName()}"
+									asc="${pagined.isAsc()}" />
+							</mylib:link></th>
 					</tr>
 				</thead>
 				<!-- Browse attribute computers -->
@@ -89,7 +109,8 @@
 		<mylib:page begin="${pagined.getFirstPage()}"
 			end="${pagined.getLastPage()}" search="${pagined.getSearch()}"
 			current="${pagined.getCurPage()}" limit="${pagined.getLimit()}"
-			pagemax="${pagined.getPageMax()}" />
+			pagemax="${pagined.getPageMax()}" orderBy="${pagined.getObName()}"
+			asc="${pagined.isAsc()}" />
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

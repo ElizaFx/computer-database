@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
+import com.excilys.formation.cdb.persistence.IComputerDAO.OrderBy;
 import com.excilys.formation.cdb.service.ComputerService;
 import com.excilys.formation.cdb.ui.Page;
 import com.excilys.formation.cdb.util.Util;
@@ -40,6 +41,8 @@ public class DashBoard extends HttpServlet {
 		String sPage = request.getParameter("page");
 		String sLimit = request.getParameter("limit");
 		String search = request.getParameter("search");
+		OrderBy ob = OrderBy.map(request.getParameter("orderBy"));
+		boolean asc = Boolean.parseBoolean(request.getParameter("asc"));
 		if (search == null) {
 			search = "";
 		}
@@ -54,7 +57,7 @@ public class DashBoard extends HttpServlet {
 		}
 
 		Page<Computer> pagined = new Page<>(ComputerService.getInstance(),
-				search, count, curPage, limit, 5);
+				search, count, curPage, limit, 5, ob, asc);
 
 		request.setAttribute("pagined", pagined);
 		request.setAttribute("lComputers",

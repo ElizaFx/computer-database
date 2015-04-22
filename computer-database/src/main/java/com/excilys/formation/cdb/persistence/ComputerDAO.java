@@ -203,7 +203,19 @@ public enum ComputerDAO implements IComputerDAO {
 	}
 
 	@Override
+	public List<Computer> pagination(int limit, int offset, OrderBy ob,
+			boolean asc) {
+		return pagination("", limit, offset, ob, asc);
+	}
+
+	@Override
 	public List<Computer> pagination(String search, int limit, int offset) {
+		return pagination(search, limit, offset, OrderBy.ID, true);
+	}
+
+	@Override
+	public List<Computer> pagination(String search, int limit, int offset,
+			OrderBy ob, boolean asc) {
 		List<Computer> res = new ArrayList<>();
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -211,14 +223,18 @@ public enum ComputerDAO implements IComputerDAO {
 		try {
 			connection = ConnectionFactory.getConnection();
 			statement = connection
-					.prepareStatement("SELECT * from computer left outer join company on computer.company_id=company.id where computer.name like ? order by computer.id limit ? offset ?;");
+					.prepareStatement("SELECT * from computer left outer join company on computer.company_id=company.id "
+							+ "where computer.name like ? or company.name like ? order by "
+							+ ob + (asc ? " " : " desc ") + "limit ? offset ? ");
 			if (search != null) {
 				statement.setString(1, "%" + search + "%");
+				statement.setString(2, "%" + search + "%");
 			} else {
 				statement.setString(1, "%");
+				statement.setString(2, "%");
 			}
-			statement.setInt(2, limit);
-			statement.setInt(3, offset);
+			statement.setInt(3, limit);
+			statement.setInt(4, offset);
 			result = statement.executeQuery();
 
 			while (result.next()) {
@@ -231,5 +247,4 @@ public enum ComputerDAO implements IComputerDAO {
 		}
 		return res;
 	}
-
 }

@@ -6,6 +6,37 @@ import java.util.function.Predicate;
 import com.excilys.formation.cdb.model.Computer;
 
 public interface IComputerDAO {
+	public enum OrderBy {
+		ID("computer.id"), NAME("computer.name"), INTRODUCED(
+				"computer.introduced"), DISCONTINUED("computer.discontinued"), COMPANY(
+				"company.name");
+		private final String name;
+
+		OrderBy(String s) {
+			name = s;
+		}
+
+		@Override
+		public String toString() {
+			return name;
+		}
+
+		public static OrderBy map(String s) {
+			if (ID.name().equalsIgnoreCase(s)) {
+				return ID;
+			} else if (NAME.name().equalsIgnoreCase(s)) {
+				return NAME;
+			} else if (INTRODUCED.name().equalsIgnoreCase(s)) {
+				return INTRODUCED;
+			} else if (DISCONTINUED.name().equalsIgnoreCase(s)) {
+				return DISCONTINUED;
+			} else if (COMPANY.name().equalsIgnoreCase(s)) {
+				return COMPANY;
+			}
+			return null;
+		}
+	}
+
 	/**
 	 * @return all row of the table of T
 	 */
@@ -85,4 +116,35 @@ public interface IComputerDAO {
 	 */
 	public List<Computer> pagination(String search, int limit, int offset);
 
+	/**
+	 * 
+	 * @param search
+	 *            name of the computer to search
+	 * @param limit
+	 *            number of elements
+	 * @param offset
+	 *            first element
+	 * @param ob
+	 *            order by
+	 * @param asc
+	 *            true for ascending order, false for descending order
+	 * @return list of limit element started by offset
+	 */
+	public List<Computer> pagination(String search, int limit, int offset,
+			OrderBy ob, boolean asc);
+
+	/**
+	 * 
+	 * @param limit
+	 *            number of elements
+	 * @param offset
+	 *            first element
+	 * @param ob
+	 *            order by
+	 * @param asc
+	 *            true for ascending order, false for descending order
+	 * @return list of limit element started by offset
+	 */
+	public List<Computer> pagination(int limit, int offset, OrderBy ob,
+			boolean asc);
 }
