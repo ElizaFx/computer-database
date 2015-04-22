@@ -1,8 +1,12 @@
 package com.excilys.formation.cdb.util;
 
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 public class Util {
 	public static boolean isNumeric(String s) {
@@ -12,15 +16,18 @@ public class Util {
 		return s.matches("\\d+");
 	}
 
-	public static Date parseDate(String s) {
+	public static LocalDateTime parseDate(String s) {
 		try {
 			if (s.matches("^\\d{4}([/.-])\\d{2}\\1\\d{2}$")) {
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-				return dateFormat.parse(s.replaceAll("[/.]", "-"));
-
+				Instant t = Instant.ofEpochMilli(dateFormat.parse(
+						s.replaceAll("[/.]", "-")).getTime());
+				return LocalDateTime.ofInstant(t, ZoneOffset.UTC);
 			} else if (s.matches("^\\d{2}([/.-])\\d{2}\\1\\d{4}$")) {
 				SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-				return dateFormat.parse(s.replaceAll("[/.]", "-"));
+				Instant t = Instant.ofEpochMilli(dateFormat.parse(
+						s.replaceAll("[/.]", "-")).getTime());
+				return LocalDateTime.ofInstant(t, ZoneOffset.UTC);
 			}
 			return null;
 		} catch (ParseException e) {
@@ -29,23 +36,26 @@ public class Util {
 	}
 
 	public static boolean isDate(String s) {
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
+		sdf1.setLenient(false);
+		sdf2.setLenient(false);
 		if ((s != null)
-				&& (s.matches("^\\d{4}([/.-])\\d{2}\\1\\d{2}$") || s
-						.matches("^\\d{2}([/.-])\\d{2}\\1\\d{4}$"))) {
+				&& ((sdf1.parse(s, new ParsePosition(0)) != null) || (sdf2
+						.parse(s, new ParsePosition(0)) != null))) {
 			return true;
 		}
 		return false;
 	}
 
-	public static String formatDate(Date d) {
+	public static String formatDate(LocalDateTime d) {
 		if (d == null) {
 			return null;
 		}
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		return dateFormat.format(d);
+		return d.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	}
 
-	public static java.sql.Date toSqlDate(Date d) {
+	public static java.sql.Date toSqlDate(LocalDateTime d) {
 		if (d == null) {
 			return null;
 		}

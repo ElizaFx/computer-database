@@ -1,7 +1,8 @@
 package com.excilys.formation.cdb.ui.servlets;
 
 import java.io.IOException;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -65,8 +66,8 @@ public class AddComputer extends HttpServlet {
 		String sCompanyId = request.getParameter("companyId");
 		StringBuilder messageError = new StringBuilder();
 
-		Date introduced = null;
-		Date discontinued = null;
+		LocalDateTime introduced = null;
+		LocalDateTime discontinued = null;
 		long companyId = 0;
 
 		if ((sComputerName == null) || sComputerName.trim().isEmpty()) {
@@ -78,8 +79,8 @@ public class AddComputer extends HttpServlet {
 
 		if (Util.isDate(sIntroduced)) {
 			introduced = Util.parseDate(sIntroduced);
-			if ((introduced.getTime() < 0)
-					|| (introduced.getTime() > (Integer.MAX_VALUE * 1000))) {
+			if ((introduced.toEpochSecond(ZoneOffset.UTC) < 0)
+					|| (introduced.toEpochSecond(ZoneOffset.UTC) > (Integer.MAX_VALUE * 1000))) {
 				messageError.append("Incorrect introduced date : ")
 						.append("range 1970-01-01 to 2038-01-19")
 						.append("<br />");
@@ -92,8 +93,8 @@ public class AddComputer extends HttpServlet {
 		}
 		if (Util.isDate(sDiscontinued)) {
 			discontinued = Util.parseDate(sDiscontinued);
-			if ((discontinued.getTime() < 0)
-					|| (discontinued.getTime() > (Integer.MAX_VALUE * 1000))) {
+			if ((discontinued.toEpochSecond(ZoneOffset.UTC) < 0)
+					|| (discontinued.toEpochSecond(ZoneOffset.UTC) > (Integer.MAX_VALUE * 1000))) {
 				messageError.append("Incorrect discontinued date : ")
 						.append("range 1970-01-01 to 2038-01-19")
 						.append("<br />");
@@ -117,7 +118,8 @@ public class AddComputer extends HttpServlet {
 					.append("Malformed company ID").append("<br />");
 			request.setAttribute("companyIdClass", "has-error");
 		}
-		System.out.println(introduced != null ? introduced.getTime() : "");
+		System.out.println(introduced != null ? introduced
+				.toEpochSecond(ZoneOffset.UTC) : "");
 		if (messageError.length() == 0) {
 			Computer computer = new Computer();
 			computer.setName(sComputerName);

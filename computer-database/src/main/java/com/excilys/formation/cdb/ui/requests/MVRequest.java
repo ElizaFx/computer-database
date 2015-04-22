@@ -1,6 +1,6 @@
 package com.excilys.formation.cdb.ui.requests;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,8 +38,8 @@ public class MVRequest implements IRequest {
 	public ICommand processCommand() throws RequestNotFoundException {
 		Long id = null;
 		String name = null;
-		Date introduced = null;
-		Date discontinued = null;
+		LocalDateTime introduced = null;
+		LocalDateTime discontinued = null;
 		Long companyId = null;
 		boolean hasChanges = false;
 		for (int i = 1; i < (request.size() - 1); i++) {

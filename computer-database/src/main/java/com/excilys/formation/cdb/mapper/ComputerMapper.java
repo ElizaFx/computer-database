@@ -2,6 +2,7 @@ package com.excilys.formation.cdb.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +27,10 @@ public class ComputerMapper {
 			computer = new Computer();
 			computer.setId(result.getLong("computer.id"));
 			computer.setName(result.getString("computer.name"));
-			computer.setIntroduced(result.getTimestamp("computer.introduced"));
-			computer.setDiscontinued(result
-					.getTimestamp("computer.discontinued"));
+			Timestamp tmp = result.getTimestamp("computer.introduced");
+			computer.setIntroduced(tmp == null ? null : tmp.toLocalDateTime());
+			tmp = result.getTimestamp("computer.discontinued");
+			computer.setDiscontinued(tmp == null ? null : tmp.toLocalDateTime());
 			if (result.getLong("company_id") != 0l) {
 				computer.setCompany(CompanyMapper.getModel(result));
 			} else {

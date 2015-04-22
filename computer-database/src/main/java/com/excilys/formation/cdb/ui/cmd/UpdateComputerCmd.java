@@ -1,6 +1,6 @@
 package com.excilys.formation.cdb.ui.cmd;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
@@ -13,8 +13,8 @@ public class UpdateComputerCmd implements ICommand {
 		this.computer = computer;
 	}
 
-	public UpdateComputerCmd(Long id, String name, Date introduced,
-			Date discontinued, Company company) {
+	public UpdateComputerCmd(Long id, String name, LocalDateTime introduced,
+			LocalDateTime discontinued, Company company) {
 		this(new Computer(id, name, introduced, discontinued, company));
 	}
 

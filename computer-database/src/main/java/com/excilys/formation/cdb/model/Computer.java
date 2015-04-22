@@ -1,7 +1,7 @@
 package com.excilys.formation.cdb.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * This class is the object version of a Computer from the Database.
@@ -14,8 +14,8 @@ public class Computer implements Serializable {
 
 	private Long id;
 	private String name;
-	private Date introduced;
-	private Date discontinued;
+	private LocalDateTime introduced;
+	private LocalDateTime discontinued;
 	private Company company;
 
 	/**
@@ -35,8 +35,8 @@ public class Computer implements Serializable {
 	 * @param company_id
 	 *            of the computer
 	 */
-	public Computer(String name, Date introduced, Date discontinued,
-			Company companyId) {
+	public Computer(String name, LocalDateTime introduced,
+			LocalDateTime discontinued, Company companyId) {
 		super();
 		this.name = name;
 		this.introduced = introduced;
@@ -56,8 +56,8 @@ public class Computer implements Serializable {
 	 * @param company_id
 	 *            of the computer
 	 */
-	public Computer(Long id, String name, Date introduced, Date discontinued,
-			Company companyId) {
+	public Computer(Long id, String name, LocalDateTime introduced,
+			LocalDateTime discontinued, Company companyId) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -99,7 +99,7 @@ public class Computer implements Serializable {
 	/**
 	 * @return when the computer was introduced
 	 */
-	public Date getIntroduced() {
+	public LocalDateTime getIntroduced() {
 		return introduced;
 	}
 
@@ -107,14 +107,14 @@ public class Computer implements Serializable {
 	 * @param introduced
 	 *            when the computer was introduced
 	 */
-	public void setIntroduced(Date introduced) {
+	public void setIntroduced(LocalDateTime introduced) {
 		this.introduced = introduced;
 	}
 
 	/**
 	 * @return when the computer was discontinued
 	 */
-	public Date getDiscontinued() {
+	public LocalDateTime getDiscontinued() {
 		return discontinued;
 	}
 
@@ -122,7 +122,7 @@ public class Computer implements Serializable {
 	 * @param discontinued
 	 *            when the computer was discontinued
 	 */
-	public void setDiscontinued(Date discontinued) {
+	public void setDiscontinued(LocalDateTime discontinued) {
 		this.discontinued = discontinued;
 	}
 
