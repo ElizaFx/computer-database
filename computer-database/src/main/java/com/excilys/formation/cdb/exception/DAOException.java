@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.persistence;
+package com.excilys.formation.cdb.exception;
 
 public class DAOException extends RuntimeException {
 

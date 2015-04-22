@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.ui.requests;
 
+import com.excilys.formation.cdb.exception.RequestNotFoundException;
 import com.excilys.formation.cdb.ui.cmd.DeleteComputerCmd;
 import com.excilys.formation.cdb.ui.cmd.ICommand;
 import com.excilys.formation.cdb.util.Util;

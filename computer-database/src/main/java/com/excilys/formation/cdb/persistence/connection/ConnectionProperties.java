@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import com.excilys.formation.cdb.persistence.DAOException;
+import com.excilys.formation.cdb.exception.DAOException;
 
 public class ConnectionProperties {
 	private final String url;

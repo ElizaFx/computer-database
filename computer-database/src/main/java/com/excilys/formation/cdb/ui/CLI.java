@@ -6,9 +6,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.excilys.formation.cdb.exception.RequestNotFoundException;
 import com.excilys.formation.cdb.ui.cmd.ICommand;
 import com.excilys.formation.cdb.ui.requests.Request;
-import com.excilys.formation.cdb.ui.requests.RequestNotFoundException;
 
 public class CLI {
 	private final List<ICommand> history;

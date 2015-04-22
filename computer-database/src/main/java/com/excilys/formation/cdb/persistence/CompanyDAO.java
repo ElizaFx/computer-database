@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.persistence.connection.ConnectionFactory;
@@ -22,13 +23,13 @@ public enum CompanyDAO implements ICompanyDAO {
 	_instance;
 
 	@Override
-	public Company find(Object id) {
+	public Company find(Long id) {
 		Connection connection = null;
 		PreparedStatement ps = null;
 		ResultSet result = null;
 		Company res = null;
 		if (id == null) {
-			throw new DAOException("NullPointerException: Model null!");
+			throw new DAOException("NullPointerException: Id null!");
 		}
 		try {
 			connection = ConnectionFactory.getConnection();

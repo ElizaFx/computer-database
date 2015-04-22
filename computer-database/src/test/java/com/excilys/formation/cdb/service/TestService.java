@@ -10,9 +10,9 @@ import java.text.ParseException;
 
 import org.junit.Test;
 
+import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.persistence.DAOException;
 import com.excilys.formation.cdb.util.Util;
 
 public class TestService {
@@ -77,7 +77,7 @@ public class TestService {
 		crf.update(jox);
 		assertNotNull(crf.find(c -> c.equals(jox)));
 
-		crf.remove(jox);
+		crf.remove(jox.getId());
 		assertNull(crf.find(c -> c.equals(jox)));
 		assertNull(crf.find(c -> c.getName().equals("Joxit")));
 	}
@@ -89,12 +89,12 @@ public class TestService {
 
 	@Test(expected = DAOException.class)
 	public void invalidComputerFind() {
-		ComputerService.getInstance().find(null);
+		ComputerService.getInstance().find((Long) null);
 	}
 
 	@Test(expected = DAOException.class)
 	public void invalidCompanyFind() {
-		CompanyService.getInstance().find(null);
+		CompanyService.getInstance().find((Long) null);
 	}
 
 	@Test(expected = DAOException.class)

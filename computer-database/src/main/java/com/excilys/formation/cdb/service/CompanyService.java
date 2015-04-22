@@ -32,10 +32,11 @@ public enum CompanyService implements ICompanyService {
 	 * @return element with this id
 	 */
 	@Override
-	public Company find(Object id) {
+	public Company find(Long id) {
 		return CompanyDAO.getInstance().find(id);
 	}
 
+	@Override
 	public int count() {
 		return CompanyDAO.getInstance().count();
 	}

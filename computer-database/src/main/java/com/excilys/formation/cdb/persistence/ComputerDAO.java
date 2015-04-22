@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.connection.ConnectionFactory;
@@ -24,7 +25,7 @@ public enum ComputerDAO implements IComputerDAO {
 	_instance;
 
 	@Override
-	public Computer find(Object id) {
+	public Computer find(Long id) {
 		Connection connection = null;
 		PreparedStatement ps = null;
 		ResultSet result = null;
@@ -79,17 +80,17 @@ public enum ComputerDAO implements IComputerDAO {
 	}
 
 	@Override
-	public int remove(Computer model) {
+	public int remove(Long id) {
 		int res = 0;
 		Connection connection = null;
 		PreparedStatement ps = null;
-		if (model == null) {
-			throw new DAOException("NullPointerException: Model null!");
+		if (id == null) {
+			throw new DAOException("NullPointerException: Id null!");
 		}
 		try {
 			connection = ConnectionFactory.getConnection();
 			ps = connection.prepareStatement("DELETE FROM computer WHERE ID=?");
-			ps.setLong(1, model.getId());
+			ps.setLong(1, id);
 			res = ps.executeUpdate();
 		} catch (SQLException e) {
 			throw new DAOException(e);

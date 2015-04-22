@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.excilys.formation.cdb.exception.RequestNotFoundException;
 import com.excilys.formation.cdb.ui.cmd.ICommand;
 
 public class Request implements IRequest {

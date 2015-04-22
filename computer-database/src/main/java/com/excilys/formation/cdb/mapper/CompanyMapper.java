@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.formation.cdb.dto.CompanyDTO;
+import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.persistence.DAOException;
 
 public class CompanyMapper {
 	/**

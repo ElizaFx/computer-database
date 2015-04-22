@@ -3,6 +3,7 @@ package com.excilys.formation.cdb.ui.requests;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.excilys.formation.cdb.exception.RequestNotFoundException;
 import com.excilys.formation.cdb.ui.cmd.ICommand;
 import com.excilys.formation.cdb.ui.cmd.ListCompanyCmd;
 import com.excilys.formation.cdb.ui.cmd.ListComputerCmd;

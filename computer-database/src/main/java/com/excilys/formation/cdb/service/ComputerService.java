@@ -46,8 +46,8 @@ public enum ComputerService implements IComputerService {
 	 * @return the row count removed
 	 */
 	@Override
-	public int remove(Computer model) {
-		return ComputerDAO.getInstance().remove(model);
+	public int remove(Long id) {
+		return ComputerDAO.getInstance().remove(id);
 	}
 
 	/**
@@ -68,7 +68,7 @@ public enum ComputerService implements IComputerService {
 	 * @return element with this id
 	 */
 	@Override
-	public Computer find(Object id) {
+	public Computer find(Long id) {
 		return ComputerDAO.getInstance().find(id);
 	}
 

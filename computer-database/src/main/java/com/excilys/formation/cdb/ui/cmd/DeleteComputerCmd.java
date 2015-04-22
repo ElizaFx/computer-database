@@ -19,7 +19,7 @@ public class DeleteComputerCmd implements ICommand {
 	public void execute() {
 		if (computer == null) {
 			System.out.println("Delete failed : Computer is null");
-		} else if (ComputerService.getInstance().remove(computer) == 1) {
+		} else if (ComputerService.getInstance().remove(computer.getId()) == 1) {
 			System.out.println("Entry deleted." + computer);
 		} else {
 			System.out

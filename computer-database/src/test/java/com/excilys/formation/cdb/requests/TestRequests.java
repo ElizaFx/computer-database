@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
+import com.excilys.formation.cdb.exception.RequestNotFoundException;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.ComputerService;
 import com.excilys.formation.cdb.ui.cmd.ICommand;
@@ -15,7 +16,6 @@ import com.excilys.formation.cdb.ui.requests.MKRequest;
 import com.excilys.formation.cdb.ui.requests.MVRequest;
 import com.excilys.formation.cdb.ui.requests.RMRequest;
 import com.excilys.formation.cdb.ui.requests.Request;
-import com.excilys.formation.cdb.ui.requests.RequestNotFoundException;
 
 public class TestRequests {
 

@@ -71,8 +71,29 @@ public class DashBoard extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		request.getParameterMap().forEach(
-				(k, v) -> System.out.println("(" + k + ";" + Arrays.toString(v)
-						+ ")"));
+		String sIds = request.getParameter("selection");
+		String[] ids = sIds == null ? null : sIds.split(",");
+		StringBuilder messageError = new StringBuilder();
+		if ((ids != null) && (ids.length != 0)) {
+			if (Arrays.stream(ids).allMatch(id -> Util.isNumeric(id))) {
+				Arrays.stream(ids).map(id -> Long.parseLong(id)).forEach(c -> {
+					if (c != null) {
+						ComputerService.getInstance().remove(c);
+					}
+				});
+			} else {
+				messageError
+						.append("Something goes wrong with your selection, wrong ids");
+			}
+		} else {
+			messageError.append("You need to choose some computers first");
+		}
+
+		if (messageError.length() == 0) {
+			request.setAttribute("success", "Computers deleted");
+		} else {
+			request.setAttribute("danger", "Error: " + messageError.toString());
+		}
+		doGet(request, response);
 	}
 }

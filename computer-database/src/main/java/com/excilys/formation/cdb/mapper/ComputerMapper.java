@@ -8,8 +8,8 @@ import java.util.List;
 
 import com.excilys.formation.cdb.dto.CompanyDTO;
 import com.excilys.formation.cdb.dto.ComputerDTO;
+import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.persistence.DAOException;
 import com.excilys.formation.cdb.util.Util;
 
 public class ComputerMapper {
@@ -51,7 +51,7 @@ public class ComputerMapper {
 
 	public static ComputerDTO computerModelToDTO(Computer computer) {
 		ComputerDTO res = new ComputerDTO();
-		res.setCompanyId(computer.getId());
+		res.setId(computer.getId());
 		res.setName(computer.getName());
 		res.setIntroduced(Util.formatDate(computer.getIntroduced()));
 		res.setDiscontinued(Util.formatDate(computer.getDiscontinued()));

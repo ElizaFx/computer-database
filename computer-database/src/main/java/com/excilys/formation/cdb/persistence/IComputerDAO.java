@@ -32,7 +32,7 @@ public interface IComputerDAO {
 	 * @param model
 	 * @return the row count removed
 	 */
-	public int remove(Computer model);
+	public int remove(Long model);
 
 	/**
 	 * Update model from the table. Must call updateRequest with the right id
@@ -48,7 +48,7 @@ public interface IComputerDAO {
 	 *            of T model
 	 * @return element with this id
 	 */
-	public Computer find(Object id);
+	public Computer find(Long id);
 
 	/**
 	 * 

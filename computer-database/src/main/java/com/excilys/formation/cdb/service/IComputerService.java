@@ -29,10 +29,10 @@ public interface IComputerService extends Paginable<Computer> {
 	 * Remove model from the table. Must call removeRequest with the right
 	 * request
 	 *
-	 * @param model
+	 * @param id
 	 * @return the row count removed
 	 */
-	public int remove(Computer model);
+	public int remove(Long id);
 
 	/**
 	 * Update model from the table. Must call updateRequest with the right id
@@ -48,7 +48,7 @@ public interface IComputerService extends Paginable<Computer> {
 	 *            of T model
 	 * @return element with this id
 	 */
-	public Computer find(Object id);
+	public Computer find(Long id);
 
 	/**
 	 * 

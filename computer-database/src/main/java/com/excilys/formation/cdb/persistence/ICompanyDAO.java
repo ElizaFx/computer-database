@@ -22,7 +22,7 @@ public interface ICompanyDAO {
 	 *            of T model
 	 * @return element with this id
 	 */
-	public Company find(Object id);
+	public Company find(Long id);
 
 	/**
 	 * 

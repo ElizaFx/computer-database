@@ -22,7 +22,13 @@
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${pagined.getNbItems()} Computers found</h1>
+			<h1 id="homeTitle">${pagined.getNbItems()}Computers found</h1>
+			<c:if test="${success != null}">
+				<div class="alert alert-success" role="alert">${success}</div>
+			</c:if>
+			<c:if test="${danger != null}">
+				<div class="alert alert-danger" role="alert">${danger}</div>
+			</c:if>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -68,7 +74,7 @@
 					<c:forEach items="${lComputers}" var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="0"></td>
+								class="cb" value="${computer.getId()}"></td>
 							<td><a href="editComputer" onclick="">${computer.getName()}</a></td>
 							<td>${computer.getIntroduced()}</td>
 							<td>${computer.getDiscontinued()}</td>
@@ -80,8 +86,10 @@
 		</div>
 	</section>
 	<footer class="navbar-fixed-bottom">
-		<mylib:page begin="${pagined.getFirstPage()}" end="${pagined.getLastPage()}" search="${pagined.getSearch()}"
-			current="${pagined.getCurPage()}" limit="${pagined.getLimit()}" pagemax="${pagined.getPageMax()}"/>
+		<mylib:page begin="${pagined.getFirstPage()}"
+			end="${pagined.getLastPage()}" search="${pagined.getSearch()}"
+			current="${pagined.getCurPage()}" limit="${pagined.getLimit()}"
+			pagemax="${pagined.getPageMax()}" />
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
