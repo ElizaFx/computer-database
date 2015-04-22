@@ -13,35 +13,21 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.formation.cdb.dto.CompanyDTO;
 import com.excilys.formation.cdb.mapper.CompanyMapper;
+import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
 import com.excilys.formation.cdb.util.Util;
 
 /**
- * Servlet implementation class AddComputer
+ * Servlet implementation class EditComputer
  */
-@WebServlet("/addComputer")
-public class AddComputer extends HttpServlet {
+@WebServlet("/editComputer")
+public class EditComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
 	private static final List<CompanyDTO> lCompany = CompanyMapper
 			.companyModelToDTO(CompanyService.getInstance().findAll());
-
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public AddComputer() {
-	}
-
-	protected void doGetAndPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-
-		request.setAttribute("lCompanies", lCompany);
-
-		getServletContext().getRequestDispatcher(
-				"/WEB-INF/views/addComputer.jsp").forward(request, response);
-
-	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -50,7 +36,19 @@ public class AddComputer extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		doGetAndPost(request, response);
+		String id = request.getParameter("id");
+		if ((id != null) && Util.isNumeric(id)) {
+			Computer computer = ComputerService.getInstance().find(
+					Long.parseLong(id));
+			if (computer != null) {
+				request.setAttribute("computer",
+						ComputerMapper.computerModelToDTO(computer));
+			}
+		}
+		request.setAttribute("lCompanies", lCompany);
+		request.getServletContext()
+				.getRequestDispatcher("/WEB-INF/views/editComputer.jsp")
+				.forward(request, response);
 	}
 
 	/**
@@ -70,7 +68,15 @@ public class AddComputer extends HttpServlet {
 		LocalDateTime introduced = null;
 		LocalDateTime discontinued = null;
 		long companyId = 0;
-
+		String id = request.getParameter("id");
+		Computer computer = null;
+		if ((id != null) && Util.isNumeric(id)) {
+			computer = ComputerService.getInstance().find(Long.parseLong(id));
+			if (computer != null) {
+				request.setAttribute("computer",
+						ComputerMapper.computerModelToDTO(computer));
+			}
+		}
 		if ((sComputerName == null) || sComputerName.trim().isEmpty()) {
 			messageError.append("Incorrect Name").append("<br />");
 			request.setAttribute("computerNameClass", "has-error");
@@ -80,8 +86,8 @@ public class AddComputer extends HttpServlet {
 
 		if (Util.isDate(sIntroduced)) {
 			introduced = Util.parseDate(sIntroduced);
-			if ((introduced.toEpochSecond(ZoneOffset.UTC) < 0)
-					|| (introduced.toEpochSecond(ZoneOffset.UTC) > (Integer.MAX_VALUE * 1000))) {
+			if ((introduced.toEpochSecond(ZoneOffset.UTC) < 0l)
+					|| (introduced.toEpochSecond(ZoneOffset.UTC) > (Integer.MAX_VALUE * 1000l))) {
 				messageError.append("Incorrect introduced date : ")
 						.append("range 1970-01-01 to 2038-01-19")
 						.append("<br />");
@@ -95,7 +101,7 @@ public class AddComputer extends HttpServlet {
 		if (Util.isDate(sDiscontinued)) {
 			discontinued = Util.parseDate(sDiscontinued);
 			if ((discontinued.toEpochSecond(ZoneOffset.UTC) < 0)
-					|| (discontinued.toEpochSecond(ZoneOffset.UTC) > (Integer.MAX_VALUE * 1000))) {
+					|| (discontinued.toEpochSecond(ZoneOffset.UTC) > (Integer.MAX_VALUE * 1000l))) {
 				messageError.append("Incorrect discontinued date : ")
 						.append("range 1970-01-01 to 2038-01-19")
 						.append("<br />");
@@ -121,15 +127,19 @@ public class AddComputer extends HttpServlet {
 		}
 		System.out.println(introduced != null ? introduced
 				.toEpochSecond(ZoneOffset.UTC) : "");
-		if (messageError.length() == 0) {
-			Computer computer = new Computer();
+		if ((messageError.length() == 0) && (computer != null)) {
 			computer.setName(sComputerName);
 			computer.setIntroduced(introduced);
 			computer.setDiscontinued(discontinued);
 			computer.setCompany(CompanyService.getInstance().find(companyId));
-			ComputerService.getInstance().insert(computer);
+			ComputerService.getInstance().update(computer);
 			request.setAttribute("success", "Computer " + sComputerName
-					+ " added");
+					+ " edited");
+			if (computer != null) {
+				request.setAttribute("computer",
+						ComputerMapper.computerModelToDTO(computer));
+			}
+
 		} else {
 			request.setAttribute("computerName",
 					request.getParameter("computerName"));
@@ -142,6 +152,10 @@ public class AddComputer extends HttpServlet {
 					+ messageError.toString());
 		}
 
-		doGetAndPost(request, response);
+		request.setAttribute("lCompanies", lCompany);
+		request.getServletContext()
+				.getRequestDispatcher("/WEB-INF/views/editComputer.jsp")
+				.forward(request, response);
 	}
+
 }

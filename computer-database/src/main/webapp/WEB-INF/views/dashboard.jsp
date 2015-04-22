@@ -22,7 +22,7 @@
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${pagined.getNbItems()}Computers found</h1>
+			<h1 id="homeTitle">${pagined.getNbItems() } Computers found</h1>
 			<c:if test="${success != null}">
 				<div class="alert alert-success" role="alert">${success}</div>
 			</c:if>
@@ -75,7 +75,7 @@
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${computer.getId()}"></td>
-							<td><a href="editComputer" onclick="">${computer.getName()}</a></td>
+							<td><a href="editComputer?id=${computer.getId()}" onclick="">${computer.getName()}</a></td>
 							<td>${computer.getIntroduced()}</td>
 							<td>${computer.getDiscontinued()}</td>
 							<td>${computer.getCompanyName()}</td>

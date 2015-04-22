@@ -13,7 +13,7 @@ public class Util {
 		if (s == null) {
 			return false;
 		}
-		return s.matches("\\d+");
+		return s.matches("\\d+") && (s.length() < 10);
 	}
 
 	public static LocalDateTime parseDate(String s) {

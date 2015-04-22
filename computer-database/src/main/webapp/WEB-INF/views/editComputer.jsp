@@ -22,48 +22,49 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
-					<h1>Add Computer</h1>
+					<div class="label label-default pull-right">id:
+						${computer.getId()}</div>
+					<h1>Edit Computer</h1>
 					<c:if test="${success != null}">
 						<div class="alert alert-success" role="alert">${success}</div>
 					</c:if>
 					<c:if test="${danger != null}">
 						<div class="alert alert-danger" role="alert">${danger}</div>
 					</c:if>
-					<form action="addComputer" method="POST">
+					<form action="editComputer?id=${computer.getId()}" method="POST">
+						<input type="hidden" value="${computer.getId()}" />
 						<fieldset>
-							<div class="form-group ${computerNameClass}">
+							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
 									type="text" class="form-control" id="computerName"
 									name="computerName" placeholder="Computer name"
-									value="${computerName}"> <span class="help-block">Required</span>
+									value="${computer.getName()}">
 							</div>
-							<div class="form-group ${introducedClass}">
+							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
 									type="date" class="form-control" id="introduced"
 									name="introduced" placeholder="Introduced date"
-									value="${introduced}"> <span class="help-block">Pattern
-									YYYY-MM-dd or dd-MM-YYYY. Delimiters can be - or . or /</span>
+									value="${computer.getIntroduced()}">
 							</div>
-							<div class="form-group ${discontinuedClass}">
+							<div class="form-group">
 								<label for="discontinued">Discontinued date</label> <input
 									type="date" class="form-control" id="discontinued"
 									name="discontinued" placeholder="Discontinued date"
-									value="${discontinued}"> <span class="help-block">Pattern
-									YYYY-MM-dd or dd-MM-YYYY. Delimiters can be - or . or /</span>
+									value="${computer.getDiscontinued()}">
 							</div>
-							<div class="form-group ${companyIdClass}">
+							<div class="form-group">
 								<label for="companyId">Company</label> <select
 									class="form-control" id="companyId" name="companyId">
 									<option value="0">--</option>
 									<c:forEach items="${lCompanies}" var="company">
 										<option value="${company.getId()}"
-											${companyId == company.getId() ? "selected" : "" }>${company.getName() }</option>
+											${computer.getCompanyId() == company.getId() ? "selected" : "" }>${company.getName() }</option>
 									</c:forEach>
 								</select>
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-							<input type="submit" value="Add" class="btn btn-primary">
+							<input type="submit" value="Edit" class="btn btn-primary">
 							or <a href="dashboard" class="btn btn-default">Cancel</a>
 						</div>
 					</form>
@@ -71,8 +72,5 @@
 			</div>
 		</div>
 	</section>
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/addcomputer.js"></script>
 </body>
 </html>
