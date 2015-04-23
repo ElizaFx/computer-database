@@ -61,32 +61,20 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th><mylib:link search="${pagined.getSearch()}"
-								page="${pagined.getCurPage()}" limit="${pagined.getLimit()}"
-								orderBy="name" asc="${!pagined.isAsc()}">
-								Computer name <mylib:caret name="name"
-									orderBy="${pagined.getObName()}" asc="${pagined.isAsc()}" />
-							</mylib:link></th>
-						<th><mylib:link search="${pagined.getSearch()}"
-								page="${pagined.getCurPage()}" limit="${pagined.getLimit()}"
-								orderBy="introduced" asc="${!pagined.isAsc()}">Introduced date<mylib:caret
-									name="introduced" orderBy="${pagined.getObName()}"
-									asc="${pagined.isAsc()}" />
-							</mylib:link></th>
+						<th>Computer name <mylib:caret name="name"
+								orderBy="${pagined.getObName()}" asc="${pagined.isAsc()}" search="${pagined.getSearch()}"
+			page="${pagined.getCurPage()}" limit="${pagined.getLimit()}" /></th>
+						<th>Introduced date<mylib:caret name="introduced"
+								orderBy="${pagined.getObName()}" asc="${pagined.isAsc()}" search="${pagined.getSearch()}"
+			page="${pagined.getCurPage()}" limit="${pagined.getLimit()}"/></th>
 						<!-- Table header for Discontinued Date -->
-						<th><mylib:link search="${pagined.getSearch()}"
-								page="${pagined.getCurPage()}" limit="${pagined.getLimit()}"
-								orderBy="discontinued" asc="${!pagined.isAsc()}">Discontinued date<mylib:caret
-									name="discontinued" orderBy="${pagined.getObName()}"
-									asc="${pagined.isAsc()}" />
-							</mylib:link></th>
+						<th>Discontinued date<mylib:caret name="discontinued"
+								orderBy="${pagined.getObName()}" asc="${pagined.isAsc()}" search="${pagined.getSearch()}"
+			page="${pagined.getCurPage()}" limit="${pagined.getLimit()}"/></th>
 						<!-- Table header for Company -->
-						<th><mylib:link search="${pagined.getSearch()}"
-								page="${pagined.getCurPage()}" limit="${pagined.getLimit()}"
-								orderBy="company" asc="${!pagined.isAsc()}">Company<mylib:caret
-									name="company" orderBy="${pagined.getObName()}"
-									asc="${pagined.isAsc()}" />
-							</mylib:link></th>
+						<th>Company<mylib:caret name="company"
+								orderBy="${pagined.getObName()}" asc="${pagined.isAsc()}" search="${pagined.getSearch()}"
+			page="${pagined.getCurPage()}" limit="${pagined.getLimit()}"/></th>
 					</tr>
 				</thead>
 				<!-- Browse attribute computers -->

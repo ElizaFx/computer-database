@@ -5,16 +5,16 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import com.excilys.formation.cdb.exception.DAOException;
+import com.excilys.formation.cdb.util.Util;
+import com.jolbox.bonecp.BoneCPConfig;
 
-public class ConnectionProperties {
-	private final String url;
-	private final String user;
-	private final String password;
+public class ConnectionProperties extends BoneCPConfig {
+
+	private static final long serialVersionUID = -8001459556204208609L;
 
 	public ConnectionProperties(String path) {
 		Properties prop = new Properties();
 		String propFileName = "config.properties";
-
 		InputStream inputStream = getClass().getClassLoader()
 				.getResourceAsStream(propFileName);
 
@@ -29,22 +29,32 @@ public class ConnectionProperties {
 			throw new DAOException("error when loading '" + propFileName);
 		}
 
-		// get the property value and print it out
-		user = prop.getProperty("user");
-		url = prop.getProperty("url");
-		password = prop.getProperty("password");
+		setUsername(prop.getProperty("user"));
+		setJdbcUrl(prop.getProperty("url"));
+		setPassword(prop.getProperty("password"));
 
-	}
+		String minConnectionsPerPartition = prop
+				.getProperty("minConnectionsPerPartition");
+		String maxConnectionsPerPartition = prop
+				.getProperty("maxConnectionsPerPartition");
+		String partitionCount = prop.getProperty("partitionCount");
+		if (Util.isNumeric(minConnectionsPerPartition)) {
+			setMinConnectionsPerPartition(Integer
+					.parseInt(minConnectionsPerPartition));
+		} else {
+			setMinConnectionsPerPartition(5);
+		}
+		if (Util.isNumeric(maxConnectionsPerPartition)) {
+			setMaxConnectionsPerPartition(Integer
+					.parseInt(maxConnectionsPerPartition));
+		} else {
+			setMaxConnectionsPerPartition(10);
+		}
 
-	public String getUrl() {
-		return url;
-	}
-
-	public String getUser() {
-		return user;
-	}
-
-	public String getPassword() {
-		return password;
+		if (Util.isNumeric(partitionCount)) {
+			setPartitionCount(Integer.parseInt(partitionCount));
+		} else {
+			setPartitionCount(1);
+		}
 	}
 }

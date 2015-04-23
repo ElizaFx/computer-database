@@ -1,22 +1,27 @@
 package com.excilys.formation.cdb.persistence.connection;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.excilys.formation.cdb.exception.DAOException;
+import com.jolbox.bonecp.BoneCP;
 
 public class ConnectionFactory {
-
-	private static final ConnectionProperties conf = new ConnectionProperties(
-			"/config.properties");
+	private static BoneCP connectionPool = null;
+	private static final String properties = "/config.properties";
 
 	static {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
+			throw new DAOException(e);
+		}
+		try {
+			ConnectionProperties conf = new ConnectionProperties(properties);
+			connectionPool = new BoneCP(conf);
+		} catch (SQLException e) {
 			throw new DAOException(e);
 		}
 	}
@@ -28,8 +33,7 @@ public class ConnectionFactory {
 	 */
 	public static Connection getConnection() {
 		try {
-			return DriverManager.getConnection(conf.getUrl(), conf.getUser(),
-					conf.getPassword());
+			return connectionPool.getConnection();
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}
