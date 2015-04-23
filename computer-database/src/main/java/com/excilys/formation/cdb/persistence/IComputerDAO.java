@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.persistence;
 
+import java.sql.Connection;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -38,9 +39,14 @@ public interface IComputerDAO {
 	}
 
 	/**
-	 * @return all row of the table of T
+	 * @return all row of the table Computer
 	 */
 	public List<Computer> findAll();
+
+	/**
+	 * @return all row of the table Computer where has this company
+	 */
+	public List<Computer> findAllByCompany(Long companyId);
 
 	/**
 	 * @param predicate
@@ -64,6 +70,17 @@ public interface IComputerDAO {
 	 * @return the row count removed
 	 */
 	public int remove(Long model);
+
+	/**
+	 * Remove model from the table. Must call removeRequest with the right
+	 * request
+	 *
+	 * @param connection
+	 *            for a transaction
+	 * @param model
+	 * @return the row count removed
+	 */
+	public int remove(Connection connection, Long model);
 
 	/**
 	 * Update model from the table. Must call updateRequest with the right id

@@ -13,7 +13,7 @@ public class ComputerDetailsCmd implements ICommand {
 
 	@Override
 	public void execute() {
-		Computer computer = ComputerService.getInstance().find(id);
+		Computer computer = ComputerService.INSTANCE.find(id);
 
 		if (computer == null) {
 			System.out.println("Computer not found");

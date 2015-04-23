@@ -25,20 +25,20 @@ public class TestDAO {
 
 	@Test
 	public void findAllComputer() {
-		ComputerDAO crf = ComputerDAO.getInstance();
+		ComputerDAO crf = ComputerDAO.INSTANCE;
 		assertEquals(574, crf.findAll().size());
 	}
 
 	@Test
 	public void findAllCompanies() {
-		CompanyDAO cyf = CompanyDAO.getInstance();
+		CompanyDAO cyf = CompanyDAO.INSTANCE;
 
 		assertEquals(42, cyf.findAll().size());
 	}
 
 	@Test
 	public void findComputer() throws ParseException {
-		ComputerDAO crf = ComputerDAO.getInstance();
+		ComputerDAO crf = ComputerDAO.INSTANCE;
 		Computer elfII = new Computer();
 		elfII.setId(20l);
 		elfII.setName("ELF II");
@@ -55,7 +55,7 @@ public class TestDAO {
 
 	@Test
 	public void findCompany() {
-		CompanyDAO cyf = CompanyDAO.getInstance();
+		CompanyDAO cyf = CompanyDAO.INSTANCE;
 
 		Company sony = new Company();
 		sony.setId(17l);
@@ -70,8 +70,8 @@ public class TestDAO {
 
 	@Test
 	public void createUpdateRemoveComputer() {
-		ComputerDAO crf = ComputerDAO.getInstance();
-		crf.insert(new Computer("Joxit", null, null, CompanyDAO.getInstance()
+		ComputerDAO crf = ComputerDAO.INSTANCE;
+		crf.insert(new Computer("Joxit", null, null, CompanyDAO.INSTANCE
 				.find(17l)));
 
 		Computer jox = crf.find(c -> (c.getName() != null)
@@ -91,27 +91,27 @@ public class TestDAO {
 
 	@Test(expected = DAOException.class)
 	public void invalidCreation() {
-		ComputerDAO.getInstance().insert(null);
+		ComputerDAO.INSTANCE.insert(null);
 	}
 
 	@Test(expected = DAOException.class)
 	public void invalidComputerFind() {
-		ComputerDAO.getInstance().find((Long) null);
+		ComputerDAO.INSTANCE.find((Long) null);
 	}
 
 	@Test(expected = DAOException.class)
 	public void invalidUpdate() {
-		ComputerDAO.getInstance().update(null);
+		ComputerDAO.INSTANCE.update(null);
 	}
 
 	@Test(expected = DAOException.class)
 	public void invalidRemove() {
-		ComputerDAO.getInstance().remove(null);
+		ComputerDAO.INSTANCE.remove(null);
 	}
 
 	@Test(expected = DAOException.class)
 	public void invalidCompanyFind() {
-		CompanyDAO.getInstance().find((Long) null);
+		CompanyDAO.INSTANCE.find((Long) null);
 	}
 
 	@Test

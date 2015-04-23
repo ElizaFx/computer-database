@@ -24,7 +24,7 @@ public class TestCmd {
 
 	@Test
 	public void ShowComputerTest() {
-		List<Computer> l = ComputerService.getInstance().findAll();
+		List<Computer> l = ComputerService.INSTANCE.findAll();
 		ICommand cmd = new ComputerDetailsCmd(l.get(
 				(int) (Math.random() * l.size())).getId());
 		cmd.execute();
@@ -33,22 +33,21 @@ public class TestCmd {
 	@Test
 	public void CreateUpdateDeleteComputerTest() {
 		ICommand cmd1 = new CreateComputerCmd(new Computer("Joxit", null, null,
-				CompanyService.getInstance().find(17l)));
+				CompanyService.INSTANCE.find(17l)));
 		cmd1.execute();
-		Computer computer = ComputerService.getInstance().find(
-				c -> (c.getName() != null) && c.getName().equals("Joxit"));
+		Computer computer = ComputerService.INSTANCE
+				.find(c -> (c.getName() != null) && c.getName().equals("Joxit"));
 		assert (computer != null);
 		computer.setName("Joxit42");
 		ICommand cmd2 = new UpdateComputerCmd(computer);
 		cmd2.execute();
-		assert (ComputerService.getInstance().find(
-				c -> c.getName().equals("Joxit42")) != null);
-		assert (ComputerService.getInstance().find(
-				c -> c.getName().equals("Joxit")) == null);
+		assert (ComputerService.INSTANCE.find(c -> c.getName()
+				.equals("Joxit42")) != null);
+		assert (ComputerService.INSTANCE.find(c -> c.getName().equals("Joxit")) == null);
 		ICommand cmd3 = new DeleteComputerCmd(computer.getId());
 		cmd3.execute();
-		assert (ComputerService.getInstance().find(
-				c -> c.getName().equals("Joxit42")) == null);
+		assert (ComputerService.INSTANCE.find(c -> c.getName()
+				.equals("Joxit42")) == null);
 	}
 
 	@Test

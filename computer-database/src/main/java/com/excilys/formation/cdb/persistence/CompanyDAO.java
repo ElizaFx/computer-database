@@ -20,7 +20,7 @@ import com.excilys.formation.cdb.persistence.connection.ConnectionFactory;
  */
 public enum CompanyDAO implements ICompanyDAO {
 
-	_instance;
+	INSTANCE;
 
 	@Override
 	public Company find(Long id) {
@@ -46,10 +46,6 @@ public enum CompanyDAO implements ICompanyDAO {
 			ConnectionFactory.closeConnection(connection, ps, result);
 		}
 		return res;
-	}
-
-	public static CompanyDAO getInstance() {
-		return _instance;
 	}
 
 	@Override
@@ -102,4 +98,28 @@ public enum CompanyDAO implements ICompanyDAO {
 		}
 		return res;
 	}
+
+	@Override
+	public int remove(Connection connection, Long id) {
+		int res = 0;
+		PreparedStatement ps = null;
+		if (id == null) {
+			throw new DAOException("NullPointerException: Id null!");
+		}
+		if (connection == null) {
+			throw new DAOException("NullPointerException: Connection null!");
+		}
+		try {
+			ps = connection
+					.prepareStatement("DELETE FROM company WHERE company.id=?");
+			ps.setLong(1, id);
+			res = ps.executeUpdate();
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			ConnectionFactory.closeConnection(null, ps, null);
+		}
+		return res;
+	}
+
 }

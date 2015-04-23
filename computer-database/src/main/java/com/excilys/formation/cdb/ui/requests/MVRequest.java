@@ -89,7 +89,7 @@ public class MVRequest implements IRequest {
 		if (id == null) {
 			throw new RequestNotFoundException("UPDATE ERROR id not found");
 		}
-		Computer computer = ComputerService.getInstance().find(id);
+		Computer computer = ComputerService.INSTANCE.find(id);
 		if (computer == null) {
 			throw new RequestNotFoundException(
 					"UPDATE ERROR no computer for this id");
@@ -107,7 +107,7 @@ public class MVRequest implements IRequest {
 			hasChanges = true;
 		}
 		if ((companyId != null) && (companyId != 0)) {
-			computer.setCompany(CompanyService.getInstance().find(companyId));
+			computer.setCompany(CompanyService.INSTANCE.find(companyId));
 			hasChanges = true;
 		}
 		if (hasChanges) {

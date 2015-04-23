@@ -8,8 +8,8 @@ public class ListComputerCmd implements ICommand {
 	@Override
 	public void execute() {
 		System.out.println("Début de la liste des elements :");
-		ComputerService.getInstance().findAll()
-				.forEach(e -> System.out.println(format(e)));
+		ComputerService.INSTANCE.findAll().forEach(
+				e -> System.out.println(format(e)));
 		System.out.println("Fin de la liste des elements");
 	}
 

@@ -27,13 +27,57 @@ public class ConnectionFactory {
 	}
 
 	/**
-	 * @return connection or new connection if does not exist
+	 * @return new connection
 	 * @throws SQLException
 	 *             if a database access error occurs or the url is null
 	 */
 	public static Connection getConnection() {
 		try {
 			return connectionPool.getConnection();
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+	}
+
+	/**
+	 * @return new connection with not auto commit
+	 * @throws SQLException
+	 *             if a database access error occurs or the url is null
+	 */
+	public static Connection getTransactionConnection() {
+		try {
+			Connection c = connectionPool.getConnection();
+			c.setAutoCommit(false);
+			return c;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+	}
+
+	/**
+	 * Undoes all changes made in the current transaction and releases any
+	 * database locks currently held by this Connection object. This method
+	 * should be used only when auto-commit mode has been disabled
+	 * 
+	 * @param c
+	 *            connection
+	 * @throws DAOException
+	 *             if a database access error occurs, this method is called
+	 *             while participating in a distributed transaction, this method
+	 *             is called on a closed connection or this Connection object is
+	 *             in auto-commit mode
+	 */
+	public static void rollback(Connection c) {
+		try {
+			c.rollback();
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+	}
+
+	public static void commit(Connection c) {
+		try {
+			c.commit();
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}

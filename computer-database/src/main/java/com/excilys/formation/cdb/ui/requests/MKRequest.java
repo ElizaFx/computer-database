@@ -66,8 +66,7 @@ public class MKRequest implements IRequest {
 					case COMPANY_ID: {
 						if (Util.isNumeric(request.get(i + 1))) {
 							Long companyId = Long.parseLong(request.get(i + 1));
-							company = CompanyService.getInstance().find(
-									companyId);
+							company = CompanyService.INSTANCE.find(companyId);
 						} else {
 							throw new RequestNotFoundException(
 									"Company id malformed");

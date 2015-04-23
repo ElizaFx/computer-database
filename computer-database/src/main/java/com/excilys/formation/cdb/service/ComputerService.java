@@ -9,14 +9,14 @@ import com.excilys.formation.cdb.persistence.IComputerDAO.OrderBy;
 
 public enum ComputerService implements IComputerService {
 
-	_instance;
+	INSTANCE;
 
 	/**
 	 * @return all row of the table of Computer
 	 */
 	@Override
 	public List<Computer> findAll() {
-		return ComputerDAO.getInstance().findAll();
+		return ComputerDAO.INSTANCE.findAll();
 	}
 
 	/**
@@ -25,7 +25,7 @@ public enum ComputerService implements IComputerService {
 	 */
 	@Override
 	public Computer find(Predicate<? super Computer> predicate) {
-		return ComputerDAO.getInstance().find(predicate);
+		return ComputerDAO.INSTANCE.find(predicate);
 	}
 
 	/**
@@ -36,7 +36,7 @@ public enum ComputerService implements IComputerService {
 	 */
 	@Override
 	public int insert(Computer model) {
-		return ComputerDAO.getInstance().insert(model);
+		return ComputerDAO.INSTANCE.insert(model);
 	}
 
 	/**
@@ -48,7 +48,7 @@ public enum ComputerService implements IComputerService {
 	 */
 	@Override
 	public int remove(Long id) {
-		return ComputerDAO.getInstance().remove(id);
+		return ComputerDAO.INSTANCE.remove(id);
 	}
 
 	/**
@@ -60,7 +60,7 @@ public enum ComputerService implements IComputerService {
 	 */
 	@Override
 	public int update(Computer model) {
-		return ComputerDAO.getInstance().update(model);
+		return ComputerDAO.INSTANCE.update(model);
 	}
 
 	/**
@@ -70,26 +70,22 @@ public enum ComputerService implements IComputerService {
 	 */
 	@Override
 	public Computer find(Long id) {
-		return ComputerDAO.getInstance().find(id);
+		return ComputerDAO.INSTANCE.find(id);
 	}
 
 	@Override
 	public int count() {
-		return ComputerDAO.getInstance().count();
+		return ComputerDAO.INSTANCE.count();
 	}
 
 	@Override
 	public int count(String search) {
-		return ComputerDAO.getInstance().count(search);
-	}
-
-	public static ComputerService getInstance() {
-		return _instance;
+		return ComputerDAO.INSTANCE.count(search);
 	}
 
 	@Override
 	public List<Computer> pagination(int limit, int offset) {
-		return ComputerDAO.getInstance().pagination(limit, offset);
+		return ComputerDAO.INSTANCE.pagination(limit, offset);
 	}
 
 	@Override
@@ -97,7 +93,7 @@ public enum ComputerService implements IComputerService {
 		if (search == null) {
 			search = "";
 		}
-		return ComputerDAO.getInstance().pagination(search, limit, offset);
+		return ComputerDAO.INSTANCE.pagination(search, limit, offset);
 	}
 
 	@Override
@@ -109,14 +105,13 @@ public enum ComputerService implements IComputerService {
 		if (search == null) {
 			search = "";
 		}
-		return ComputerDAO.getInstance().pagination(search, limit, offset, ob,
-				asc);
+		return ComputerDAO.INSTANCE.pagination(search, limit, offset, ob, asc);
 	}
 
 	@Override
 	public List<Computer> pagination(int limit, int offset, OrderBy ob,
 			boolean asc) {
-		return ComputerDAO.getInstance().pagination(limit, offset, ob, asc);
+		return ComputerDAO.INSTANCE.pagination(limit, offset, ob, asc);
 	}
 
 }

@@ -8,8 +8,8 @@ public class ListCompanyCmd implements ICommand {
 	@Override
 	public void execute() {
 		System.out.println("Début de la liste des elements :");
-		CompanyService.getInstance().findAll()
-				.forEach(e -> System.out.println(format(e)));
+		CompanyService.INSTANCE.findAll().forEach(
+				e -> System.out.println(format(e)));
 		System.out.println("Fin de la liste des elements");
 	}
 

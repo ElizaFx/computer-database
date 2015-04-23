@@ -27,7 +27,7 @@ public class EditComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private static final List<CompanyDTO> lCompany = CompanyMapper
-			.companyModelToDTO(CompanyService.getInstance().findAll());
+			.companyModelToDTO(CompanyService.INSTANCE.findAll());
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -38,8 +38,8 @@ public class EditComputer extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
 		if ((id != null) && Util.isNumeric(id)) {
-			Computer computer = ComputerService.getInstance().find(
-					Long.parseLong(id));
+			Computer computer = ComputerService.INSTANCE.find(Long
+					.parseLong(id));
 			if (computer != null) {
 				request.setAttribute("computer",
 						ComputerMapper.computerModelToDTO(computer));
@@ -71,7 +71,7 @@ public class EditComputer extends HttpServlet {
 		String id = request.getParameter("id");
 		Computer computer = null;
 		if ((id != null) && Util.isNumeric(id)) {
-			computer = ComputerService.getInstance().find(Long.parseLong(id));
+			computer = ComputerService.INSTANCE.find(Long.parseLong(id));
 			if (computer != null) {
 				request.setAttribute("computer",
 						ComputerMapper.computerModelToDTO(computer));
@@ -115,7 +115,7 @@ public class EditComputer extends HttpServlet {
 		if (Util.isNumeric(sCompanyId)) {
 			companyId = Integer.parseInt(sCompanyId);
 			if ((companyId != 0)
-					&& (CompanyService.getInstance().find(companyId) == null)) {
+					&& (CompanyService.INSTANCE.find(companyId) == null)) {
 				messageError.append("Incorrect company ID : ")
 						.append("This company doesn't exist").append("<br />");
 				request.setAttribute("companyIdClass", "has-error");
@@ -131,8 +131,8 @@ public class EditComputer extends HttpServlet {
 			computer.setName(sComputerName);
 			computer.setIntroduced(introduced);
 			computer.setDiscontinued(discontinued);
-			computer.setCompany(CompanyService.getInstance().find(companyId));
-			ComputerService.getInstance().update(computer);
+			computer.setCompany(CompanyService.INSTANCE.find(companyId));
+			ComputerService.INSTANCE.update(computer);
 			request.setAttribute("success", "Computer " + sComputerName
 					+ " edited");
 			if (computer != null) {

@@ -67,8 +67,8 @@ public class TestRequests {
 		} catch (RequestNotFoundException e) {
 			fail(sCmd1 + " should be a correct Command! : " + e.getMessage());
 		}
-		Computer computer = ComputerService.getInstance().find(
-				c -> (c.getName() != null) && c.getName().equals("Joxit"));
+		Computer computer = ComputerService.INSTANCE
+				.find(c -> (c.getName() != null) && c.getName().equals("Joxit"));
 		assertNotNull(computer);
 
 		String sCmd2 = MVRequest.CMD + " " + computer.getId() + " "
@@ -81,12 +81,13 @@ public class TestRequests {
 		} catch (RequestNotFoundException e) {
 			fail(sCmd2 + " should be a correct Command! : " + e.getMessage());
 		}
-		assertNotNull(ComputerService.getInstance().find(
-				c -> c.getName().equals("Joxit 42")));
-		assertNull(ComputerService.getInstance().find(
-				c -> c.getName().equals("Joxit")));
+		assertNotNull(ComputerService.INSTANCE.find(c -> c.getName().equals(
+				"Joxit 42")));
+		assertNull(ComputerService.INSTANCE.find(c -> c.getName().equals(
+				"Joxit")));
 
-		String sCmd3 = RMRequest.CMD + " " + computer.getId();
+		String sCmd3 = RMRequest.CMD + " " + RMRequest.RM_COMPUTER + " "
+				+ computer.getId();
 		try {
 			ICommand cmd3;
 			cmd3 = new Request(sCmd3).processCommand();
@@ -95,7 +96,7 @@ public class TestRequests {
 			fail(sCmd3 + " should be a correct Command! : " + e.getMessage());
 		}
 
-		assertNull(ComputerService.getInstance().find(computer.getId()));
+		assertNull(ComputerService.INSTANCE.find(computer.getId()));
 	}
 
 	@Test
@@ -165,7 +166,8 @@ public class TestRequests {
 		}
 		try {
 			ICommand command;
-			command = new Request(RMRequest.CMD + " 10007").processCommand();
+			command = new Request(RMRequest.CMD + " " + RMRequest.RM_COMPUTER
+					+ " 10007").processCommand();
 			command.execute();
 		} catch (RequestNotFoundException e) {
 			fail("Should be a good command but do nothing");

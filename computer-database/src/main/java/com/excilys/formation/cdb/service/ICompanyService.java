@@ -19,7 +19,7 @@ public interface ICompanyService {
 
 	/**
 	 * @param id
-	 *            of T model
+	 *            of Company
 	 * @return element with this id
 	 */
 	public Company find(Long id);
@@ -29,4 +29,12 @@ public interface ICompanyService {
 	 * @return count the number of companies
 	 */
 	public int count();
+
+	/**
+	 * 
+	 * @param id
+	 *            of Company
+	 * @return -1 if something wrong
+	 */
+	public int remove(Long id);
 }

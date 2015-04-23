@@ -46,7 +46,7 @@ public class DashBoard extends HttpServlet {
 		if (search == null) {
 			search = "";
 		}
-		int count = ComputerService.getInstance().count(search);
+		int count = ComputerService.INSTANCE.count(search);
 		int curPage = 1;
 		int limit = 10;
 		if (Util.isNumeric(sPage)) {
@@ -56,8 +56,8 @@ public class DashBoard extends HttpServlet {
 			limit = Integer.parseInt(sLimit);
 		}
 
-		Page<Computer> pagined = new Page<>(ComputerService.getInstance(),
-				search, count, curPage, limit, 5, ob, asc);
+		Page<Computer> pagined = new Page<>(ComputerService.INSTANCE, search,
+				count, curPage, limit, 5, ob, asc);
 
 		request.setAttribute("pagined", pagined);
 		request.setAttribute("lComputers",
@@ -81,7 +81,7 @@ public class DashBoard extends HttpServlet {
 			if (Arrays.stream(ids).allMatch(id -> Util.isNumeric(id))) {
 				Arrays.stream(ids).map(id -> Long.parseLong(id)).forEach(c -> {
 					if (c != null) {
-						ComputerService.getInstance().remove(c);
+						ComputerService.INSTANCE.remove(c);
 					}
 				});
 			} else {

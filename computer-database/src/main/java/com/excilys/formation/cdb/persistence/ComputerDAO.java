@@ -22,7 +22,7 @@ import com.excilys.formation.cdb.util.Util;
  */
 public enum ComputerDAO implements IComputerDAO {
 
-	_instance;
+	INSTANCE;
 
 	@Override
 	public Computer find(Long id) {
@@ -36,7 +36,9 @@ public enum ComputerDAO implements IComputerDAO {
 		try {
 			connection = ConnectionFactory.getConnection();
 			ps = connection
-					.prepareStatement("SELECT * FROM computer left outer join company on computer.company_id=company.id WHERE computer.ID=?");
+					.prepareStatement("SELECT * FROM "
+							+ "computer left outer join company on computer.company_id=company.id "
+							+ "WHERE computer.ID=?");
 			ps.setObject(1, id);
 			result = ps.executeQuery();
 			if (result.next()) {
@@ -60,8 +62,8 @@ public enum ComputerDAO implements IComputerDAO {
 		}
 		try {
 			connection = ConnectionFactory.getConnection();
-			ps = connection
-					.prepareStatement("INSERT INTO computer SET NAME=?, INTRODUCED=?, DISCONTINUED=?, COMPANY_ID=?");
+			ps = connection.prepareStatement("INSERT INTO computer SET "
+					+ "NAME=?, INTRODUCED=?, DISCONTINUED=?, COMPANY_ID=?");
 			ps.setString(1, model.getName());
 			ps.setDate(2, Util.toSqlDate(model.getIntroduced()));
 			ps.setDate(3, Util.toSqlDate(model.getDiscontinued()));
@@ -80,22 +82,41 @@ public enum ComputerDAO implements IComputerDAO {
 	}
 
 	@Override
-	public int remove(Long id) {
+	public int remove(Connection connection, Long id) {
 		int res = 0;
-		Connection connection = null;
 		PreparedStatement ps = null;
 		if (id == null) {
 			throw new DAOException("NullPointerException: Id null!");
 		}
+		if (connection == null) {
+			throw new DAOException("NullPointerException: Connection null!");
+		}
 		try {
-			connection = ConnectionFactory.getConnection();
 			ps = connection.prepareStatement("DELETE FROM computer WHERE ID=?");
 			ps.setLong(1, id);
 			res = ps.executeUpdate();
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(connection, ps, null);
+			ConnectionFactory.closeConnection(null, ps, null);
+		}
+		return res;
+	}
+
+	@Override
+	public int remove(Long id) {
+		int res = 0;
+		Connection connection = null;
+		if (id == null) {
+			throw new DAOException("NullPointerException: Id null!");
+		}
+		try {
+			connection = ConnectionFactory.getConnection();
+			res = remove(connection, id);
+		} catch (DAOException e) {
+			throw new DAOException(e);
+		} finally {
+			ConnectionFactory.closeConnection(connection, null, null);
 		}
 		return res;
 
@@ -112,7 +133,8 @@ public enum ComputerDAO implements IComputerDAO {
 		try {
 			connection = ConnectionFactory.getConnection();
 			ps = connection
-					.prepareStatement("UPDATE computer SET NAME=?, INTRODUCED=?, DISCONTINUED=?, COMPANY_ID=? WHERE ID=?");
+					.prepareStatement("UPDATE computer SET "
+							+ "NAME=?, INTRODUCED=?, DISCONTINUED=?, COMPANY_ID=? WHERE ID=?");
 			ps.setObject(1, model.getName());
 			ps.setDate(2, Util.toSqlDate(model.getIntroduced()));
 			ps.setDate(3, Util.toSqlDate(model.getDiscontinued()));
@@ -141,7 +163,8 @@ public enum ComputerDAO implements IComputerDAO {
 			connection = ConnectionFactory.getConnection();
 			statement = connection.createStatement();
 			result = statement
-					.executeQuery("SELECT * FROM computer left outer join company on computer.company_id=company.id");
+					.executeQuery("SELECT * FROM "
+							+ "computer left outer join company on computer.company_id=company.id");
 			while (result.next()) {
 				res.add(ComputerMapper.getModel(result));
 			}
@@ -161,10 +184,6 @@ public enum ComputerDAO implements IComputerDAO {
 		return findAll().stream().filter(predicate).findFirst().orElse(null);
 	}
 
-	public static ComputerDAO getInstance() {
-		return _instance;
-	}
-
 	@Override
 	public int count(String search) {
 		int res = 0;
@@ -174,11 +193,15 @@ public enum ComputerDAO implements IComputerDAO {
 		try {
 			connection = ConnectionFactory.getConnection();
 			statement = connection
-					.prepareStatement("SELECT count(*) as size FROM computer where computer.name like ?;");
+					.prepareStatement("SELECT count(*) as size FROM "
+							+ "computer left outer join company on computer.company_id=company.id "
+							+ "where computer.name like ? or company.name like ?;");
 			if (search != null) {
 				statement.setString(1, "%" + search + "%");
+				statement.setString(2, "%" + search + "%");
 			} else {
 				statement.setString(1, "%");
+				statement.setString(2, "%");
 			}
 			result = statement.executeQuery();
 			if (result.next()) {
@@ -223,9 +246,11 @@ public enum ComputerDAO implements IComputerDAO {
 		try {
 			connection = ConnectionFactory.getConnection();
 			statement = connection
-					.prepareStatement("SELECT * from computer left outer join company on computer.company_id=company.id "
+					.prepareStatement("SELECT * from "
+							+ "computer left outer join company on computer.company_id=company.id "
 							+ "where computer.name like ? or company.name like ? order by "
-							+ ob + (asc ? " " : " desc ") + "limit ? offset ? ");
+							+ (ob == null ? OrderBy.ID : ob)
+							+ (asc ? " " : " desc ") + "limit ? offset ? ");
 			if (search != null) {
 				statement.setString(1, "%" + search + "%");
 				statement.setString(2, "%" + search + "%");
@@ -237,6 +262,31 @@ public enum ComputerDAO implements IComputerDAO {
 			statement.setInt(4, offset);
 			result = statement.executeQuery();
 
+			while (result.next()) {
+				res.add(ComputerMapper.getModel(result));
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			ConnectionFactory.closeConnection(connection, statement, result);
+		}
+		return res;
+	}
+
+	@Override
+	public List<Computer> findAllByCompany(Long companyId) {
+		List<Computer> res = new ArrayList<>();
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet result = null;
+		try {
+			connection = ConnectionFactory.getConnection();
+			statement = connection
+					.prepareStatement("SELECT * FROM "
+							+ "computer left outer join company on computer.company_id=company.id "
+							+ "where company.id = ?");
+			statement.setLong(1, companyId);
+			result = statement.executeQuery();
 			while (result.next()) {
 				res.add(ComputerMapper.getModel(result));
 			}

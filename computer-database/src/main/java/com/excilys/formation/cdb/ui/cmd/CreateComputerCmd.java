@@ -24,7 +24,7 @@ public class CreateComputerCmd implements ICommand {
 		if (computer == null) {
 			System.out.println("Create failed : Computer is null");
 		}
-		if (ComputerService.getInstance().insert(computer) == 1) {
+		if (ComputerService.INSTANCE.insert(computer) == 1) {
 			System.out.println("Entry insered." + computer);
 		} else {
 			System.out.println("An error has occured, entry not insered");

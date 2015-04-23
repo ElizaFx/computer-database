@@ -56,5 +56,6 @@ public class ConnectionProperties extends BoneCPConfig {
 		} else {
 			setPartitionCount(1);
 		}
+		super.setLogStatementsEnabled(false);
 	}
 }

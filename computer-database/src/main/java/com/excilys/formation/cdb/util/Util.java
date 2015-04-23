@@ -62,4 +62,8 @@ public class Util {
 		return java.sql.Date.valueOf(Util.formatDate(d));
 	}
 
+	public static String trim(String s) {
+		return s == null ? null : s.trim();
+	}
+
 }

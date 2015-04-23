@@ -68,11 +68,11 @@ public class Request implements IRequest {
 				break;
 			}
 			case RMRequest.CMD: {
-				if (getSecondCmd() == null) {
+				if (getThirdCmd() == null) {
 					throw new RequestNotFoundException(getFirstCmd()
 							+ " need a second arg!");
 				} else {
-					request = new RMRequest(getSecondCmd());
+					request = new RMRequest(getSecondCmd(), getThirdCmd());
 				}
 				break;
 			}
@@ -109,6 +109,14 @@ public class Request implements IRequest {
 	public String getSecondCmd() {
 		if (request.size() > 1) {
 			return request.get(1);
+		} else {
+			return null;
+		}
+	}
+
+	public String getThirdCmd() {
+		if (request.size() > 2) {
+			return request.get(2);
 		} else {
 			return null;
 		}

@@ -23,7 +23,7 @@ public class UpdateComputerCmd implements ICommand {
 		if (computer == null) {
 			System.out.println("Update failed : Computer is null");
 		}
-		if (ComputerDAO.getInstance().update(computer) == 1) {
+		if (ComputerDAO.INSTANCE.update(computer) == 1) {
 			System.out.println("Entry updated." + computer);
 		} else {
 			System.out

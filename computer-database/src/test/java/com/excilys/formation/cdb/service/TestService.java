@@ -18,21 +18,21 @@ import com.excilys.formation.cdb.util.Util;
 public class TestService {
 	@Test
 	public void findAllComputer() {
-		ComputerService crf = ComputerService.getInstance();
+		ComputerService crf = ComputerService.INSTANCE;
 
 		assertEquals(574, crf.findAll().size());
 	}
 
 	@Test
 	public void findAllCompanies() {
-		CompanyService cyf = CompanyService.getInstance();
+		CompanyService cyf = CompanyService.INSTANCE;
 
 		assertEquals(42, cyf.findAll().size());
 	}
 
 	@Test
 	public void findComputer() throws ParseException {
-		ComputerService crf = ComputerService.getInstance();
+		ComputerService crf = ComputerService.INSTANCE;
 		Computer elfII = new Computer();
 		elfII.setId(20l);
 		elfII.setName("ELF II");
@@ -49,7 +49,7 @@ public class TestService {
 
 	@Test
 	public void findCompany() {
-		CompanyService cyf = CompanyService.getInstance();
+		CompanyService cyf = CompanyService.INSTANCE;
 
 		Company sony = new Company();
 		sony.setId(17l);
@@ -64,9 +64,9 @@ public class TestService {
 
 	@Test
 	public void createUpdateRemoveComputer() {
-		ComputerService crf = ComputerService.getInstance();
-		crf.insert(new Computer("Joxit", null, null, CompanyService
-				.getInstance().find(17l)));
+		ComputerService crf = ComputerService.INSTANCE;
+		crf.insert(new Computer("Joxit", null, null, CompanyService.INSTANCE
+				.find(17l)));
 
 		Computer jox = crf.find(c -> (c.getName() != null)
 				&& c.getName().equals("Joxit"));
@@ -84,26 +84,26 @@ public class TestService {
 
 	@Test(expected = DAOException.class)
 	public void invalidCreation() {
-		ComputerService.getInstance().insert(null);
+		ComputerService.INSTANCE.insert(null);
 	}
 
 	@Test(expected = DAOException.class)
 	public void invalidComputerFind() {
-		ComputerService.getInstance().find((Long) null);
+		ComputerService.INSTANCE.find((Long) null);
 	}
 
 	@Test(expected = DAOException.class)
 	public void invalidCompanyFind() {
-		CompanyService.getInstance().find((Long) null);
+		CompanyService.INSTANCE.find((Long) null);
 	}
 
 	@Test(expected = DAOException.class)
 	public void invalidUpdate() {
-		ComputerService.getInstance().update(null);
+		ComputerService.INSTANCE.update(null);
 	}
 
 	@Test(expected = DAOException.class)
 	public void invalidRemove() {
-		ComputerService.getInstance().remove(null);
+		ComputerService.INSTANCE.remove(null);
 	}
 }
