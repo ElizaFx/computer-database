@@ -18,14 +18,14 @@ function validateDate(elt) {
 		parent = elt.parent();
 		if (value.match("^\\d{4}([/.-])\\d{2}\\1\\d{2}$")
 				|| value.match("^\\d{2}([/.-])\\d{2}\\1\\d{4}$")) {
-			if (!parent.hasClass("has-success")) {
-				parent.removeClass("has-error").addClass("has-success")
+			if (!parent.hasClass("has-warning")) {
+				parent.removeClass("has-error").addClass("has-warning")
 			}
 		} else if (!parent.hasClass("has-error")) {
-			parent.removeClass("has-success").addClass("has-error")
+			parent.removeClass("has-warning").addClass("has-error")
 		}
 	} else {
-		parent.removeClass("has-error").removeClass("has-success")
+		parent.removeClass("has-error").removeClass("has-warning")
 	}
 }
 

@@ -96,9 +96,17 @@ public class ConnectionFactory {
 			if ((r != null) && !r.isClosed()) {
 				r.close();
 			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		try {
 			if ((s != null) && !s.isClosed()) {
 				s.close();
 			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		try {
 			if ((c != null) && !c.isClosed()) {
 				c.close();
 			}

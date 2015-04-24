@@ -11,11 +11,11 @@
 <%@ attribute name="asc" required="true" type="java.lang.Boolean"%>
 <div class="container text-center">
 	<ul class="pagination">
-		<li <c:if test="${begin == current}">class="disabled"</c:if>><mylib:link
-				disabled="${begin == current}" limit="${limit}" search="${search}"
+		<li <c:if test="${begin >= current}">class="disabled"</c:if>><mylib:link
+				disabled="${begin >= current}" limit="${limit}" search="${search}"
 				orderBy="${orderBy}" asc="${asc}" label="First Page">
 				<span aria-hidden="true">&laquo;</span>
-			</mylib:link> <mylib:link disabled="${begin == current}" page="${current - 1}"
+			</mylib:link> <mylib:link disabled="${begin >= current}" page="${current - 1}"
 				limit="${limit}" search="${search}" orderBy="${orderBy}"
 				asc="${asc}" label="Previous">
 				<span aria-hidden="true">&lsaquo;</span>
@@ -25,11 +25,11 @@
 					disabled="${myPage == current}" page="${myPage}" limit="${limit}"
 					search="${search}" orderBy="${orderBy}" asc="${asc}">${myPage}</mylib:link></li>
 		</c:forEach>
-		<li <c:if test="${end == current}">class="disabled"</c:if>><mylib:link
-				disabled="${end == current}" page="${current + 1}" limit="${limit}"
+		<li <c:if test="${end <= current}">class="disabled"</c:if>><mylib:link
+				disabled="${end <= current}" page="${current + 1}" limit="${limit}"
 				search="${search}" label="Next" orderBy="${orderBy}" asc="${asc}">
 				<span aria-hidden="true">&rsaquo;</span>
-			</mylib:link> <mylib:link disabled="${end == current}" page="${pagemax}"
+			</mylib:link> <mylib:link disabled="${end <= current}" page="${pagemax}"
 				limit="${limit}" search="${search}" label="Last Page"
 				orderBy="${orderBy}" asc="${asc}">
 				<span aria-hidden="true">&raquo;</span>
