@@ -3,9 +3,13 @@ package com.excilys.formation.cdb.service;
 import java.util.List;
 import java.util.function.Predicate;
 
+import com.excilys.formation.cdb.dto.ComputerDTO;
+import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.ComputerDAO;
 import com.excilys.formation.cdb.persistence.IComputerDAO.OrderBy;
+import com.excilys.formation.cdb.ui.Page;
+import com.excilys.formation.cdb.util.Util;
 
 public enum ComputerService implements IComputerService {
 
@@ -80,24 +84,14 @@ public enum ComputerService implements IComputerService {
 
 	@Override
 	public int count(String search) {
+		if (search == null) {
+			search = "";
+		}
 		return ComputerDAO.INSTANCE.count(search);
 	}
 
 	@Override
-	public List<Computer> pagination(int limit, int offset) {
-		return ComputerDAO.INSTANCE.pagination(limit, offset);
-	}
-
-	@Override
-	public List<Computer> pagination(String search, int limit, int offset) {
-		if (search == null) {
-			search = "";
-		}
-		return ComputerDAO.INSTANCE.pagination(search, limit, offset);
-	}
-
-	@Override
-	public List<Computer> pagination(String search, int limit, int offset,
+	public List<ComputerDTO> pagination(String search, int limit, int offset,
 			OrderBy ob, boolean asc) {
 		if (ob == null) {
 			ob = OrderBy.ID;
@@ -105,13 +99,45 @@ public enum ComputerService implements IComputerService {
 		if (search == null) {
 			search = "";
 		}
-		return ComputerDAO.INSTANCE.pagination(search, limit, offset, ob, asc);
+		if (limit < 0) {
+			limit = 10;
+		}
+		if (offset < 0) {
+			offset = 0;
+		}
+		return ComputerMapper.computerModelToDTO(ComputerDAO.INSTANCE
+				.pagination(search, limit, offset, ob, asc));
 	}
 
 	@Override
-	public List<Computer> pagination(int limit, int offset, OrderBy ob,
-			boolean asc) {
-		return ComputerDAO.INSTANCE.pagination(limit, offset, ob, asc);
+	public Page<ComputerDTO> getPage(String search, String sLimit,
+			String sCurPage, String sOrderBy, String sAsc) {
+
+		OrderBy ob = OrderBy.map(sOrderBy);
+		boolean asc = Boolean.parseBoolean(sAsc);
+		if (search == null) {
+			search = "";
+		}
+		int count = count(search);
+		int curPage = 1;
+		int limit = 10;
+		if (Util.isNumeric(sCurPage)) {
+			curPage = Integer.parseInt(sCurPage);
+		}
+		if (Util.isNumeric(sLimit)) {
+			limit = Integer.parseInt(sLimit);
+		}
+
+		return new Page<>(this, search, count, curPage, limit, 5, ob, asc);
+
+	}
+
+	@Override
+	public int remove(List<Long> output) {
+		if (output != null) {
+			return output.stream().mapToInt(this::remove).sum();
+		}
+		return 0;
 	}
 
 }

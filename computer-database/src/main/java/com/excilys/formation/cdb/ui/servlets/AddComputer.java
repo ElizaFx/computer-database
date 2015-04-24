@@ -29,17 +29,6 @@ public class AddComputer extends HttpServlet {
 	public AddComputer() {
 	}
 
-	protected void processRequest(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-
-		request.setAttribute("lCompanies", CompanyMapper
-				.companyModelToDTO(CompanyService.INSTANCE.findAll()));
-
-		getServletContext().getRequestDispatcher(
-				"/WEB-INF/views/addComputer.jsp").forward(request, response);
-
-	}
-
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -47,7 +36,11 @@ public class AddComputer extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		processRequest(request, response);
+		request.setAttribute("lCompanies", CompanyMapper
+				.companyModelToDTO(CompanyService.INSTANCE.findAll()));
+
+		getServletContext().getRequestDispatcher(
+				"/WEB-INF/views/addComputer.jsp").forward(request, response);
 	}
 
 	/**
@@ -103,7 +96,7 @@ public class AddComputer extends HttpServlet {
 			request.setAttribute("danger", "Error: Check red labels!");
 		}
 
-		processRequest(request, response);
+		doGet(request, response);
 	}
 
 	private void resetParameters(HttpServletRequest request) {

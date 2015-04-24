@@ -66,7 +66,7 @@
 				</thead>
 				<!-- Browse attribute computers -->
 				<tbody id="results">
-					<c:forEach items="${lComputers}" var="computer">
+					<c:forEach items="${pagined.getPage()}" var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${computer.getId()}"></td>

@@ -2,8 +2,8 @@ package com.excilys.formation.cdb.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.excilys.formation.cdb.dto.CompanyDTO;
 import com.excilys.formation.cdb.exception.DAOException;
@@ -37,9 +37,8 @@ public class CompanyMapper {
 	}
 
 	public static List<CompanyDTO> companyModelToDTO(List<Company> companies) {
-		List<CompanyDTO> res = new ArrayList<CompanyDTO>();
-		companies.forEach(c -> res.add(companyModelToDTO(c)));
-		return res;
+		return companies.parallelStream().map(CompanyMapper::companyModelToDTO)
+				.collect(Collectors.toList());
 	}
 
 	public static Company companyDTOToModel(CompanyDTO dto) {
@@ -53,9 +52,8 @@ public class CompanyMapper {
 	}
 
 	public static List<Company> companyDTOToModel(List<CompanyDTO> companies) {
-		List<Company> res = new ArrayList<Company>();
-		companies.forEach(c -> res.add(companyDTOToModel(c)));
-		return res;
+		return companies.parallelStream().map(CompanyMapper::companyDTOToModel)
+				.collect(Collectors.toList());
 	}
 
 }

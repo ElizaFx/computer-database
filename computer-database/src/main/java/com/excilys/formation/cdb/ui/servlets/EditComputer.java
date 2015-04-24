@@ -10,10 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
-import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
-import com.excilys.formation.cdb.util.Util;
 import com.excilys.formation.cdb.validation.CompanyValidator;
 import com.excilys.formation.cdb.validation.ComputerValidator;
 import com.excilys.formation.cdb.validation.DateValidator;
@@ -33,18 +31,16 @@ public class EditComputer extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		String id = request.getParameter("id");
-		if ((id != null) && Util.isNumeric(id)) {
-			Computer computer = ComputerService.INSTANCE.find(Long
-					.parseLong(id));
-			if (computer != null) {
-				request.setAttribute("computer",
-						ComputerMapper.computerModelToDTO(computer));
-			} else {
-				request.setAttribute("danger",
-						"Error: This computer does't exist!");
-			}
+		ComputerValidator computer = new ComputerValidator(
+				request.getParameter("id"));
+
+		if (computer.isValid()) {
+			request.setAttribute("computer",
+					ComputerMapper.computerModelToDTO(computer.getOutput()));
+		} else {
+			request.setAttribute("danger", "Error: This computer does't exist!");
 		}
+
 		request.setAttribute("lCompanies", CompanyMapper
 				.companyModelToDTO(CompanyService.INSTANCE.findAll()));
 		request.getServletContext()

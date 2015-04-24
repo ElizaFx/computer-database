@@ -3,9 +3,11 @@ package com.excilys.formation.cdb.service;
 import java.util.List;
 import java.util.function.Predicate;
 
+import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.model.Computer;
+import com.excilys.formation.cdb.ui.Page;
 
-public interface IComputerService extends Paginable<Computer> {
+public interface IComputerService extends Paginable<ComputerDTO> {
 	/**
 	 * @return all row of the table of Computer
 	 */
@@ -61,6 +63,16 @@ public interface IComputerService extends Paginable<Computer> {
 	 *            name of the computer to search
 	 * @return count the number of computers
 	 */
-	int count(String search);
+	public int count(String search);
 
+	public Page<ComputerDTO> getPage(String search, String limit,
+			String curPage, String orderBy, String asc);
+
+	/**
+	 * 
+	 * @param ids
+	 *            of all computers
+	 * @return number of deletions
+	 */
+	public int remove(List<Long> ids);
 }

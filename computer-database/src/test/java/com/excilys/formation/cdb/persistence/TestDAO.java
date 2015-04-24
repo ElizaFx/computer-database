@@ -1,7 +1,6 @@
 package com.excilys.formation.cdb.persistence;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -49,7 +48,7 @@ public class TestDAO {
 		elfII.setCompany(netronics);
 		Computer computer = crf.find(20l);
 		assertNotNull(computer);
-		assertFalse(computer.equals(elfII));
+		assertTrue(computer.equals(elfII));
 		assertNull(crf.find(-1l));
 	}
 

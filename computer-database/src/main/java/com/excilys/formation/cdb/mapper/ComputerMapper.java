@@ -3,8 +3,8 @@ package com.excilys.formation.cdb.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.excilys.formation.cdb.dto.CompanyDTO;
 import com.excilys.formation.cdb.dto.ComputerDTO;
@@ -65,9 +65,9 @@ public class ComputerMapper {
 	}
 
 	public static List<ComputerDTO> computerModelToDTO(List<Computer> computers) {
-		List<ComputerDTO> res = new ArrayList<ComputerDTO>();
-		computers.forEach(c -> res.add(computerModelToDTO(c)));
-		return res;
+		return computers.parallelStream()
+				.map(ComputerMapper::computerModelToDTO)
+				.collect(Collectors.toList());
 	}
 
 	public static Computer computerDTOToModel(ComputerDTO dto) {
@@ -94,8 +94,7 @@ public class ComputerMapper {
 	}
 
 	public static List<Computer> computerDTOToModel(List<ComputerDTO> dto) {
-		List<Computer> res = new ArrayList<>();
-		dto.forEach(c -> res.add(computerDTOToModel(c)));
-		return res;
+		return dto.parallelStream().map(ComputerMapper::computerDTOToModel)
+				.collect(Collectors.toList());
 	}
 }
