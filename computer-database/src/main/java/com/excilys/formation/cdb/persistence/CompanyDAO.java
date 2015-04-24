@@ -43,7 +43,7 @@ public enum CompanyDAO implements ICompanyDAO {
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(connection, ps, result);
+			ConnectionFactory.closeConnection(ps, result);
 		}
 		return res;
 	}
@@ -64,7 +64,7 @@ public enum CompanyDAO implements ICompanyDAO {
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(connection, statement, result);
+			ConnectionFactory.closeConnection(statement, result);
 		}
 		return res;
 	}
@@ -94,15 +94,16 @@ public enum CompanyDAO implements ICompanyDAO {
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(connection, statement, result);
+			ConnectionFactory.closeConnection(statement, result);
 		}
 		return res;
 	}
 
 	@Override
-	public int remove(Connection connection, Long id) {
+	public int remove(Long id) {
 		int res = 0;
 		PreparedStatement ps = null;
+		Connection connection = ConnectionFactory.getConnection();
 		if (id == null) {
 			throw new DAOException("NullPointerException: Id null!");
 		}
@@ -117,7 +118,7 @@ public enum CompanyDAO implements ICompanyDAO {
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(null, ps, null);
+			ConnectionFactory.closeConnection(ps, null);
 		}
 		return res;
 	}

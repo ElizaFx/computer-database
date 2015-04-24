@@ -1,6 +1,5 @@
 package com.excilys.formation.cdb.service;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -47,25 +46,18 @@ public enum CompanyService implements ICompanyService {
 
 	@Override
 	public int remove(Long id) {
-		Connection connection = null;
 		int res = 0;
 		try {
-			connection = ConnectionFactory.getTransactionConnection();
-			final Connection finalConnection = connection;
-			ComputerDAO.INSTANCE
-					.findAllByCompany(id)
-					.parallelStream()
-					.forEach(
-							c -> ComputerDAO.INSTANCE.remove(finalConnection,
-									c.getId()));
-
-			res = CompanyDAO.INSTANCE.remove(connection, id);
-			ConnectionFactory.commit(connection);
+			ConnectionFactory.createTransactionConnection();
+			ComputerDAO.INSTANCE.findAllByCompany(id).stream()
+					.forEach(c -> ComputerDAO.INSTANCE.remove(c.getId()));
+			res = CompanyDAO.INSTANCE.remove(id);
+			ConnectionFactory.commit();
 		} catch (DAOException e) {
-			ConnectionFactory.rollback(connection);
+			ConnectionFactory.rollback();
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(connection, null, null);
+			ConnectionFactory.closeTransactionConnection();
 		}
 		return res;
 	}

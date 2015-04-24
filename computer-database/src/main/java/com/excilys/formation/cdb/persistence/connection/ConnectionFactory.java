@@ -11,7 +11,16 @@ import com.jolbox.bonecp.BoneCP;
 public class ConnectionFactory {
 	private static BoneCP connectionPool = null;
 	private static final String properties = "/config.properties";
-
+	private static ThreadLocal<Connection> myThreadLocal = new ThreadLocal<Connection>() {
+		@Override
+		protected Connection initialValue() {
+			try {
+				return connectionPool.getConnection();
+			} catch (SQLException e) {
+				throw new DAOException(e);
+			}
+		}
+	};
 	static {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -32,11 +41,7 @@ public class ConnectionFactory {
 	 *             if a database access error occurs or the url is null
 	 */
 	public static Connection getConnection() {
-		try {
-			return connectionPool.getConnection();
-		} catch (SQLException e) {
-			throw new DAOException(e);
-		}
+		return myThreadLocal.get();
 	}
 
 	/**
@@ -44,9 +49,9 @@ public class ConnectionFactory {
 	 * @throws SQLException
 	 *             if a database access error occurs or the url is null
 	 */
-	public static Connection getTransactionConnection() {
+	public static Connection createTransactionConnection() {
 		try {
-			Connection c = connectionPool.getConnection();
+			Connection c = getConnection();
 			c.setAutoCommit(false);
 			return c;
 		} catch (SQLException e) {
@@ -67,17 +72,25 @@ public class ConnectionFactory {
 	 *             is called on a closed connection or this Connection object is
 	 *             in auto-commit mode
 	 */
-	public static void rollback(Connection c) {
+	public static void rollback() {
 		try {
-			c.rollback();
+			getConnection().rollback();
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}
 	}
 
-	public static void commit(Connection c) {
+	public static void commit() {
 		try {
-			c.commit();
+			getConnection().commit();
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+	}
+
+	public static boolean isAutoCommit() {
+		try {
+			return getConnection().getAutoCommit();
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}
@@ -91,7 +104,7 @@ public class ConnectionFactory {
 	 * @param r
 	 *            result set to close or null
 	 */
-	public static void closeConnection(Connection c, Statement s, ResultSet r) {
+	public static void closeConnection(Statement s, ResultSet r) {
 		try {
 			if ((r != null) && !r.isClosed()) {
 				r.close();
@@ -107,12 +120,33 @@ public class ConnectionFactory {
 			throw new DAOException(e);
 		}
 		try {
-			if ((c != null) && !c.isClosed()) {
+			Connection c = getConnection();
+			if ((c != null) && !c.isClosed() && isAutoCommit()) {
 				c.close();
+				myThreadLocal.remove();
 			}
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}
 	}
 
+	/**
+	 * @param c
+	 *            connection to close or null
+	 * @param s
+	 *            statement to close or null
+	 * @param r
+	 *            result set to close or null
+	 */
+	public static void closeTransactionConnection() {
+		try {
+			Connection c = getConnection();
+			if ((c != null) && !c.isClosed()) {
+				c.close();
+				myThreadLocal.remove();
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+	}
 }

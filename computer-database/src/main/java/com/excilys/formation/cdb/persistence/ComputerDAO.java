@@ -47,7 +47,7 @@ public enum ComputerDAO implements IComputerDAO {
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(connection, ps, result);
+			ConnectionFactory.closeConnection(ps, result);
 		}
 		return res;
 	}
@@ -76,18 +76,19 @@ public enum ComputerDAO implements IComputerDAO {
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(connection, ps, null);
+			ConnectionFactory.closeConnection(ps, null);
 		}
 		return res;
 	}
 
 	@Override
-	public int remove(Connection connection, Long id) {
+	public int remove(Long id) {
 		int res = 0;
 		PreparedStatement ps = null;
 		if (id == null) {
 			throw new DAOException("NullPointerException: Id null!");
 		}
+		Connection connection = ConnectionFactory.getConnection();
 		if (connection == null) {
 			throw new DAOException("NullPointerException: Connection null!");
 		}
@@ -98,28 +99,9 @@ public enum ComputerDAO implements IComputerDAO {
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(null, ps, null);
+			ConnectionFactory.closeConnection(ps, null);
 		}
 		return res;
-	}
-
-	@Override
-	public int remove(Long id) {
-		int res = 0;
-		Connection connection = null;
-		if (id == null) {
-			throw new DAOException("NullPointerException: Id null!");
-		}
-		try {
-			connection = ConnectionFactory.getConnection();
-			res = remove(connection, id);
-		} catch (DAOException e) {
-			throw new DAOException(e);
-		} finally {
-			ConnectionFactory.closeConnection(connection, null, null);
-		}
-		return res;
-
 	}
 
 	@Override
@@ -148,7 +130,7 @@ public enum ComputerDAO implements IComputerDAO {
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(connection, ps, null);
+			ConnectionFactory.closeConnection(ps, null);
 		}
 		return res;
 	}
@@ -171,7 +153,7 @@ public enum ComputerDAO implements IComputerDAO {
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(connection, statement, result);
+			ConnectionFactory.closeConnection(statement, result);
 		}
 		return res;
 	}
@@ -210,7 +192,7 @@ public enum ComputerDAO implements IComputerDAO {
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(connection, statement, result);
+			ConnectionFactory.closeConnection(statement, result);
 		}
 		return res;
 	}
@@ -268,7 +250,7 @@ public enum ComputerDAO implements IComputerDAO {
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(connection, statement, result);
+			ConnectionFactory.closeConnection(statement, result);
 		}
 		return res;
 	}
@@ -293,7 +275,7 @@ public enum ComputerDAO implements IComputerDAO {
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(connection, statement, result);
+			ConnectionFactory.closeConnection(statement, result);
 		}
 		return res;
 	}

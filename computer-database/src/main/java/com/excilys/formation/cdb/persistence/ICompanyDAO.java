@@ -1,6 +1,5 @@
 package com.excilys.formation.cdb.persistence;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -32,13 +31,12 @@ public interface ICompanyDAO {
 	public int count();
 
 	/**
-	 * Remove model from the table. Must call removeRequest with the right
-	 * request
+	 * Remove model from the table. Use a transaction connection
 	 *
 	 * @param connection
 	 *            for a transaction
 	 * @param model
 	 * @return the row count removed
 	 */
-	public int remove(Connection connection, Long model);
+	public int remove(Long model);
 }
