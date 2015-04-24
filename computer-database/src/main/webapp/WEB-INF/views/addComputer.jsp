@@ -35,21 +35,30 @@
 								<label for="computerName">Computer name</label> <input
 									type="text" class="form-control" id="computerName"
 									name="computerName" placeholder="Computer name"
-									value="${computerName}"> <span class="help-block">Required</span>
+									value="${computerName}" required> <span
+									class="help-block">Required <c:if
+										test="${computerNameMessage != null}">
+										<br />${computerNameMessage}</c:if></span>
 							</div>
 							<div class="form-group ${introducedClass}">
 								<label for="introduced">Introduced date</label> <input
 									type="date" class="form-control" id="introduced"
 									name="introduced" placeholder="Introduced date"
 									value="${introduced}"> <span class="help-block">Pattern
-									YYYY-MM-dd or dd-MM-YYYY. Delimiters can be - or . or /</span>
+									YYYY-MM-dd or dd-MM-YYYY. Delimiters can be - or . or / <c:if
+										test="${introducedMessage != null}">
+										<br />${introducedMessage}</c:if>
+								</span>
 							</div>
 							<div class="form-group ${discontinuedClass}">
 								<label for="discontinued">Discontinued date</label> <input
 									type="date" class="form-control" id="discontinued"
 									name="discontinued" placeholder="Discontinued date"
 									value="${discontinued}"> <span class="help-block">Pattern
-									YYYY-MM-dd or dd-MM-YYYY. Delimiters can be - or . or /</span>
+									YYYY-MM-dd or dd-MM-YYYY. Delimiters can be - or . or / <c:if
+										test="${discontinuedMessage != null}">
+										<br />${discontinuedMessage}</c:if>
+								</span>
 							</div>
 							<div class="form-group ${companyIdClass}">
 								<label for="companyId">Company</label> <select
@@ -59,7 +68,7 @@
 										<option value="${company.getId()}"
 											${companyId == company.getId() ? "selected" : "" }>${company.getName() }</option>
 									</c:forEach>
-								</select>
+								</select> <span class="help-block">${companyIdMessage}</span>
 							</div>
 						</fieldset>
 						<div class="actions pull-right">

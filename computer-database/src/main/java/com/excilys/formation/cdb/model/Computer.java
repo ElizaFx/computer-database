@@ -1,7 +1,7 @@
 package com.excilys.formation.cdb.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  * This class is the object version of a Computer from the Database.
@@ -14,8 +14,8 @@ public class Computer implements Serializable {
 
 	private Long id;
 	private String name;
-	private LocalDateTime introduced;
-	private LocalDateTime discontinued;
+	private LocalDate introduced;
+	private LocalDate discontinued;
 	private Company company;
 
 	/**
@@ -35,8 +35,8 @@ public class Computer implements Serializable {
 	 * @param company_id
 	 *            of the computer
 	 */
-	public Computer(String name, LocalDateTime introduced,
-			LocalDateTime discontinued, Company companyId) {
+	public Computer(String name, LocalDate introduced, LocalDate discontinued,
+			Company companyId) {
 		super();
 		this.name = name;
 		this.introduced = introduced;
@@ -56,8 +56,8 @@ public class Computer implements Serializable {
 	 * @param company_id
 	 *            of the computer
 	 */
-	public Computer(Long id, String name, LocalDateTime introduced,
-			LocalDateTime discontinued, Company companyId) {
+	public Computer(Long id, String name, LocalDate introduced,
+			LocalDate discontinued, Company companyId) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -99,7 +99,7 @@ public class Computer implements Serializable {
 	/**
 	 * @return when the computer was introduced
 	 */
-	public LocalDateTime getIntroduced() {
+	public LocalDate getIntroduced() {
 		return introduced;
 	}
 
@@ -107,14 +107,14 @@ public class Computer implements Serializable {
 	 * @param introduced
 	 *            when the computer was introduced
 	 */
-	public void setIntroduced(LocalDateTime introduced) {
+	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
 	}
 
 	/**
 	 * @return when the computer was discontinued
 	 */
-	public LocalDateTime getDiscontinued() {
+	public LocalDate getDiscontinued() {
 		return discontinued;
 	}
 
@@ -122,7 +122,7 @@ public class Computer implements Serializable {
 	 * @param discontinued
 	 *            when the computer was discontinued
 	 */
-	public void setDiscontinued(LocalDateTime discontinued) {
+	public void setDiscontinued(LocalDate discontinued) {
 		this.discontinued = discontinued;
 	}
 

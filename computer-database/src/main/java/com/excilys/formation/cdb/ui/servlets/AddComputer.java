@@ -1,9 +1,6 @@
 package com.excilys.formation.cdb.ui.servlets;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,12 +8,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.formation.cdb.dto.CompanyDTO;
 import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
-import com.excilys.formation.cdb.util.Util;
+import com.excilys.formation.cdb.validation.CompanyValidator;
+import com.excilys.formation.cdb.validation.DateValidator;
+import com.excilys.formation.cdb.validation.NameValidator;
 
 /**
  * Servlet implementation class AddComputer
@@ -24,8 +22,6 @@ import com.excilys.formation.cdb.util.Util;
 @WebServlet("/addComputer")
 public class AddComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final List<CompanyDTO> lCompany = CompanyMapper
-			.companyModelToDTO(CompanyService.INSTANCE.findAll());
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -33,10 +29,11 @@ public class AddComputer extends HttpServlet {
 	public AddComputer() {
 	}
 
-	protected void doGetAndPost(HttpServletRequest request,
+	protected void processRequest(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		request.setAttribute("lCompanies", lCompany);
+		request.setAttribute("lCompanies", CompanyMapper
+				.companyModelToDTO(CompanyService.INSTANCE.findAll()));
 
 		getServletContext().getRequestDispatcher(
 				"/WEB-INF/views/addComputer.jsp").forward(request, response);
@@ -50,7 +47,7 @@ public class AddComputer extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		doGetAndPost(request, response);
+		processRequest(request, response);
 	}
 
 	/**
@@ -61,85 +58,60 @@ public class AddComputer extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		String sComputerName = Util.trim(request.getParameter("computerName"));
-		String sIntroduced = Util.trim(request.getParameter("introduced"));
-		String sDiscontinued = Util.trim(request.getParameter("discontinued"));
-		String sCompanyId = Util.trim(request.getParameter("companyId"));
-		StringBuilder messageError = new StringBuilder();
+		NameValidator computerName = new NameValidator(
+				request.getParameter("computerName"));
+		DateValidator introduced = new DateValidator(
+				request.getParameter("introduced"));
+		DateValidator discontinued = new DateValidator(
+				request.getParameter("discontinued"));
+		CompanyValidator company = new CompanyValidator(
+				request.getParameter("companyId"));
+		boolean hasError = false;
 
-		LocalDateTime introduced = null;
-		LocalDateTime discontinued = null;
-		long companyId = 0;
-
-		if ((sComputerName == null) || sComputerName.isEmpty()) {
-			messageError.append("Incorrect Name").append("<br />");
+		if (!computerName.isValid()) {
 			request.setAttribute("computerNameClass", "has-error");
+			request.setAttribute("nameMessage", computerName.getMsg());
+			hasError = true;
 		}
-
-		if (Util.isDate(sIntroduced)) {
-			introduced = Util.parseDate(sIntroduced);
-			if ((introduced.toEpochSecond(ZoneOffset.UTC) < 0)
-					|| (introduced.toEpochSecond(ZoneOffset.UTC) > Integer.MAX_VALUE)) {
-				messageError.append("Incorrect introduced date : ")
-						.append("range 1970-01-01 to 2038-01-19")
-						.append("<br />");
-				request.setAttribute("introducedClass", "has-error");
-			}
-		} else if ((sIntroduced != null) && !sIntroduced.isEmpty()) {
-			messageError.append("Incorrect introduced date : ")
-					.append("Malformed date").append("<br />");
+		if (!introduced.isValid()) {
 			request.setAttribute("introducedClass", "has-error");
+			request.setAttribute("introducedMessage", introduced.getMsg());
+			hasError = true;
 		}
-		if (Util.isDate(sDiscontinued)) {
-			discontinued = Util.parseDate(sDiscontinued);
-			if ((discontinued.toEpochSecond(ZoneOffset.UTC) < 0)
-					|| (discontinued.toEpochSecond(ZoneOffset.UTC) > Integer.MAX_VALUE)) {
-				messageError.append("Incorrect discontinued date : ")
-						.append("range 1970-01-01 to 2038-01-19")
-						.append("<br />");
-				request.setAttribute("discontinuedClass", "has-error");
-			}
-		} else if ((sDiscontinued != null) && !sDiscontinued.isEmpty()) {
-			messageError.append("Incorrect discontinued date : ")
-					.append("Malformed date").append("<br />");
-			request.setAttribute("discontinuedClass", "has-error");
+		if (!discontinued.isValid()) {
+			request.setAttribute("introducedClass", "has-error");
+			request.setAttribute("introducedMessage", discontinued.getMsg());
+			hasError = true;
 		}
-		if (Util.isNumeric(sCompanyId)) {
-			companyId = Integer.parseInt(sCompanyId);
-			if ((companyId != 0)
-					&& (CompanyService.INSTANCE.find(companyId) == null)) {
-				messageError.append("Incorrect company ID : ")
-						.append("This company doesn't exist").append("<br />");
-				request.setAttribute("companyIdClass", "has-error");
-			}
-		} else if ((sCompanyId != null) && !sCompanyId.isEmpty()) {
-			messageError.append("Incorrect company ID : ")
-					.append("Malformed company ID").append("<br />");
-			request.setAttribute("companyIdClass", "has-error");
-		}
-		System.out.println(introduced != null ? introduced
-				.toEpochSecond(ZoneOffset.UTC) : "");
-		if (messageError.length() == 0) {
-			Computer computer = new Computer();
-			computer.setName(sComputerName);
-			computer.setIntroduced(introduced);
-			computer.setDiscontinued(discontinued);
-			computer.setCompany(CompanyService.INSTANCE.find(companyId));
-			ComputerService.INSTANCE.insert(computer);
-			request.setAttribute("success", "Computer " + sComputerName
-					+ " added");
-		} else {
-			request.setAttribute("computerName",
-					request.getParameter("computerName"));
-			request.setAttribute("introduced",
-					request.getParameter("introduced"));
-			request.setAttribute("discontinued",
-					request.getParameter("discontinued"));
-			request.setAttribute("companyId", request.getParameter("companyId"));
-			request.setAttribute("danger", "Error: Check red labels!<br />"
-					+ messageError.toString());
+		if (!company.isValid()) {
+			request.setAttribute("companyClass", "has-error");
+			request.setAttribute("companyMessage", company.getMsg());
+			hasError = true;
 		}
 
-		doGetAndPost(request, response);
+		if (!hasError) {
+			Computer computer = new Computer();
+			computer.setName(computerName.getOutput());
+			computer.setIntroduced(introduced.getOutput());
+			computer.setDiscontinued(discontinued.getOutput());
+			computer.setCompany(company.getOutput());
+			ComputerService.INSTANCE.insert(computer);
+			request.setAttribute("success",
+					"Computer " + computerName.getOutput() + " added");
+		} else {
+			resetParameters(request);
+			request.setAttribute("danger", "Error: Check red labels!");
+		}
+
+		processRequest(request, response);
+	}
+
+	private void resetParameters(HttpServletRequest request) {
+		request.setAttribute("computerName",
+				request.getParameter("computerName"));
+		request.setAttribute("introduced", request.getParameter("introduced"));
+		request.setAttribute("discontinued",
+				request.getParameter("discontinued"));
+		request.setAttribute("companyId", request.getParameter("companyId"));
 	}
 }

@@ -1,11 +1,8 @@
 package com.excilys.formation.cdb.util;
 
-import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Util {
@@ -16,46 +13,42 @@ public class Util {
 		return s.matches("\\d+") && (s.length() < 10);
 	}
 
-	public static LocalDateTime parseDate(String s) {
-		try {
-			if (s.matches("^\\d{4}([/.-])\\d{2}\\1\\d{2}$")) {
-				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-				Instant t = Instant.ofEpochMilli(dateFormat.parse(
-						s.replaceAll("[/.]", "-")).getTime());
-				return LocalDateTime.ofInstant(t, ZoneOffset.UTC);
-			} else if (s.matches("^\\d{2}([/.-])\\d{2}\\1\\d{4}$")) {
-				SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-				Instant t = Instant.ofEpochMilli(dateFormat.parse(
-						s.replaceAll("[/.]", "-")).getTime());
-				return LocalDateTime.ofInstant(t, ZoneOffset.UTC);
-			}
-			return null;
-		} catch (ParseException e) {
-			throw new RuntimeException("FATAL ERROR in parsing date " + s);
+	public static LocalDate parseDate(String s) {
+		if (s.matches("^\\d{4}([/.-])\\d{2}\\1\\d{2}$")) {
+			return LocalDate.parse(s.replaceAll("[/.]", "-"),
+					DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		} else if (s.matches("^\\d{2}([/.-])\\d{2}\\1\\d{4}$")) {
+			return LocalDate.parse(s.replaceAll("[/.]", "-"),
+					DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 		}
+		return null;
 	}
 
 	public static boolean isDate(String s) {
-		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
-		sdf1.setLenient(false);
-		sdf2.setLenient(false);
 		if ((s != null)
-				&& ((sdf1.parse(s, new ParsePosition(0)) != null) || (sdf2
-						.parse(s, new ParsePosition(0)) != null))) {
-			return true;
+				&& (s.matches("^\\d{4}([/.-])\\d{2}\\1\\d{2}$") || s
+						.matches("^\\d{2}([/.-])\\d{2}\\1\\d{4}$"))) {
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
+			sdf1.setLenient(false);
+			sdf2.setLenient(false);
+			if ((sdf1.parse(s.replaceAll("[/.]", "-"), new ParsePosition(0)) != null)
+					|| (sdf2.parse(s.replaceAll("[/.]", "-"),
+							new ParsePosition(0)) != null)) {
+				return true;
+			}
 		}
 		return false;
 	}
 
-	public static String formatDate(LocalDateTime d) {
-		if (d == null) {
+	public static String formatDate(LocalDate localDate) {
+		if (localDate == null) {
 			return null;
 		}
-		return d.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		return localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	}
 
-	public static java.sql.Date toSqlDate(LocalDateTime d) {
+	public static java.sql.Date toSqlDate(LocalDate d) {
 		if (d == null) {
 			return null;
 		}

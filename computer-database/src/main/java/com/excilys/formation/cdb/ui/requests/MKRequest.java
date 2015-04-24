@@ -1,6 +1,6 @@
 package com.excilys.formation.cdb.ui.requests;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,8 +37,8 @@ public class MKRequest implements IRequest {
 	@Override
 	public ICommand processCommand() throws RequestNotFoundException {
 		String name = null;
-		LocalDateTime introduced = null;
-		LocalDateTime discontinued = null;
+		LocalDate introduced = null;
+		LocalDate discontinued = null;
 		Company company = null;
 		for (int i = 0; i < (request.size() - 1); i++) {
 			if (MK_ARGS.contains(request.get(i))) {

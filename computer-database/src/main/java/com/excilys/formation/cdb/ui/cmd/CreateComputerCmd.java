@@ -1,6 +1,6 @@
 package com.excilys.formation.cdb.ui.cmd;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
@@ -14,8 +14,8 @@ public class CreateComputerCmd implements ICommand {
 		this.computer = computer;
 	}
 
-	public CreateComputerCmd(String name, LocalDateTime introduced,
-			LocalDateTime discontinued, Company company) {
+	public CreateComputerCmd(String name, LocalDate introduced,
+			LocalDate discontinued, Company company) {
 		this(new Computer(name, introduced, discontinued, company));
 	}
 

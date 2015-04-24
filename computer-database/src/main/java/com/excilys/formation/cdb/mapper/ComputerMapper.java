@@ -28,9 +28,11 @@ public class ComputerMapper {
 			computer.setId(result.getLong("computer.id"));
 			computer.setName(result.getString("computer.name"));
 			Timestamp tmp = result.getTimestamp("computer.introduced");
-			computer.setIntroduced(tmp == null ? null : tmp.toLocalDateTime());
+			computer.setIntroduced(tmp == null ? null : tmp.toLocalDateTime()
+					.toLocalDate());
 			tmp = result.getTimestamp("computer.discontinued");
-			computer.setDiscontinued(tmp == null ? null : tmp.toLocalDateTime());
+			computer.setDiscontinued(tmp == null ? null : tmp.toLocalDateTime()
+					.toLocalDate());
 			if (result.getLong("company_id") != 0l) {
 				computer.setCompany(CompanyMapper.getModel(result));
 			} else {
