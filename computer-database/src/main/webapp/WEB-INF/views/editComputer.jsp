@@ -73,6 +73,6 @@
 	</section>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-	<script src="js/addcomputer.js"></script>
+	<script src="js/computerValidator.js"></script>
 </body>
 </html>
