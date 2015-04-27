@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
@@ -23,6 +26,8 @@ import com.excilys.formation.cdb.util.Util;
 public enum ComputerDAO implements IComputerDAO {
 
 	INSTANCE;
+	private final static Logger LOGGER = LoggerFactory
+			.getLogger(ComputerDAO.class);
 
 	@Override
 	public Computer find(Long id) {
@@ -31,6 +36,7 @@ public enum ComputerDAO implements IComputerDAO {
 		ResultSet result = null;
 		Computer res = null;
 		if (id == null) {
+			LOGGER.error("Error param null in ComputerDAO.find(id)");
 			throw new DAOException("NullPointerException: ID null!");
 		}
 		try {
@@ -45,6 +51,7 @@ public enum ComputerDAO implements IComputerDAO {
 				res = ComputerMapper.getModel(result);
 			}
 		} catch (SQLException e) {
+			LOGGER.error("Error in ComputerDAO.find(" + id + ")", e);
 			throw new DAOException(e);
 		} finally {
 			ConnectionFactory.closeConnection(ps, result);
@@ -58,6 +65,7 @@ public enum ComputerDAO implements IComputerDAO {
 		Connection connection = null;
 		PreparedStatement ps = null;
 		if (model == null) {
+			LOGGER.error("Error param null in ComputerDAO.insert(id)");
 			throw new DAOException("NullPointerException: Model null!");
 		}
 		try {
@@ -74,6 +82,7 @@ public enum ComputerDAO implements IComputerDAO {
 			}
 			res = ps.executeUpdate();
 		} catch (SQLException e) {
+			LOGGER.error("Error in ComputerDAO.insert(" + model + ")", e);
 			throw new DAOException(e);
 		} finally {
 			ConnectionFactory.closeConnection(ps, null);
@@ -86,21 +95,21 @@ public enum ComputerDAO implements IComputerDAO {
 		int res = 0;
 		PreparedStatement ps = null;
 		if (id == null) {
+			LOGGER.error("Error param null in CompanyDAO.remove(id)");
 			throw new DAOException("NullPointerException: Id null!");
 		}
 		Connection connection = ConnectionFactory.getConnection();
-		if (connection == null) {
-			throw new DAOException("NullPointerException: Connection null!");
-		}
 		try {
 			ps = connection.prepareStatement("DELETE FROM computer WHERE ID=?");
 			ps.setLong(1, id);
 			res = ps.executeUpdate();
 		} catch (SQLException e) {
+			LOGGER.error("Error in ComputerDAO.remove(" + id + ")", e);
 			throw new DAOException(e);
 		} finally {
 			ConnectionFactory.closeConnection(ps, null);
 		}
+		LOGGER.info("Computer id : {} removed", id);
 		return res;
 	}
 
@@ -110,6 +119,7 @@ public enum ComputerDAO implements IComputerDAO {
 		Connection connection = null;
 		PreparedStatement ps = null;
 		if (model == null) {
+			LOGGER.error("Error param null in CompanyDAO.update(model)");
 			throw new DAOException("NullPointerException: Model null!");
 		}
 		try {
@@ -128,6 +138,7 @@ public enum ComputerDAO implements IComputerDAO {
 			ps.setLong(5, model.getId());
 			res = ps.executeUpdate();
 		} catch (SQLException e) {
+			LOGGER.error("Error in ComputerDAO.update(" + model + ")", e);
 			throw new DAOException(e);
 		} finally {
 			ConnectionFactory.closeConnection(ps, null);
@@ -151,6 +162,7 @@ public enum ComputerDAO implements IComputerDAO {
 				res.add(ComputerMapper.getModel(result));
 			}
 		} catch (SQLException e) {
+			LOGGER.error("Error in ComputerDAO.findAll()", e);
 			throw new DAOException(e);
 		} finally {
 			ConnectionFactory.closeConnection(statement, result);
@@ -161,6 +173,7 @@ public enum ComputerDAO implements IComputerDAO {
 	@Override
 	public Computer find(Predicate<? super Computer> predicate) {
 		if (predicate == null) {
+			LOGGER.error("Error param null in CompanyDAO.find(predicate)");
 			throw new DAOException("NullPointerException: Predicate null!");
 		}
 		return findAll().stream().filter(predicate).findFirst().orElse(null);
@@ -190,6 +203,7 @@ public enum ComputerDAO implements IComputerDAO {
 				res = result.getInt("size");
 			}
 		} catch (SQLException e) {
+			LOGGER.error("Error in ComputerDAO.find(" + search + ")", e);
 			throw new DAOException(e);
 		} finally {
 			ConnectionFactory.closeConnection(statement, result);
@@ -248,6 +262,8 @@ public enum ComputerDAO implements IComputerDAO {
 				res.add(ComputerMapper.getModel(result));
 			}
 		} catch (SQLException e) {
+			LOGGER.error("Error in ComputerDAO.pagination(" + search + ","
+					+ limit + "," + offset + "," + ob + "," + asc + ")", e);
 			throw new DAOException(e);
 		} finally {
 			ConnectionFactory.closeConnection(statement, result);
@@ -261,6 +277,10 @@ public enum ComputerDAO implements IComputerDAO {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet result = null;
+		if (companyId == null) {
+			LOGGER.error("Error param null in CompanyDAO.remove(id)");
+			throw new DAOException("NullPointerException: Id null!");
+		}
 		try {
 			connection = ConnectionFactory.getConnection();
 			statement = connection
@@ -273,6 +293,8 @@ public enum ComputerDAO implements IComputerDAO {
 				res.add(ComputerMapper.getModel(result));
 			}
 		} catch (SQLException e) {
+			LOGGER.error("Error in ComputerDAO.findAllByCompany(" + companyId
+					+ ")", e);
 			throw new DAOException(e);
 		} finally {
 			ConnectionFactory.closeConnection(statement, result);

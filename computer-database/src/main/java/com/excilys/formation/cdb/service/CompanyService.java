@@ -3,6 +3,9 @@ package com.excilys.formation.cdb.service;
 import java.util.List;
 import java.util.function.Predicate;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.persistence.CompanyDAO;
@@ -11,6 +14,9 @@ import com.excilys.formation.cdb.persistence.connection.ConnectionFactory;
 
 public enum CompanyService implements ICompanyService {
 	INSTANCE;
+
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(CompanyService.class);
 
 	/**
 	 * @return all row of the table of T
@@ -55,6 +61,8 @@ public enum CompanyService implements ICompanyService {
 			ConnectionFactory.commit();
 		} catch (DAOException e) {
 			ConnectionFactory.rollback();
+			LOGGER.error("Error in CompanyService.remove(" + id
+					+ ") rollback successfull", e);
 			throw new DAOException(e);
 		} finally {
 			ConnectionFactory.closeTransactionConnection();
