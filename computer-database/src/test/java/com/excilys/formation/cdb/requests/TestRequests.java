@@ -4,8 +4,13 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.excilys.formation.cdb.Utils;
 import com.excilys.formation.cdb.exception.RequestNotFoundException;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.ComputerService;
@@ -18,6 +23,16 @@ import com.excilys.formation.cdb.ui.requests.RMRequest;
 import com.excilys.formation.cdb.ui.requests.Request;
 
 public class TestRequests {
+
+	@BeforeClass
+	public static void setUp() throws IOException {
+		Utils.loadDatabase();
+	}
+
+	@AfterClass
+	public static void reset() throws IOException {
+		Utils.unloadDatabase();
+	}
 
 	@Test
 	public void ListComputerTest() {
@@ -117,74 +132,60 @@ public class TestRequests {
 		}
 	}
 
-	@Test
-	public void invalidCatRequests() {
-		try {
-			ICommand command;
-			command = new Request(CatRequest.CMD + " bad command man")
-					.processCommand();
-			command.execute();
-			fail("Should be a bad command");
-		} catch (RequestNotFoundException e) {
+	@Test(expected = RequestNotFoundException.class)
+	public void invalidCatRequestBadCmd() throws RequestNotFoundException {
+		ICommand command;
+		command = new Request(CatRequest.CMD + " bad command man")
+				.processCommand();
+		command.execute();
+	}
 
-		}
-		try {
-			ICommand command;
-			command = new Request(CatRequest.CMD + " -9").processCommand();
-			command.execute();
-			fail("Should be a bad command");
-		} catch (RequestNotFoundException e) {
+	@Test(expected = RequestNotFoundException.class)
+	public void invalidCatRequestNegativeCmd() throws RequestNotFoundException {
 
-		}
-		try {
-			ICommand command;
-			command = new Request(CatRequest.CMD + " 10007").processCommand();
-			command.execute();
-		} catch (RequestNotFoundException e) {
-			fail("Should be a good command but do nothing");
-		}
+		ICommand command;
+		command = new Request(CatRequest.CMD + " -9").processCommand();
+		command.execute();
 	}
 
 	@Test
-	public void invalidRMRequest() {
-		try {
-			ICommand command;
-			command = new Request(RMRequest.CMD + " bad command man")
-					.processCommand();
-			command.execute();
-			fail("Should be a bad command");
-		} catch (RequestNotFoundException e) {
+	public void invalidCatRequestOutOfBoundCmd()
+			throws RequestNotFoundException {
+		ICommand command;
+		command = new Request(CatRequest.CMD + " 10007").processCommand();
+		command.execute();
+	}
 
-		}
-		try {
-			ICommand command;
-			command = new Request(RMRequest.CMD + " -17").processCommand();
-			command.execute();
-			fail("Should be a bad command");
-		} catch (RequestNotFoundException e) {
+	@Test(expected = RequestNotFoundException.class)
+	public void invalidRMRequestBadCommand() throws RequestNotFoundException {
+		ICommand command;
+		command = new Request(RMRequest.CMD + " bad command man")
+				.processCommand();
+		command.execute();
+	}
 
-		}
-		try {
-			ICommand command;
-			command = new Request(RMRequest.CMD + " " + RMRequest.RM_COMPUTER
-					+ " 10007").processCommand();
-			command.execute();
-		} catch (RequestNotFoundException e) {
-			fail("Should be a good command but do nothing");
-		}
+	@Test(expected = RequestNotFoundException.class)
+	public void invalidRMRequestNegativeCmd() throws RequestNotFoundException {
+		ICommand command;
+		command = new Request(RMRequest.CMD + " -17").processCommand();
+		command.execute();
 	}
 
 	@Test
-	public void invalidLSRequests() {
-		try {
-			ICommand command;
-			command = new Request(LSRequest.CMD + " bad command man")
-					.processCommand();
-			command.execute();
-			fail("Should be a bad command");
-		} catch (RequestNotFoundException e) {
+	public void invalidRMRequestOutOfBoundCmd() throws RequestNotFoundException {
+		ICommand command;
+		command = new Request(RMRequest.CMD + " " + RMRequest.RM_COMPUTER
+				+ " 10007").processCommand();
+		command.execute();
 
-		}
+	}
+
+	@Test(expected = RequestNotFoundException.class)
+	public void invalidLSRequests() throws RequestNotFoundException {
+		ICommand command;
+		command = new Request(LSRequest.CMD + " bad command man")
+				.processCommand();
+		command.execute();
 	}
 
 	@Test

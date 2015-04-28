@@ -5,21 +5,38 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
+import com.excilys.formation.cdb.Utils;
 import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
+import com.excilys.formation.cdb.persistence.ComputerDAO;
 import com.excilys.formation.cdb.util.Util;
 
 public class TestService {
+
+	@Before
+	public void setUp() throws IOException {
+		Utils.loadDatabase();
+	}
+
+	@After
+	public void reset() throws IOException {
+		Utils.unloadDatabase();
+	}
+
 	@Test
 	public void findAllComputer() {
 		ComputerService crf = ComputerService.INSTANCE;
-
-		assertEquals(574, crf.findAll().size());
+		assertEquals(273, crf.findAll().size());
+		assertEquals(273, crf.count());
 	}
 
 	@Test
@@ -27,6 +44,7 @@ public class TestService {
 		CompanyService cyf = CompanyService.INSTANCE;
 
 		assertEquals(42, cyf.findAll().size());
+		assertEquals(42, cyf.count());
 	}
 
 	@Test
@@ -81,6 +99,18 @@ public class TestService {
 		assertNull(crf.find(c -> c.getName().equals("Joxit")));
 	}
 
+	@Test
+	public void deleteCompany() {
+		List<Computer> computers = ComputerDAO.INSTANCE.findAllByCompany(1l);
+		assertTrue(computers.stream().allMatch(
+				c -> ComputerService.INSTANCE.find(c.getId()) != null));
+		assertNotNull(CompanyService.INSTANCE.find(1l));
+		CompanyService.INSTANCE.remove(1l);
+		assertNull(CompanyService.INSTANCE.find(1l));
+		assertTrue(computers.stream().allMatch(
+				c -> ComputerService.INSTANCE.find(c.getId()) == null));
+	}
+
 	@Test(expected = DAOException.class)
 	public void invalidCreation() {
 		ComputerService.INSTANCE.insert(null);
@@ -105,4 +135,5 @@ public class TestService {
 	public void invalidRemove() {
 		ComputerService.INSTANCE.remove((Long) null);
 	}
+
 }

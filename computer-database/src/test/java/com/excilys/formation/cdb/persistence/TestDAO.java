@@ -5,16 +5,20 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.text.ParseException;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.excilys.formation.cdb.Utils;
 import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.util.Util;
+import com.excilys.formation.cdb.validation.DateValidator;
 
 /**
  *
@@ -22,17 +26,29 @@ import com.excilys.formation.cdb.util.Util;
  */
 public class TestDAO {
 
+	@BeforeClass
+	public static void setUp() throws IOException {
+		Utils.loadDatabase();
+	}
+
+	@AfterClass
+	public static void reset() throws IOException {
+		Utils.unloadDatabase();
+	}
+
 	@Test
 	public void findAllComputer() {
 		ComputerDAO crf = ComputerDAO.INSTANCE;
-		assertEquals(574, crf.findAll().size());
+		assertEquals(273, crf.findAll().size());
+		assertEquals(273, crf.count());
+		assertEquals(30, crf.findAllByCompany(1l).size());
 	}
 
 	@Test
 	public void findAllCompanies() {
 		CompanyDAO cyf = CompanyDAO.INSTANCE;
-
 		assertEquals(42, cyf.findAll().size());
+		assertEquals(42, cyf.count());
 	}
 
 	@Test
@@ -41,7 +57,7 @@ public class TestDAO {
 		Computer elfII = new Computer();
 		elfII.setId(20l);
 		elfII.setName("ELF II");
-		elfII.setIntroduced(Util.parseDate("1977-01-01"));
+		elfII.setIntroduced(new DateValidator("1977-01-01").getOutput());
 		Company netronics = new Company();
 		netronics.setId(4l);
 		netronics.setName("Netronics");
@@ -86,6 +102,13 @@ public class TestDAO {
 		crf.remove(jox.getId());
 		assertNull(crf.find(c -> c.equals(jox)));
 		assertNull(crf.find(c -> c.getName().equals("Joxit")));
+	}
+
+	@Test
+	public void deleteCompany() {
+		assertNotNull(CompanyDAO.INSTANCE.find(43l));
+		CompanyDAO.INSTANCE.remove(43l);
+		assertNull(CompanyDAO.INSTANCE.find(43l));
 	}
 
 	@Test(expected = DAOException.class)

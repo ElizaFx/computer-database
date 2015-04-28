@@ -1,14 +1,28 @@
 package com.excilys.formation.cdb.ui.cmd;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.excilys.formation.cdb.Utils;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
 
 public class TestCmd {
+
+	@BeforeClass
+	public static void setUp() throws IOException {
+		Utils.loadDatabase();
+	}
+
+	@AfterClass
+	public static void reset() throws IOException {
+		Utils.unloadDatabase();
+	}
 
 	@Test
 	public void ListComputerTest() {
