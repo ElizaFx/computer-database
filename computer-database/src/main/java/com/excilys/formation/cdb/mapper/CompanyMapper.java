@@ -33,7 +33,8 @@ public class CompanyMapper {
 		if (company == null) {
 			return null;
 		}
-		return new CompanyDTO(company.getId(), company.getName());
+		return CompanyDTO.build().id(company.getId()).name(company.getName())
+				.create();
 	}
 
 	public static List<CompanyDTO> companyModelToDTO(List<Company> companies) {
@@ -45,10 +46,7 @@ public class CompanyMapper {
 		if (dto == null) {
 			return null;
 		}
-		Company res = new Company();
-		res.setId(dto.getId());
-		res.setName(dto.getName());
-		return res;
+		return Company.build().id(dto.getId()).name(dto.getName()).create();
 	}
 
 	public static List<Company> companyDTOToModel(List<CompanyDTO> companies) {

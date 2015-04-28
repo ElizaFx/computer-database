@@ -112,4 +112,30 @@ public class Company implements Serializable {
 		return true;
 	}
 
+	public static CompanyBuilder build() {
+		return new CompanyBuilder();
+	}
+
+	public static class CompanyBuilder {
+		private Company company;
+
+		public CompanyBuilder() {
+			company = new Company();
+		}
+
+		public CompanyBuilder name(String name) {
+			company.setName(name);
+			return this;
+		}
+
+		public CompanyBuilder id(Long id) {
+			company.setId(id);
+			return this;
+		}
+
+		public Company create() {
+			return company;
+		}
+
+	}
 }

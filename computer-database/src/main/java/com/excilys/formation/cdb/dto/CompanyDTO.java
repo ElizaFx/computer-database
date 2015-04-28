@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.dto;
 
+
 public class CompanyDTO {
 	private Long id;
 	private String name;
@@ -61,6 +62,33 @@ public class CompanyDTO {
 
 	@Override
 	public String toString() {
-		return "Company [id=" + id + ", name=" + name + "]";
+		return "CompanyDTO [id=" + id + ", name=" + name + "]";
+	}
+
+	public static CompanyBuilder build() {
+		return new CompanyBuilder();
+	}
+
+	public static class CompanyBuilder {
+		private CompanyDTO company;
+
+		public CompanyBuilder() {
+			company = new CompanyDTO();
+		}
+
+		public CompanyBuilder name(String name) {
+			company.setName(name);
+			return this;
+		}
+
+		public CompanyBuilder id(Long id) {
+			company.setId(id);
+			return this;
+		}
+
+		public CompanyDTO create() {
+			return company;
+		}
+
 	}
 }

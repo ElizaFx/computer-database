@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.dto;
 
+
 public class ComputerDTO {
 	private Long id;
 	private String name;
@@ -69,4 +70,49 @@ public class ComputerDTO {
 		this.companyName = companyName;
 	}
 
+	public static ComputerBuilder build() {
+		return new ComputerBuilder();
+	}
+
+	public static class ComputerBuilder {
+		private ComputerDTO computer;
+
+		private ComputerBuilder() {
+			computer = new ComputerDTO();
+		}
+
+		public ComputerBuilder id(Long id) {
+			computer.setId(id);
+			return this;
+		}
+
+		public ComputerBuilder name(String name) {
+			computer.setName(name);
+			return this;
+		}
+
+		public ComputerBuilder introduced(String introduced) {
+			computer.setIntroduced(introduced);
+			return this;
+		}
+
+		public ComputerBuilder discontinued(String discontinued) {
+			computer.setDiscontinued(discontinued);
+			return this;
+		}
+
+		public ComputerBuilder companyId(Long companyId) {
+			computer.setCompanyId(companyId);
+			return this;
+		}
+
+		public ComputerBuilder companyName(String companyName) {
+			computer.setCompanyName(companyName);
+			return this;
+		}
+
+		public ComputerDTO create() {
+			return computer;
+		}
+	}
 }

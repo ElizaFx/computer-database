@@ -52,11 +52,11 @@ public class ComputerMapper {
 	}
 
 	public static ComputerDTO computerModelToDTO(Computer computer) {
-		ComputerDTO res = new ComputerDTO();
-		res.setId(computer.getId());
-		res.setName(computer.getName());
-		res.setIntroduced(Util.formatDate(computer.getIntroduced()));
-		res.setDiscontinued(Util.formatDate(computer.getDiscontinued()));
+		ComputerDTO res = ComputerDTO.build().id(computer.getId())
+				.name(computer.getName())
+				.introduced(Util.formatDate(computer.getIntroduced()))
+				.discontinued(Util.formatDate(computer.getDiscontinued()))
+				.create();
 		if (computer.getCompany() != null) {
 			res.setCompanyId(computer.getCompany().getId());
 			res.setCompanyName(String.valueOf(computer.getCompany().getName()));
@@ -74,22 +74,15 @@ public class ComputerMapper {
 		if (dto == null) {
 			return null;
 		}
-		Computer computer = new Computer();
-		computer.setId(dto.getId());
-		computer.setName(dto.getName());
-		if ((dto.getIntroduced() != null) && !dto.getIntroduced().isEmpty()) {
-			computer.setIntroduced(Util.parseDate(dto.getIntroduced()));
-		}
-		if ((dto.getDiscontinued() != null) && !dto.getDiscontinued().isEmpty()) {
-			computer.setDiscontinued(Util.parseDate(dto.getDiscontinued()));
-		}
+		Computer computer = Computer.build().id(dto.getId())
+				.name(dto.getName())
+				.introduced(Util.parseDate(dto.getIntroduced()))
+				.discontinued(Util.parseDate(dto.getDiscontinued())).create();
 		if ((dto.getCompanyId() != null) && (dto.getCompanyId() != 0l)) {
-			CompanyDTO company = new CompanyDTO();
-			company.setId(dto.getCompanyId());
-			company.setName(dto.getCompanyName());
+			CompanyDTO company = CompanyDTO.build().id(dto.getCompanyId())
+					.name(dto.getCompanyName()).create();
 			computer.setCompany(CompanyMapper.companyDTOToModel(company));
 		}
-
 		return computer;
 	}
 

@@ -83,11 +83,10 @@ public class AddComputer extends HttpServlet {
 		}
 
 		if (!hasError) {
-			Computer computer = new Computer();
-			computer.setName(computerName.getOutput());
-			computer.setIntroduced(introduced.getOutput());
-			computer.setDiscontinued(discontinued.getOutput());
-			computer.setCompany(company.getOutput());
+			Computer computer = Computer.build().name(computerName.getOutput())
+					.introduced(introduced.getOutput())
+					.discontinued(discontinued.getOutput())
+					.company(company.getOutput()).create();
 			ComputerService.INSTANCE.insert(computer);
 			request.setAttribute("success",
 					"Computer " + computerName.getOutput() + " added");

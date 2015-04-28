@@ -213,4 +213,44 @@ public class Computer implements Serializable {
 		return true;
 	}
 
+	public static ComputerBuilder build() {
+		return new ComputerBuilder();
+	}
+
+	public static class ComputerBuilder {
+		private Computer computer;
+
+		private ComputerBuilder() {
+			computer = new Computer();
+		}
+
+		public ComputerBuilder id(Long id) {
+			computer.setId(id);
+			return this;
+		}
+
+		public ComputerBuilder name(String name) {
+			computer.setName(name);
+			return this;
+		}
+
+		public ComputerBuilder introduced(LocalDate introduced) {
+			computer.setIntroduced(introduced);
+			return this;
+		}
+
+		public ComputerBuilder discontinued(LocalDate discontinued) {
+			computer.setDiscontinued(discontinued);
+			return this;
+		}
+
+		public ComputerBuilder company(Company company) {
+			computer.setCompany(company);
+			return this;
+		}
+
+		public Computer create() {
+			return computer;
+		}
+	}
 }
