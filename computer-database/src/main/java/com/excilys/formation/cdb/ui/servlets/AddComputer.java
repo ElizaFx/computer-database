@@ -37,7 +37,7 @@ public class AddComputer extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("lCompanies", CompanyMapper
-				.companyModelToDTO(CompanyService.INSTANCE.findAll()));
+				.toDTO(CompanyService.INSTANCE.findAll()));
 
 		getServletContext().getRequestDispatcher(
 				"/WEB-INF/views/addComputer.jsp").forward(request, response);

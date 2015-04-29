@@ -14,43 +14,31 @@ public class CompanyMapper {
 	 * @param result
 	 * @return result translated in the model
 	 */
-	public static Company getModel(ResultSet result) {
-		Company company = null;
-		if (result == null) {
-			return null;
-		}
+	public static Company toModel(ResultSet result) {
 		try {
-			company = new Company();
-			company.setId(result.getLong("company.id"));
-			company.setName(result.getString("company.name"));
+			return Company.build().id(result.getLong("company.id"))
+					.name(result.getString("company.name")).create();
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}
-		return company;
 	}
 
-	public static CompanyDTO companyModelToDTO(Company company) {
-		if (company == null) {
-			return null;
-		}
+	public static CompanyDTO toDTO(Company company) {
 		return CompanyDTO.build().id(company.getId()).name(company.getName())
 				.create();
 	}
 
-	public static List<CompanyDTO> companyModelToDTO(List<Company> companies) {
-		return companies.parallelStream().map(CompanyMapper::companyModelToDTO)
+	public static List<CompanyDTO> toDTO(List<Company> companies) {
+		return companies.parallelStream().map(CompanyMapper::toDTO)
 				.collect(Collectors.toList());
 	}
 
-	public static Company companyDTOToModel(CompanyDTO dto) {
-		if (dto == null) {
-			return null;
-		}
+	public static Company toModel(CompanyDTO dto) {
 		return Company.build().id(dto.getId()).name(dto.getName()).create();
 	}
 
-	public static List<Company> companyDTOToModel(List<CompanyDTO> companies) {
-		return companies.parallelStream().map(CompanyMapper::companyDTOToModel)
+	public static List<Company> toModel(List<CompanyDTO> companies) {
+		return companies.parallelStream().map(CompanyMapper::toModel)
 				.collect(Collectors.toList());
 	}
 

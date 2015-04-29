@@ -13,6 +13,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.excilys.formation.cdb.Utils;
+import com.excilys.formation.cdb.dto.CompanyDTO;
+import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
@@ -136,13 +138,13 @@ public class TestDAO {
 		CompanyDAO.INSTANCE.find((Long) null);
 	}
 
-	@Test
+	@Test(expected = NullPointerException.class)
 	public void invalidCompanyModel() {
-		CompanyMapper.getModel(null);
+		assertNull(CompanyMapper.toModel((CompanyDTO) null));
 	}
 
-	@Test
+	@Test(expected = NullPointerException.class)
 	public void invalidComputerModel() {
-		assertNull(ComputerMapper.getModel(null));
+		assertNull(ComputerMapper.toModel((ComputerDTO) null));
 	}
 }

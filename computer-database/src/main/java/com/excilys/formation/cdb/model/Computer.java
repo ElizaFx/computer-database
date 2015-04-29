@@ -213,11 +213,11 @@ public class Computer implements Serializable {
 		return true;
 	}
 
-	public static ComputerBuilder build() {
+	public final static ComputerBuilder build() {
 		return new ComputerBuilder();
 	}
 
-	public static class ComputerBuilder {
+	public final static class ComputerBuilder {
 		private Computer computer;
 
 		private ComputerBuilder() {

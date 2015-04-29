@@ -48,7 +48,7 @@ public enum ComputerDAO implements IComputerDAO {
 			ps.setObject(1, id);
 			result = ps.executeQuery();
 			if (result.next()) {
-				res = ComputerMapper.getModel(result);
+				res = ComputerMapper.toModel(result);
 			}
 		} catch (SQLException e) {
 			LOGGER.error("Error in ComputerDAO.find(" + id + ")", e);
@@ -159,7 +159,7 @@ public enum ComputerDAO implements IComputerDAO {
 					.executeQuery("SELECT * FROM "
 							+ "computer left outer join company on computer.company_id=company.id");
 			while (result.next()) {
-				res.add(ComputerMapper.getModel(result));
+				res.add(ComputerMapper.toModel(result));
 			}
 		} catch (SQLException e) {
 			LOGGER.error("Error in ComputerDAO.findAll()", e);
@@ -259,7 +259,7 @@ public enum ComputerDAO implements IComputerDAO {
 			result = statement.executeQuery();
 
 			while (result.next()) {
-				res.add(ComputerMapper.getModel(result));
+				res.add(ComputerMapper.toModel(result));
 			}
 		} catch (SQLException e) {
 			LOGGER.error("Error in ComputerDAO.pagination(" + search + ","
@@ -290,7 +290,7 @@ public enum ComputerDAO implements IComputerDAO {
 			statement.setLong(1, companyId);
 			result = statement.executeQuery();
 			while (result.next()) {
-				res.add(ComputerMapper.getModel(result));
+				res.add(ComputerMapper.toModel(result));
 			}
 		} catch (SQLException e) {
 			LOGGER.error("Error in ComputerDAO.findAllByCompany(" + companyId

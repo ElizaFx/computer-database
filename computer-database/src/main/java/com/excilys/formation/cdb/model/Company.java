@@ -112,11 +112,11 @@ public class Company implements Serializable {
 		return true;
 	}
 
-	public static CompanyBuilder build() {
+	public final static CompanyBuilder build() {
 		return new CompanyBuilder();
 	}
 
-	public static class CompanyBuilder {
+	public final static class CompanyBuilder {
 		private Company company;
 
 		public CompanyBuilder() {

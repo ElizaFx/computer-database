@@ -36,13 +36,13 @@ public class EditComputer extends HttpServlet {
 
 		if (computer.isValid()) {
 			request.setAttribute("computer",
-					ComputerMapper.computerModelToDTO(computer.getOutput()));
+					ComputerMapper.toDTO(computer.getOutput()));
 		} else {
 			request.setAttribute("danger", "Error: This computer does't exist!");
 		}
 
 		request.setAttribute("lCompanies", CompanyMapper
-				.companyModelToDTO(CompanyService.INSTANCE.findAll()));
+				.toDTO(CompanyService.INSTANCE.findAll()));
 		request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/editComputer.jsp")
 				.forward(request, response);
@@ -101,12 +101,12 @@ public class EditComputer extends HttpServlet {
 		}
 		if (computer.isValid()) {
 			request.setAttribute("computer",
-					ComputerMapper.computerModelToDTO(computer.getOutput()));
+					ComputerMapper.toDTO(computer.getOutput()));
 		} else {
 			request.setAttribute("danger", "Error: This computer does't exist!");
 		}
 		request.setAttribute("lCompanies", CompanyMapper
-				.companyModelToDTO(CompanyService.INSTANCE.findAll()));
+				.toDTO(CompanyService.INSTANCE.findAll()));
 		request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/editComputer.jsp")
 				.forward(request, response);

@@ -28,34 +28,29 @@ public class Util {
 	}
 
 	public static boolean isDate(String s) {
-		if ((s != null)
-				&& (s.matches("^\\d{4}([/.-])\\d{2}\\1\\d{2}$") || s
-						.matches("^\\d{2}([/.-])\\d{2}\\1\\d{4}$"))) {
-			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-			SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
-			sdf1.setLenient(false);
-			sdf2.setLenient(false);
-			if ((sdf1.parse(s.replaceAll("[/.]", "-"), new ParsePosition(0)) != null)
-					|| (sdf2.parse(s.replaceAll("[/.]", "-"),
-							new ParsePosition(0)) != null)) {
-				return true;
+		if (s != null) {
+			if (s.matches("^\\d{4}([/.-])\\d{2}\\1\\d{2}$")) {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				sdf.setLenient(false);
+				return sdf.parse(s.replaceAll("[/.]", "-"),
+						new ParsePosition(0)) != null;
+			} else if (s.matches("^\\d{2}([/.-])\\d{2}\\1\\d{4}$")) {
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				sdf.setLenient(false);
+				return sdf.parse(s.replaceAll("[/.]", "-"),
+						new ParsePosition(0)) != null;
 			}
 		}
 		return false;
 	}
 
 	public static String formatDate(LocalDate localDate) {
-		if (localDate == null) {
-			return null;
-		}
-		return localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		return localDate == null ? null : localDate.format(DateTimeFormatter
+				.ofPattern("yyyy-MM-dd"));
 	}
 
 	public static java.sql.Date toSqlDate(LocalDate d) {
-		if (d == null) {
-			return null;
-		}
-		return java.sql.Date.valueOf(Util.formatDate(d));
+		return d == null ? null : java.sql.Date.valueOf(Util.formatDate(d));
 	}
 
 	public static LocalDate toLocalDate(Timestamp timestamp) {

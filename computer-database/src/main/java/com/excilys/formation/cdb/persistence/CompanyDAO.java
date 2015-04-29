@@ -44,7 +44,7 @@ public enum CompanyDAO implements ICompanyDAO {
 			ps.setObject(1, id);
 			result = ps.executeQuery();
 			if (result.next()) {
-				res = CompanyMapper.getModel(result);
+				res = CompanyMapper.toModel(result);
 			}
 		} catch (SQLException e) {
 			LOGGER.error("Error in CompanyDAO.find(" + id + ")", e);
@@ -66,7 +66,7 @@ public enum CompanyDAO implements ICompanyDAO {
 			statement = connection.createStatement();
 			result = statement.executeQuery("select * from company");
 			while (result.next()) {
-				res.add(CompanyMapper.getModel(result));
+				res.add(CompanyMapper.toModel(result));
 			}
 		} catch (SQLException e) {
 			LOGGER.error("Error in CompanyDAO.findAll()", e);

@@ -105,7 +105,7 @@ public enum ComputerService implements IComputerService {
 		if (offset < 0) {
 			offset = 0;
 		}
-		return ComputerMapper.computerModelToDTO(ComputerDAO.INSTANCE
+		return ComputerMapper.toDTO(ComputerDAO.INSTANCE
 				.pagination(search, limit, offset, ob, asc));
 	}
 
