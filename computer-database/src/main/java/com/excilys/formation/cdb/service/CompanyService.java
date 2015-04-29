@@ -12,8 +12,16 @@ import com.excilys.formation.cdb.persistence.CompanyDAO;
 import com.excilys.formation.cdb.persistence.ComputerDAO;
 import com.excilys.formation.cdb.persistence.connection.ConnectionFactory;
 
-public enum CompanyService implements ICompanyService {
-	INSTANCE;
+public class CompanyService implements ICompanyService {
+	public static CompanyService INSTANCE;
+
+	public static CompanyService getINSTANCE() {
+		return INSTANCE;
+	}
+
+	public static void setINSTANCE(CompanyService iNSTANCE) {
+		INSTANCE = iNSTANCE;
+	}
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(CompanyService.class);

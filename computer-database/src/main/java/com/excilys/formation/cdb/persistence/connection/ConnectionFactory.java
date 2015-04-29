@@ -5,30 +5,49 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 
 import com.excilys.formation.cdb.exception.DAOException;
 import com.jolbox.bonecp.BoneCP;
 
+@Component
 public class ConnectionFactory {
 	private static final BoneCP connectionPool;
 	private static final String properties = "/config.properties";
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ConnectionFactory.class);
 	private static ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>() {
+
 		@Override
 		protected Connection initialValue() {
 			try {
-				return connectionPool.getConnection();
+				ApplicationContext context = new ClassPathXmlApplicationContext(
+						"springModules.xml");
+				dataSource = (DataSource) context.getBean("dataSource");
+				return dataSource.getConnection();
 			} catch (SQLException e) {
 				LOGGER.error(
 						"Error in ConnectionFactory while getting new connection",
 						e);
+				LOGGER.error("Error in getConnection()", e);
 				throw new DAOException(e);
 			}
 		}
 	};
+	@Autowired
+	public static DataSource dataSource;
+
+	public void setDataSource(DataSource dataSource) {
+		ConnectionFactory.dataSource = dataSource;
+	}
+
 	static {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -55,6 +74,14 @@ public class ConnectionFactory {
 	 */
 	public static Connection getConnection() {
 		return threadLocal.get();
+		/*
+		 * try { ApplicationContext context = new
+		 * ClassPathXmlApplicationContext( "springModules.xml"); dataSource =
+		 * (DataSource) context.getBean("dataSource"); return
+		 * dataSource.getConnection(); } catch (SQLException e) {
+		 * LOGGER.error("Error in getConnection()", e); throw new
+		 * DAOException(e); }
+		 */
 	}
 
 	/**

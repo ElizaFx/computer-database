@@ -11,9 +11,17 @@ import com.excilys.formation.cdb.persistence.IComputerDAO.OrderBy;
 import com.excilys.formation.cdb.ui.Page;
 import com.excilys.formation.cdb.util.Util;
 
-public enum ComputerService implements IComputerService {
+public class ComputerService implements IComputerService {
 
-	INSTANCE;
+	public static ComputerService INSTANCE;
+
+	public static ComputerService getINSTANCE() {
+		return INSTANCE;
+	}
+
+	public static void setINSTANCE(ComputerService iNSTANCE) {
+		INSTANCE = iNSTANCE;
+	}
 
 	/**
 	 * @return all row of the table of Computer
@@ -105,8 +113,8 @@ public enum ComputerService implements IComputerService {
 		if (offset < 0) {
 			offset = 0;
 		}
-		return ComputerMapper.toDTO(ComputerDAO.INSTANCE
-				.pagination(search, limit, offset, ob, asc));
+		return ComputerMapper.toDTO(ComputerDAO.INSTANCE.pagination(search,
+				limit, offset, ob, asc));
 	}
 
 	@Override

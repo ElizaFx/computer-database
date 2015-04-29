@@ -21,11 +21,20 @@ import com.excilys.formation.cdb.persistence.connection.ConnectionFactory;
  *
  * @author Joxit
  */
-public enum CompanyDAO implements ICompanyDAO {
+public class CompanyDAO implements ICompanyDAO {
 
-	INSTANCE;
+	public static CompanyDAO INSTANCE;
+
 	private final static Logger LOGGER = LoggerFactory
 			.getLogger(CompanyDAO.class);
+
+	public static CompanyDAO getInstance() {
+		return INSTANCE;
+	}
+
+	public static void setINSTANCE(CompanyDAO INSTANCE) {
+		CompanyDAO.INSTANCE = INSTANCE;
+	}
 
 	@Override
 	public Company find(Long id) {

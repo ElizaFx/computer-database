@@ -23,11 +23,19 @@ import com.excilys.formation.cdb.util.Util;
  *
  * @author Joxit
  */
-public enum ComputerDAO implements IComputerDAO {
+public class ComputerDAO implements IComputerDAO {
 
-	INSTANCE;
+	public static ComputerDAO INSTANCE;
 	private final static Logger LOGGER = LoggerFactory
 			.getLogger(ComputerDAO.class);
+
+	public static ComputerDAO getINSTANCE() {
+		return INSTANCE;
+	}
+
+	public static void setINSTANCE(ComputerDAO iNSTANCE) {
+		INSTANCE = iNSTANCE;
+	}
 
 	@Override
 	public Computer find(Long id) {

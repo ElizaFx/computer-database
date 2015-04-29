@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="connectionFactory"
+		class="com.excilys.formation.cdb.persistence.connection.ConnectionFactory">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="companyDAO" class="com.excilys.formation.cdb.persistence.CompanyDAO">
+		<property name="INSTANCE" ref="companyDAO"></property>
+	</bean>
+	<bean id="computerDAO" class="com.excilys.formation.cdb.persistence.ComputerDAO">
+		<property name="INSTANCE" ref="computerDAO"></property>
+	</bean>
+	<bean id="companyService" class="com.excilys.formation.cdb.service.CompanyService">
+		<property name="INSTANCE" ref="companyService"></property>
+	</bean>
+	<bean id="computerService" class="com.excilys.formation.cdb.service.ComputerService">
+		<property name="INSTANCE" ref="computerService"></property>
+	</bean>
+</beans>
