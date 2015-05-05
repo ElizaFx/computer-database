@@ -152,4 +152,6 @@ public interface IComputerDAO {
 	 */
 	public List<Computer> pagination(int limit, int offset, OrderBy ob,
 			boolean asc);
+
+	public int removeByCompany(Long companyId);
 }

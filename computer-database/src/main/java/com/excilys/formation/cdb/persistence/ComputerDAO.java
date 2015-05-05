@@ -305,4 +305,30 @@ public class ComputerDAO implements IComputerDAO {
 		}
 		return res;
 	}
+
+	@Override
+	public int removeByCompany(Long companyId) {
+		int res = 0;
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet result = null;
+		if (companyId == null) {
+			LOGGER.error("Error param null in CompanyDAO.remove(id)");
+			throw new DAOException("NullPointerException: Id null!");
+		}
+		try {
+			connection = connectionFacotry.getConnection();
+			statement = connection
+					.prepareStatement("DELETE FROM computer where company.id = ?");
+			statement.setLong(1, companyId);
+			res = statement.executeUpdate();
+		} catch (SQLException e) {
+			LOGGER.error("Error in ComputerDAO.findAllByCompany(" + companyId
+					+ ")", e);
+			throw new DAOException(e);
+		} finally {
+			connectionFacotry.closeConnection(statement, result);
+		}
+		return res;
+	}
 }
