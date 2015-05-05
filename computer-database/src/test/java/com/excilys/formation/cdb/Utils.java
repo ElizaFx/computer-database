@@ -6,16 +6,26 @@ import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import com.excilys.formation.cdb.persistence.connection.ConnectionFactory;
 
+@ContextConfiguration("/applicationContext.xml")
+@RunWith(SpringJUnit4ClassRunner.class)
 public class Utils {
-	public static void loadDatabase() throws IOException {
+	@Autowired
+	private ConnectionFactory connectionFacotry;
+
+	public void loadDatabase() throws IOException {
 		BufferedReader f = new BufferedReader(new InputStreamReader(Utils.class
 				.getClassLoader().getResourceAsStream("db/3-ENTRIES.sql"),
 				"UTF-8"));
 
 		try {
-			final Statement s = ConnectionFactory.getConnection()
+			final Statement s = connectionFacotry.getConnection()
 					.createStatement();
 			f.lines().forEach(l -> {
 				try {
@@ -27,20 +37,20 @@ public class Utils {
 					throw new RuntimeException(l + e.getMessage(), e);
 				}
 			});
-			ConnectionFactory.closeConnection(s, null);
+			connectionFacotry.closeConnection(s, null);
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
 		f.close();
 	}
 
-	public static void unloadDatabase() {
+	public void unloadDatabase() {
 		try {
-			final Statement s = ConnectionFactory.getConnection()
+			final Statement s = connectionFacotry.getConnection()
 					.createStatement();
 			s.execute("delete from computer");
 			s.execute("delete from company");
-			ConnectionFactory.closeConnection(s, null);
+			connectionFacotry.closeConnection(s, null);
 		} catch (SQLException e) {
 		}
 	}

@@ -1,13 +1,12 @@
 package com.excilys.formation.cdb.ui.cmd;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.service.CompanyService;
+import com.excilys.formation.cdb.ui.CLI;
 
 public class ListCompanyCmd implements ICommand {
-	@Autowired
-	private CompanyService companyService;
+	private CompanyService companyService = (CompanyService) CLI.context
+			.getBean("companyService");
 
 	@Override
 	public void execute() {

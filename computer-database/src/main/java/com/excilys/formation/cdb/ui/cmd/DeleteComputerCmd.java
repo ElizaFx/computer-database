@@ -1,14 +1,12 @@
 package com.excilys.formation.cdb.ui.cmd;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.ComputerService;
+import com.excilys.formation.cdb.ui.CLI;
 
 public class DeleteComputerCmd implements ICommand {
-
-	@Autowired
-	private ComputerService computerService;
+	private ComputerService computerService = (ComputerService) CLI.context
+			.getBean("computerService");
 	private final Computer computer;
 
 	public DeleteComputerCmd(Computer computer) {

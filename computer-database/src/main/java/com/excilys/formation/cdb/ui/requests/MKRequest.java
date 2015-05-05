@@ -5,18 +5,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.excilys.formation.cdb.exception.RequestNotFoundException;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.service.CompanyService;
+import com.excilys.formation.cdb.ui.CLI;
 import com.excilys.formation.cdb.ui.cmd.CreateComputerCmd;
 import com.excilys.formation.cdb.ui.cmd.ICommand;
 import com.excilys.formation.cdb.util.Util;
 
 public class MKRequest implements IRequest {
-	@Autowired
-	private CompanyService companyService;
+	private CompanyService companyService = (CompanyService) CLI.context
+			.getBean("companyService");
 	private final List<String> request;
 
 	public final static String CMD = "mk";

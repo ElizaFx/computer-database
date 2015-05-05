@@ -35,12 +35,12 @@ public class TestRequests {
 
 	@BeforeClass
 	public static void setUp() throws IOException {
-		Utils.loadDatabase();
+		new Utils().loadDatabase();
 	}
 
 	@AfterClass
 	public static void reset() throws IOException {
-		Utils.unloadDatabase();
+		new Utils().unloadDatabase();
 	}
 
 	@Test

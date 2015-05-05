@@ -8,8 +8,8 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.text.ParseException;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +39,14 @@ public class TestDAO {
 	@Autowired
 	private ComputerDAO computerDAO;
 
-	@BeforeClass
-	public static void setUp() throws IOException {
-		Utils.loadDatabase();
+	@Before
+	public void setUp() throws IOException {
+		new Utils().loadDatabase();
 	}
 
-	@AfterClass
-	public static void reset() throws IOException {
-		Utils.unloadDatabase();
+	@After
+	public void reset() throws IOException {
+		new Utils().unloadDatabase();
 	}
 
 	@Test

@@ -19,12 +19,12 @@ import com.excilys.formation.cdb.Utils;
 public class TestComputerValidator {
 	@BeforeClass
 	public static void setUp() throws IOException {
-		Utils.loadDatabase();
+		new Utils().loadDatabase();
 	}
 
 	@AfterClass
 	public static void reset() throws IOException {
-		Utils.unloadDatabase();
+		new Utils().unloadDatabase();
 	}
 
 	@Test

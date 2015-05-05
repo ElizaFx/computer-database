@@ -1,14 +1,13 @@
 package com.excilys.formation.cdb.ui.cmd;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.service.CompanyService;
+import com.excilys.formation.cdb.ui.CLI;
 
 public class DeleteCompanyCmd implements ICommand {
 
-	@Autowired
-	private CompanyService companyService;
+	private CompanyService companyService = (CompanyService) CLI.context
+			.getBean("companyService");
 	private final Company company;
 
 	public DeleteCompanyCmd(Company company) {

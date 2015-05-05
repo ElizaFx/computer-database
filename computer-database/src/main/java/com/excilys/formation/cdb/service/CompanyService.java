@@ -20,6 +20,8 @@ public class CompanyService implements ICompanyService {
 	private CompanyDAO companyDAO;
 	@Autowired
 	private ComputerDAO computerDAO;
+	@Autowired
+	private ConnectionFactory connectionFacotry;
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(CompanyService.class);
@@ -60,18 +62,18 @@ public class CompanyService implements ICompanyService {
 	public int remove(Long id) {
 		int res = 0;
 		try {
-			ConnectionFactory.createTransactionConnection();
+			connectionFacotry.createTransactionConnection();
 			computerDAO.findAllByCompany(id).stream()
 					.forEach(c -> computerDAO.remove(c.getId()));
 			res = companyDAO.remove(id);
-			ConnectionFactory.commit();
+			connectionFacotry.commit();
 		} catch (DAOException e) {
-			ConnectionFactory.rollback();
+			connectionFacotry.rollback();
 			LOGGER.error("Error in CompanyService.remove(" + id
 					+ ") rollback successfull", e);
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeTransactionConnection();
+			connectionFacotry.closeTransactionConnection();
 		}
 		return res;
 	}

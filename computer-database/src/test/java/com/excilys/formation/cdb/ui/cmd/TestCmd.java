@@ -29,6 +29,7 @@ public class TestCmd {
 
 	@BeforeClass
 	public static void setUp() throws IOException {
+		new Utils().loadDatabase();
 	}
 
 	@Before
@@ -38,7 +39,7 @@ public class TestCmd {
 
 	@AfterClass
 	public static void reset() throws IOException {
-		Utils.unloadDatabase();
+		new Utils().unloadDatabase();
 	}
 
 	@Test

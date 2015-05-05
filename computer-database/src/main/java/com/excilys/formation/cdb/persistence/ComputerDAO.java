@@ -12,6 +12,7 @@ import java.util.function.Predicate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.cdb.exception.DAOException;
@@ -26,9 +27,11 @@ import com.excilys.formation.cdb.util.Util;
  */
 @Repository
 public class ComputerDAO implements IComputerDAO {
-
 	private final static Logger LOGGER = LoggerFactory
 			.getLogger(ComputerDAO.class);
+
+	@Autowired
+	private ConnectionFactory connectionFacotry;
 
 	@Override
 	public Computer find(Long id) {
@@ -41,7 +44,7 @@ public class ComputerDAO implements IComputerDAO {
 			throw new DAOException("NullPointerException: ID null!");
 		}
 		try {
-			connection = ConnectionFactory.getConnection();
+			connection = connectionFacotry.getConnection();
 			ps = connection
 					.prepareStatement("SELECT * FROM "
 							+ "computer left outer join company on computer.company_id=company.id "
@@ -55,7 +58,7 @@ public class ComputerDAO implements IComputerDAO {
 			LOGGER.error("Error in ComputerDAO.find(" + id + ")", e);
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(ps, result);
+			connectionFacotry.closeConnection(ps, result);
 		}
 		return res;
 	}
@@ -70,7 +73,7 @@ public class ComputerDAO implements IComputerDAO {
 			throw new DAOException("NullPointerException: Model null!");
 		}
 		try {
-			connection = ConnectionFactory.getConnection();
+			connection = connectionFacotry.getConnection();
 			ps = connection.prepareStatement("INSERT INTO computer SET "
 					+ "NAME=?, INTRODUCED=?, DISCONTINUED=?, COMPANY_ID=?");
 			ps.setString(1, model.getName());
@@ -86,7 +89,7 @@ public class ComputerDAO implements IComputerDAO {
 			LOGGER.error("Error in ComputerDAO.insert(" + model + ")", e);
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(ps, null);
+			connectionFacotry.closeConnection(ps, null);
 		}
 		return res;
 	}
@@ -99,7 +102,7 @@ public class ComputerDAO implements IComputerDAO {
 			LOGGER.error("Error param null in CompanyDAO.remove(id)");
 			throw new DAOException("NullPointerException: Id null!");
 		}
-		Connection connection = ConnectionFactory.getConnection();
+		Connection connection = connectionFacotry.getConnection();
 		try {
 			ps = connection.prepareStatement("DELETE FROM computer WHERE ID=?");
 			ps.setLong(1, id);
@@ -108,7 +111,7 @@ public class ComputerDAO implements IComputerDAO {
 			LOGGER.error("Error in ComputerDAO.remove(" + id + ")", e);
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(ps, null);
+			connectionFacotry.closeConnection(ps, null);
 		}
 		LOGGER.info("Computer id : {} removed", id);
 		return res;
@@ -124,7 +127,7 @@ public class ComputerDAO implements IComputerDAO {
 			throw new DAOException("NullPointerException: Model null!");
 		}
 		try {
-			connection = ConnectionFactory.getConnection();
+			connection = connectionFacotry.getConnection();
 			ps = connection
 					.prepareStatement("UPDATE computer SET "
 							+ "NAME=?, INTRODUCED=?, DISCONTINUED=?, COMPANY_ID=? WHERE ID=?");
@@ -142,7 +145,7 @@ public class ComputerDAO implements IComputerDAO {
 			LOGGER.error("Error in ComputerDAO.update(" + model + ")", e);
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(ps, null);
+			connectionFacotry.closeConnection(ps, null);
 		}
 		return res;
 	}
@@ -154,7 +157,7 @@ public class ComputerDAO implements IComputerDAO {
 		Statement statement = null;
 		ResultSet result = null;
 		try {
-			connection = ConnectionFactory.getConnection();
+			connection = connectionFacotry.getConnection();
 			statement = connection.createStatement();
 			result = statement
 					.executeQuery("SELECT * FROM "
@@ -166,7 +169,7 @@ public class ComputerDAO implements IComputerDAO {
 			LOGGER.error("Error in ComputerDAO.findAll()", e);
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(statement, result);
+			connectionFacotry.closeConnection(statement, result);
 		}
 		return res;
 	}
@@ -187,7 +190,7 @@ public class ComputerDAO implements IComputerDAO {
 		PreparedStatement statement = null;
 		ResultSet result = null;
 		try {
-			connection = ConnectionFactory.getConnection();
+			connection = connectionFacotry.getConnection();
 			statement = connection
 					.prepareStatement("SELECT count(*) as size FROM "
 							+ "computer left outer join company on computer.company_id=company.id "
@@ -207,7 +210,7 @@ public class ComputerDAO implements IComputerDAO {
 			LOGGER.error("Error in ComputerDAO.find(" + search + ")", e);
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(statement, result);
+			connectionFacotry.closeConnection(statement, result);
 		}
 		return res;
 	}
@@ -241,7 +244,7 @@ public class ComputerDAO implements IComputerDAO {
 		PreparedStatement statement = null;
 		ResultSet result = null;
 		try {
-			connection = ConnectionFactory.getConnection();
+			connection = connectionFacotry.getConnection();
 			statement = connection
 					.prepareStatement("SELECT * from "
 							+ "computer left outer join company on computer.company_id=company.id "
@@ -267,7 +270,7 @@ public class ComputerDAO implements IComputerDAO {
 					+ limit + "," + offset + "," + ob + "," + asc + ")", e);
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(statement, result);
+			connectionFacotry.closeConnection(statement, result);
 		}
 		return res;
 	}
@@ -283,7 +286,7 @@ public class ComputerDAO implements IComputerDAO {
 			throw new DAOException("NullPointerException: Id null!");
 		}
 		try {
-			connection = ConnectionFactory.getConnection();
+			connection = connectionFacotry.getConnection();
 			statement = connection
 					.prepareStatement("SELECT * FROM "
 							+ "computer left outer join company on computer.company_id=company.id "
@@ -298,7 +301,7 @@ public class ComputerDAO implements IComputerDAO {
 					+ ")", e);
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(statement, result);
+			connectionFacotry.closeConnection(statement, result);
 		}
 		return res;
 	}

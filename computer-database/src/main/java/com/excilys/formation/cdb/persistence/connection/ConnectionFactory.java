@@ -5,13 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.jca.context.SpringContextResourceAdapter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -22,16 +19,10 @@ import com.excilys.formation.cdb.exception.DAOException;
 public class ConnectionFactory {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ConnectionFactory.class);
-	private static ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>() {
-		private DataSource dataSource;
+	@Autowired
+	private DriverManagerDataSource dataSource;
 
-		{
-			ApplicationContext context = new ClassPathXmlApplicationContext(
-					"applicationContext.xml");
-			SpringContextResourceAdapter sd = new SpringContextResourceAdapter();
-			dataSource = context.getBean("dataSource", DataSource.class);
-			System.out.println(context.getAutowireCapableBeanFactory());
-		}
+	private ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>() {
 
 		@Override
 		protected Connection initialValue() {
@@ -47,22 +38,12 @@ public class ConnectionFactory {
 		}
 	};
 
-	static {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			LOGGER.error(
-					"Error in ConnectionFactory while getting JDBC driver", e);
-			throw new DAOException(e);
-		}
-	}
-
 	/**
 	 * @return new connection
 	 * @throws SQLException
 	 *             if a database access error occurs or the url is null
 	 */
-	public static Connection getConnection() {
+	public Connection getConnection() {
 		return threadLocal.get();
 		/*
 		 * try { ApplicationContext context = new
@@ -79,7 +60,7 @@ public class ConnectionFactory {
 	 * @throws SQLException
 	 *             if a database access error occurs or the url is null
 	 */
-	public static Connection createTransactionConnection() {
+	public Connection createTransactionConnection() {
 		try {
 			Connection c = getConnection();
 			c.setAutoCommit(false);
@@ -106,7 +87,7 @@ public class ConnectionFactory {
 	 *             is called on a closed connection or this Connection object is
 	 *             in auto-commit mode
 	 */
-	public static void rollback() {
+	public void rollback() {
 		try {
 			getConnection().rollback();
 		} catch (SQLException e) {
@@ -115,7 +96,7 @@ public class ConnectionFactory {
 		}
 	}
 
-	public static void commit() {
+	public void commit() {
 		try {
 			getConnection().commit();
 		} catch (SQLException e) {
@@ -124,7 +105,7 @@ public class ConnectionFactory {
 		}
 	}
 
-	public static boolean isAutoCommit() {
+	public boolean isAutoCommit() {
 		try {
 			return getConnection().getAutoCommit();
 		} catch (SQLException e) {
@@ -141,7 +122,7 @@ public class ConnectionFactory {
 	 * @param r
 	 *            result set to close or null
 	 */
-	public static void closeConnection(Statement s, ResultSet r) {
+	public void closeConnection(Statement s, ResultSet r) {
 		try {
 			if ((r != null) && !r.isClosed()) {
 				r.close();
@@ -183,7 +164,7 @@ public class ConnectionFactory {
 	 * @param r
 	 *            result set to close or null
 	 */
-	public static void closeTransactionConnection() {
+	public void closeTransactionConnection() {
 		try {
 			Connection c = getConnection();
 			if ((c != null) && !c.isClosed()) {

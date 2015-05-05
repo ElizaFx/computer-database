@@ -33,12 +33,12 @@ public class TestService {
 
 	@Before
 	public void setUp() throws IOException {
-		Utils.loadDatabase();
+		new Utils().loadDatabase();
 	}
 
 	@After
 	public void reset() throws IOException {
-		Utils.unloadDatabase();
+		new Utils().unloadDatabase();
 	}
 
 	@Test

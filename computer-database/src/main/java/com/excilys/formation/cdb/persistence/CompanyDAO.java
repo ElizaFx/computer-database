@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.cdb.exception.DAOException;
@@ -24,9 +25,11 @@ import com.excilys.formation.cdb.persistence.connection.ConnectionFactory;
  */
 @Repository
 public class CompanyDAO implements ICompanyDAO {
-
 	private final static Logger LOGGER = LoggerFactory
 			.getLogger(CompanyDAO.class);
+
+	@Autowired
+	private ConnectionFactory connectionFacotry;
 
 	@Override
 	public Company find(Long id) {
@@ -39,7 +42,7 @@ public class CompanyDAO implements ICompanyDAO {
 			throw new DAOException("NullPointerException: Id null!");
 		}
 		try {
-			connection = ConnectionFactory.getConnection();
+			connection = connectionFacotry.getConnection();
 			ps = connection
 					.prepareStatement("SELECT * FROM company WHERE ID=?");
 			ps.setObject(1, id);
@@ -51,7 +54,7 @@ public class CompanyDAO implements ICompanyDAO {
 			LOGGER.error("Error in CompanyDAO.find(" + id + ")", e);
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(ps, result);
+			connectionFacotry.closeConnection(ps, result);
 		}
 		return res;
 	}
@@ -63,7 +66,7 @@ public class CompanyDAO implements ICompanyDAO {
 		Statement statement = null;
 		ResultSet result = null;
 		try {
-			connection = ConnectionFactory.getConnection();
+			connection = connectionFacotry.getConnection();
 			statement = connection.createStatement();
 			result = statement.executeQuery("select * from company");
 			while (result.next()) {
@@ -73,7 +76,7 @@ public class CompanyDAO implements ICompanyDAO {
 			LOGGER.error("Error in CompanyDAO.findAll()", e);
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(statement, result);
+			connectionFacotry.closeConnection(statement, result);
 		}
 		return res;
 	}
@@ -94,7 +97,7 @@ public class CompanyDAO implements ICompanyDAO {
 		Statement statement = null;
 		ResultSet result = null;
 		try {
-			connection = ConnectionFactory.getConnection();
+			connection = connectionFacotry.getConnection();
 			statement = connection.createStatement();
 			result = statement
 					.executeQuery("SELECT count(*) as size FROM company");
@@ -105,7 +108,7 @@ public class CompanyDAO implements ICompanyDAO {
 			LOGGER.error("Error in CompanyDAO.count()", e);
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(statement, result);
+			connectionFacotry.closeConnection(statement, result);
 		}
 		return res;
 	}
@@ -114,7 +117,7 @@ public class CompanyDAO implements ICompanyDAO {
 	public int remove(Long id) {
 		int res = 0;
 		PreparedStatement ps = null;
-		Connection connection = ConnectionFactory.getConnection();
+		Connection connection = connectionFacotry.getConnection();
 		if (id == null) {
 			LOGGER.error("Error param null in CompanyDAO.remove(id)");
 			throw new DAOException("NullPointerException: Id null!");
@@ -128,7 +131,7 @@ public class CompanyDAO implements ICompanyDAO {
 			LOGGER.error("Error in CompanyDAO.remove(" + id + ")", e);
 			throw new DAOException(e);
 		} finally {
-			ConnectionFactory.closeConnection(ps, null);
+			connectionFacotry.closeConnection(ps, null);
 		}
 		LOGGER.info("Company id : {} removed", id);
 		return res;
