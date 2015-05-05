@@ -7,14 +7,14 @@ import java.util.Set;
 
 import com.excilys.formation.cdb.exception.RequestNotFoundException;
 import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.service.CompanyService;
+import com.excilys.formation.cdb.service.ICompanyService;
 import com.excilys.formation.cdb.ui.CLI;
 import com.excilys.formation.cdb.ui.cmd.CreateComputerCmd;
 import com.excilys.formation.cdb.ui.cmd.ICommand;
 import com.excilys.formation.cdb.util.Util;
 
 public class MKRequest implements IRequest {
-	private CompanyService companyService = (CompanyService) CLI.context
+	private ICompanyService companyService = (ICompanyService) CLI.context
 			.getBean("companyService");
 	private final List<String> request;
 

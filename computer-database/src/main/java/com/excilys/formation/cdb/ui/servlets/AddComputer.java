@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.formation.cdb.mapper.CompanyMapper;
@@ -25,7 +24,6 @@ import com.excilys.formation.cdb.validation.NameValidator;
  * Servlet implementation class AddComputer
  */
 @WebServlet("/addComputer")
-@Controller
 public class AddComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@Autowired

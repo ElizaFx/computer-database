@@ -8,6 +8,7 @@ import java.sql.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,37 +23,13 @@ public class ConnectionFactory {
 	@Autowired
 	private DriverManagerDataSource dataSource;
 
-	private ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>() {
-
-		@Override
-		protected Connection initialValue() {
-			try {
-				return dataSource.getConnection();
-			} catch (SQLException e) {
-				LOGGER.error(
-						"Error in ConnectionFactory while getting new connection",
-						e);
-				LOGGER.error("Error in getConnection()", e);
-				throw new DAOException(e);
-			}
-		}
-	};
-
 	/**
 	 * @return new connection
 	 * @throws SQLException
 	 *             if a database access error occurs or the url is null
 	 */
 	public Connection getConnection() {
-		return threadLocal.get();
-		/*
-		 * try { ApplicationContext context = new
-		 * ClassPathXmlApplicationContext( "springModules.xml"); dataSource =
-		 * (DataSource) context.getBean("dataSource"); return
-		 * dataSource.getConnection(); } catch (SQLException e) {
-		 * LOGGER.error("Error in getConnection()", e); throw new
-		 * DAOException(e); }
-		 */
+		return DataSourceUtils.getConnection(dataSource);
 	}
 
 	/**
@@ -61,17 +38,10 @@ public class ConnectionFactory {
 	 *             if a database access error occurs or the url is null
 	 */
 	public Connection createTransactionConnection() {
-		try {
-			Connection c = getConnection();
-			c.setAutoCommit(false);
-			LOGGER.info("new Transation Connection");
-			return c;
-		} catch (SQLException e) {
-			LOGGER.error(
-					"Error in ConnectionFactory.createTransactionConnection()",
-					e);
-			throw new DAOException(e);
-		}
+
+		LOGGER.info("new Transation Connection");
+		return DataSourceUtils.getConnection(dataSource);
+
 	}
 
 	/**
@@ -147,7 +117,6 @@ public class ConnectionFactory {
 			Connection c = getConnection();
 			if ((c != null) && !c.isClosed() && isAutoCommit()) {
 				c.close();
-				threadLocal.remove();
 			}
 		} catch (SQLException e) {
 			LOGGER.error("Error in ConnectionFactory while closing connection",
@@ -169,7 +138,6 @@ public class ConnectionFactory {
 			Connection c = getConnection();
 			if ((c != null) && !c.isClosed()) {
 				c.close();
-				threadLocal.remove();
 			}
 		} catch (SQLException e) {
 			LOGGER.error("Error in ConnectionFactory", e);

@@ -4,11 +4,11 @@ import java.time.LocalDate;
 
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.service.ComputerService;
+import com.excilys.formation.cdb.service.IComputerService;
 import com.excilys.formation.cdb.ui.CLI;
 
 public class UpdateComputerCmd implements ICommand {
-	private ComputerService computerService = (ComputerService) CLI.context
+	private IComputerService computerService = (IComputerService) CLI.context
 			.getBean("computerService");
 	private final Computer computer;
 

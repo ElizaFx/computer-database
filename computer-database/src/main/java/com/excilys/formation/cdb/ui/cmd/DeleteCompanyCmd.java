@@ -1,13 +1,13 @@
 package com.excilys.formation.cdb.ui.cmd;
 
 import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.service.CompanyService;
+import com.excilys.formation.cdb.service.ICompanyService;
 import com.excilys.formation.cdb.ui.CLI;
 
 public class DeleteCompanyCmd implements ICommand {
 
-	private CompanyService companyService = (CompanyService) CLI.context
-			.getBean("companyService");
+	private ICompanyService companyService = CLI.context.getBean(
+			"companyService", ICompanyService.class);
 	private final Company company;
 
 	public DeleteCompanyCmd(Company company) {

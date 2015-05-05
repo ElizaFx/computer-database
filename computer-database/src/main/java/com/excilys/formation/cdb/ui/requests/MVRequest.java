@@ -7,17 +7,17 @@ import java.util.Set;
 
 import com.excilys.formation.cdb.exception.RequestNotFoundException;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.service.CompanyService;
-import com.excilys.formation.cdb.service.ComputerService;
+import com.excilys.formation.cdb.service.ICompanyService;
+import com.excilys.formation.cdb.service.IComputerService;
 import com.excilys.formation.cdb.ui.CLI;
 import com.excilys.formation.cdb.ui.cmd.ICommand;
 import com.excilys.formation.cdb.ui.cmd.UpdateComputerCmd;
 import com.excilys.formation.cdb.util.Util;
 
 public class MVRequest implements IRequest {
-	private ComputerService computerService = (ComputerService) CLI.context
+	private IComputerService computerService = (IComputerService) CLI.context
 			.getBean("computerService");
-	private CompanyService companyService = (CompanyService) CLI.context
+	private ICompanyService companyService = (ICompanyService) CLI.context
 			.getBean("companyService");
 	private final List<String> request;
 

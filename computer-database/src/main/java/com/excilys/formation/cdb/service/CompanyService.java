@@ -7,8 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.persistence.CompanyDAO;
 import com.excilys.formation.cdb.persistence.ComputerDAO;
@@ -31,6 +32,8 @@ public class CompanyService implements ICompanyService {
 	 */
 	@Override
 	public List<Company> findAll() {
+		System.out.println(TransactionSynchronizationManager
+				.isSynchronizationActive());
 		return companyDAO.findAll();
 	}
 
@@ -58,23 +61,23 @@ public class CompanyService implements ICompanyService {
 		return companyDAO.count();
 	}
 
+	@Transactional(rollbackFor = RuntimeException.class)
 	@Override
 	public int remove(Long id) {
 		int res = 0;
-		try {
-			connectionFacotry.createTransactionConnection();
-			computerDAO.findAllByCompany(id).stream()
-					.forEach(c -> computerDAO.remove(c.getId()));
-			res = companyDAO.remove(id);
-			connectionFacotry.commit();
-		} catch (DAOException e) {
-			connectionFacotry.rollback();
-			LOGGER.error("Error in CompanyService.remove(" + id
-					+ ") rollback successfull", e);
-			throw new DAOException(e);
-		} finally {
-			connectionFacotry.closeTransactionConnection();
-		}
+		System.out.println(TransactionSynchronizationManager
+				.isSynchronizationActive());
+		System.out.println(connectionFacotry.getConnection());
+
+		connectionFacotry.createTransactionConnection();
+		System.out.println(connectionFacotry.getConnection());
+		computerDAO.findAllByCompany(id).stream()
+				.forEach(c -> computerDAO.remove(c.getId()));
+		System.out.println(connectionFacotry.getConnection());
+		res = companyDAO.remove(id);
+
+		connectionFacotry.closeTransactionConnection();
+
 		return res;
 	}
 }

@@ -9,7 +9,6 @@ import java.util.List;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.formation.cdb.exception.RequestNotFoundException;
 import com.excilys.formation.cdb.ui.cmd.ICommand;
@@ -28,8 +27,6 @@ public class CLI {
 
 	public static void main(String[] args) throws IOException {
 		CLI cli = new CLI();
-
-		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(cli);
 		cli.run();
 	}
 

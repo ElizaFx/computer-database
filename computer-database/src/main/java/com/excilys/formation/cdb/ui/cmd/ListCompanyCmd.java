@@ -1,11 +1,11 @@
 package com.excilys.formation.cdb.ui.cmd;
 
 import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.service.CompanyService;
+import com.excilys.formation.cdb.service.ICompanyService;
 import com.excilys.formation.cdb.ui.CLI;
 
 public class ListCompanyCmd implements ICommand {
-	private CompanyService companyService = (CompanyService) CLI.context
+	private ICompanyService companyService = (ICompanyService) CLI.context
 			.getBean("companyService");
 
 	@Override

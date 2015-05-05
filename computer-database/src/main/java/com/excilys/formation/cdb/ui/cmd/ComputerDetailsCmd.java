@@ -4,14 +4,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.service.ComputerService;
+import com.excilys.formation.cdb.service.IComputerService;
 import com.excilys.formation.cdb.ui.CLI;
 
 @ContextConfiguration("/applicationContext.xml")
 public class ComputerDetailsCmd implements ICommand {
 
-	private ComputerService computerService = (ComputerService) CLI.context
-			.getBean("computerService");
+	private IComputerService computerService = CLI.context.getBean(
+			"computerService", IComputerService.class);
 	private long id;
 
 	public ComputerDetailsCmd(long id) {
