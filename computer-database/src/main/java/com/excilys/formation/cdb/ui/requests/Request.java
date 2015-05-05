@@ -7,6 +7,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+
 import com.excilys.formation.cdb.exception.RequestNotFoundException;
 import com.excilys.formation.cdb.ui.cmd.ICommand;
 
@@ -33,6 +35,8 @@ public class Request implements IRequest {
 		while (regexMatcher.find()) {
 			this.request.add(regexMatcher.group().replace("\"", ""));
 		}
+
+		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 	}
 
 	@Override

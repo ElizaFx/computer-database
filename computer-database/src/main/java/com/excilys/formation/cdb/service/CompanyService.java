@@ -5,6 +5,8 @@ import java.util.function.Predicate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.model.Company;
@@ -12,16 +14,12 @@ import com.excilys.formation.cdb.persistence.CompanyDAO;
 import com.excilys.formation.cdb.persistence.ComputerDAO;
 import com.excilys.formation.cdb.persistence.connection.ConnectionFactory;
 
+@Service
 public class CompanyService implements ICompanyService {
-	public static CompanyService INSTANCE;
-
-	public static CompanyService getINSTANCE() {
-		return INSTANCE;
-	}
-
-	public static void setINSTANCE(CompanyService iNSTANCE) {
-		INSTANCE = iNSTANCE;
-	}
+	@Autowired
+	private CompanyDAO companyDAO;
+	@Autowired
+	private ComputerDAO computerDAO;
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(CompanyService.class);
@@ -31,7 +29,7 @@ public class CompanyService implements ICompanyService {
 	 */
 	@Override
 	public List<Company> findAll() {
-		return CompanyDAO.INSTANCE.findAll();
+		return companyDAO.findAll();
 	}
 
 	/**
@@ -40,7 +38,7 @@ public class CompanyService implements ICompanyService {
 	 */
 	@Override
 	public Company find(Predicate<? super Company> predicate) {
-		return CompanyDAO.INSTANCE.find(predicate);
+		return companyDAO.find(predicate);
 	}
 
 	/**
@@ -50,12 +48,12 @@ public class CompanyService implements ICompanyService {
 	 */
 	@Override
 	public Company find(Long id) {
-		return CompanyDAO.INSTANCE.find(id);
+		return companyDAO.find(id);
 	}
 
 	@Override
 	public int count() {
-		return CompanyDAO.INSTANCE.count();
+		return companyDAO.count();
 	}
 
 	@Override
@@ -63,9 +61,9 @@ public class CompanyService implements ICompanyService {
 		int res = 0;
 		try {
 			ConnectionFactory.createTransactionConnection();
-			ComputerDAO.INSTANCE.findAllByCompany(id).stream()
-					.forEach(c -> ComputerDAO.INSTANCE.remove(c.getId()));
-			res = CompanyDAO.INSTANCE.remove(id);
+			computerDAO.findAllByCompany(id).stream()
+					.forEach(c -> computerDAO.remove(c.getId()));
+			res = companyDAO.remove(id);
 			ConnectionFactory.commit();
 		} catch (DAOException e) {
 			ConnectionFactory.rollback();

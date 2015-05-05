@@ -2,11 +2,15 @@ package com.excilys.formation.cdb.ui.servlets;
 
 import java.io.IOException;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
@@ -22,7 +26,19 @@ import com.excilys.formation.cdb.validation.NameValidator;
  */
 @WebServlet("/editComputer")
 public class EditComputer extends HttpServlet {
+	@Autowired
+	private CompanyService companyService;
 	private static final long serialVersionUID = 1L;
+
+	@Autowired
+	private ComputerService computerService;
+
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
+				config.getServletContext());
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -41,8 +57,8 @@ public class EditComputer extends HttpServlet {
 			request.setAttribute("danger", "Error: This computer does't exist!");
 		}
 
-		request.setAttribute("lCompanies", CompanyMapper
-				.toDTO(CompanyService.INSTANCE.findAll()));
+		request.setAttribute("lCompanies",
+				CompanyMapper.toDTO(companyService.findAll()));
 		request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/editComputer.jsp")
 				.forward(request, response);
@@ -92,7 +108,7 @@ public class EditComputer extends HttpServlet {
 			computer.getOutput().setIntroduced(introduced.getOutput());
 			computer.getOutput().setDiscontinued(discontinued.getOutput());
 			computer.getOutput().setCompany(company.getOutput());
-			ComputerService.INSTANCE.update(computer.getOutput());
+			computerService.update(computer.getOutput());
 			request.setAttribute("success",
 					"Computer " + computerName.getOutput() + " edited");
 		} else {
@@ -105,8 +121,8 @@ public class EditComputer extends HttpServlet {
 		} else {
 			request.setAttribute("danger", "Error: This computer does't exist!");
 		}
-		request.setAttribute("lCompanies", CompanyMapper
-				.toDTO(CompanyService.INSTANCE.findAll()));
+		request.setAttribute("lCompanies",
+				CompanyMapper.toDTO(companyService.findAll()));
 		request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/editComputer.jsp")
 				.forward(request, response);

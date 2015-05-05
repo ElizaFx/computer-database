@@ -3,6 +3,9 @@ package com.excilys.formation.cdb.service;
 import java.util.List;
 import java.util.function.Predicate;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
@@ -11,24 +14,18 @@ import com.excilys.formation.cdb.persistence.IComputerDAO.OrderBy;
 import com.excilys.formation.cdb.ui.Page;
 import com.excilys.formation.cdb.util.Util;
 
+@Service
 public class ComputerService implements IComputerService {
 
-	public static ComputerService INSTANCE;
-
-	public static ComputerService getINSTANCE() {
-		return INSTANCE;
-	}
-
-	public static void setINSTANCE(ComputerService iNSTANCE) {
-		INSTANCE = iNSTANCE;
-	}
+	@Autowired
+	private ComputerDAO computerDAO;
 
 	/**
 	 * @return all row of the table of Computer
 	 */
 	@Override
 	public List<Computer> findAll() {
-		return ComputerDAO.INSTANCE.findAll();
+		return computerDAO.findAll();
 	}
 
 	/**
@@ -37,7 +34,7 @@ public class ComputerService implements IComputerService {
 	 */
 	@Override
 	public Computer find(Predicate<? super Computer> predicate) {
-		return ComputerDAO.INSTANCE.find(predicate);
+		return computerDAO.find(predicate);
 	}
 
 	/**
@@ -48,7 +45,7 @@ public class ComputerService implements IComputerService {
 	 */
 	@Override
 	public int insert(Computer model) {
-		return ComputerDAO.INSTANCE.insert(model);
+		return computerDAO.insert(model);
 	}
 
 	/**
@@ -60,7 +57,7 @@ public class ComputerService implements IComputerService {
 	 */
 	@Override
 	public int remove(Long id) {
-		return ComputerDAO.INSTANCE.remove(id);
+		return computerDAO.remove(id);
 	}
 
 	/**
@@ -72,7 +69,7 @@ public class ComputerService implements IComputerService {
 	 */
 	@Override
 	public int update(Computer model) {
-		return ComputerDAO.INSTANCE.update(model);
+		return computerDAO.update(model);
 	}
 
 	/**
@@ -82,12 +79,12 @@ public class ComputerService implements IComputerService {
 	 */
 	@Override
 	public Computer find(Long id) {
-		return ComputerDAO.INSTANCE.find(id);
+		return computerDAO.find(id);
 	}
 
 	@Override
 	public int count() {
-		return ComputerDAO.INSTANCE.count();
+		return computerDAO.count();
 	}
 
 	@Override
@@ -95,7 +92,7 @@ public class ComputerService implements IComputerService {
 		if (search == null) {
 			search = "";
 		}
-		return ComputerDAO.INSTANCE.count(search);
+		return computerDAO.count(search);
 	}
 
 	@Override
@@ -113,8 +110,8 @@ public class ComputerService implements IComputerService {
 		if (offset < 0) {
 			offset = 0;
 		}
-		return ComputerMapper.toDTO(ComputerDAO.INSTANCE.pagination(search,
-				limit, offset, ob, asc));
+		return ComputerMapper.toDTO(computerDAO.pagination(search, limit,
+				offset, ob, asc));
 	}
 
 	@Override
@@ -148,4 +145,8 @@ public class ComputerService implements IComputerService {
 		return 0;
 	}
 
+	@Override
+	public List<Computer> findAllByCompany(Long companyId) {
+		return computerDAO.findAllByCompany(companyId);
+	}
 }

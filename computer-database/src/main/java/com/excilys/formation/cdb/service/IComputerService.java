@@ -75,4 +75,11 @@ public interface IComputerService extends Paginable<ComputerDTO> {
 	 * @return number of deletions
 	 */
 	public int remove(List<Long> ids);
+
+	/**
+	 * 
+	 * @param companyId
+	 * @return list of all computers from this company
+	 */
+	public List<Computer> findAllByCompany(Long companyId);
 }

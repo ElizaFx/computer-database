@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.mapper.CompanyMapper;
@@ -21,20 +22,11 @@ import com.excilys.formation.cdb.persistence.connection.ConnectionFactory;
  *
  * @author Joxit
  */
+@Repository
 public class CompanyDAO implements ICompanyDAO {
-
-	public static CompanyDAO INSTANCE;
 
 	private final static Logger LOGGER = LoggerFactory
 			.getLogger(CompanyDAO.class);
-
-	public static CompanyDAO getInstance() {
-		return INSTANCE;
-	}
-
-	public static void setINSTANCE(CompanyDAO INSTANCE) {
-		CompanyDAO.INSTANCE = INSTANCE;
-	}
 
 	@Override
 	public Company find(Long id) {

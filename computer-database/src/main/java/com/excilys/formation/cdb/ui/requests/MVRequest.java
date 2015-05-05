@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.formation.cdb.exception.RequestNotFoundException;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.CompanyService;
@@ -14,6 +16,10 @@ import com.excilys.formation.cdb.ui.cmd.UpdateComputerCmd;
 import com.excilys.formation.cdb.util.Util;
 
 public class MVRequest implements IRequest {
+	@Autowired
+	private ComputerService computerService;
+	@Autowired
+	private CompanyService companyService;
 	private final List<String> request;
 
 	public final static String CMD = "mv";
@@ -89,7 +95,7 @@ public class MVRequest implements IRequest {
 		if (id == null) {
 			throw new RequestNotFoundException("UPDATE ERROR id not found");
 		}
-		Computer computer = ComputerService.INSTANCE.find(id);
+		Computer computer = computerService.find(id);
 		if (computer == null) {
 			throw new RequestNotFoundException(
 					"UPDATE ERROR no computer for this id");
@@ -107,7 +113,7 @@ public class MVRequest implements IRequest {
 			hasChanges = true;
 		}
 		if ((companyId != null) && (companyId != 0)) {
-			computer.setCompany(CompanyService.INSTANCE.find(companyId));
+			computer.setCompany(companyService.find(companyId));
 			hasChanges = true;
 		}
 		if (hasChanges) {

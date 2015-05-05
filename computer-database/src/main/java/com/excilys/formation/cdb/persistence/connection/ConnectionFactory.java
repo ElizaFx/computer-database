@@ -9,28 +9,33 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jca.context.SpringContextResourceAdapter;
 import org.springframework.stereotype.Component;
+import org.springframework.test.context.ContextConfiguration;
 
 import com.excilys.formation.cdb.exception.DAOException;
-import com.jolbox.bonecp.BoneCP;
 
 @Component
+@ContextConfiguration("/applicationContext.xml")
 public class ConnectionFactory {
-	private static final BoneCP connectionPool;
-	private static final String properties = "/config.properties";
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ConnectionFactory.class);
 	private static ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>() {
+		private DataSource dataSource;
+
+		{
+			ApplicationContext context = new ClassPathXmlApplicationContext(
+					"applicationContext.xml");
+			SpringContextResourceAdapter sd = new SpringContextResourceAdapter();
+			dataSource = context.getBean("dataSource", DataSource.class);
+			System.out.println(context.getAutowireCapableBeanFactory());
+		}
 
 		@Override
 		protected Connection initialValue() {
 			try {
-				ApplicationContext context = new ClassPathXmlApplicationContext(
-						"springModules.xml");
-				dataSource = (DataSource) context.getBean("dataSource");
 				return dataSource.getConnection();
 			} catch (SQLException e) {
 				LOGGER.error(
@@ -41,12 +46,6 @@ public class ConnectionFactory {
 			}
 		}
 	};
-	@Autowired
-	public static DataSource dataSource;
-
-	public void setDataSource(DataSource dataSource) {
-		ConnectionFactory.dataSource = dataSource;
-	}
 
 	static {
 		try {
@@ -54,15 +53,6 @@ public class ConnectionFactory {
 		} catch (ClassNotFoundException e) {
 			LOGGER.error(
 					"Error in ConnectionFactory while getting JDBC driver", e);
-			throw new DAOException(e);
-		}
-		try {
-			ConnectionProperties conf = new ConnectionProperties(properties);
-			connectionPool = new BoneCP(conf);
-		} catch (SQLException e) {
-			LOGGER.error(
-					"Error in ConnectionFactory while building connection pool",
-					e);
 			throw new DAOException(e);
 		}
 	}

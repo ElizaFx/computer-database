@@ -2,11 +2,15 @@ package com.excilys.formation.cdb.ui.cmd;
 
 import java.time.LocalDate;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.persistence.ComputerDAO;
+import com.excilys.formation.cdb.service.ComputerService;
 
 public class UpdateComputerCmd implements ICommand {
+	@Autowired
+	private ComputerService computerService;
 	private final Computer computer;
 
 	public UpdateComputerCmd(Computer computer) {
@@ -23,7 +27,7 @@ public class UpdateComputerCmd implements ICommand {
 		if (computer == null) {
 			System.out.println("Update failed : Computer is null");
 		}
-		if (ComputerDAO.INSTANCE.update(computer) == 1) {
+		if (computerService.update(computer) == 1) {
 			System.out.println("Entry updated." + computer);
 		} else {
 			System.out

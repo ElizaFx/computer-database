@@ -12,6 +12,7 @@ import java.util.function.Predicate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
@@ -23,19 +24,11 @@ import com.excilys.formation.cdb.util.Util;
  *
  * @author Joxit
  */
+@Repository
 public class ComputerDAO implements IComputerDAO {
 
-	public static ComputerDAO INSTANCE;
 	private final static Logger LOGGER = LoggerFactory
 			.getLogger(ComputerDAO.class);
-
-	public static ComputerDAO getINSTANCE() {
-		return INSTANCE;
-	}
-
-	public static void setINSTANCE(ComputerDAO iNSTANCE) {
-		INSTANCE = iNSTANCE;
-	}
 
 	@Override
 	public Computer find(Long id) {

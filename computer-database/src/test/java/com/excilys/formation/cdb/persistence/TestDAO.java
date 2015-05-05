@@ -11,6 +11,10 @@ import java.text.ParseException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.formation.cdb.Utils;
 import com.excilys.formation.cdb.dto.CompanyDTO;
@@ -26,7 +30,14 @@ import com.excilys.formation.cdb.validation.DateValidator;
  *
  * @author Joxit
  */
+@ContextConfiguration("/applicationContext.xml")
+@RunWith(SpringJUnit4ClassRunner.class)
 public class TestDAO {
+
+	@Autowired
+	private CompanyDAO companyDAO;
+	@Autowired
+	private ComputerDAO computerDAO;
 
 	@BeforeClass
 	public static void setUp() throws IOException {
@@ -40,22 +51,19 @@ public class TestDAO {
 
 	@Test
 	public void findAllComputer() {
-		ComputerDAO crf = ComputerDAO.INSTANCE;
-		assertEquals(273, crf.findAll().size());
-		assertEquals(273, crf.count());
-		assertEquals(30, crf.findAllByCompany(1l).size());
+		assertEquals(273, computerDAO.findAll().size());
+		assertEquals(273, computerDAO.count());
+		assertEquals(30, computerDAO.findAllByCompany(1l).size());
 	}
 
 	@Test
 	public void findAllCompanies() {
-		CompanyDAO cyf = CompanyDAO.INSTANCE;
-		assertEquals(42, cyf.findAll().size());
-		assertEquals(42, cyf.count());
+		assertEquals(42, companyDAO.findAll().size());
+		assertEquals(42, companyDAO.count());
 	}
 
 	@Test
 	public void findComputer() throws ParseException {
-		ComputerDAO crf = ComputerDAO.INSTANCE;
 		Computer elfII = new Computer();
 		elfII.setId(20l);
 		elfII.setName("ELF II");
@@ -64,78 +72,76 @@ public class TestDAO {
 		netronics.setId(4l);
 		netronics.setName("Netronics");
 		elfII.setCompany(netronics);
-		Computer computer = crf.find(20l);
+		Computer computer = computerDAO.find(20l);
 		assertNotNull(computer);
 		assertTrue(computer.equals(elfII));
-		assertNull(crf.find(-1l));
+		assertNull(computerDAO.find(-1l));
 	}
 
 	@Test
 	public void findCompany() {
-		CompanyDAO cyf = CompanyDAO.INSTANCE;
 
 		Company sony = new Company();
 		sony.setId(17l);
 		sony.setName("Sony");
 
-		Company company = cyf.find(17l);
+		Company company = companyDAO.find(17l);
 		assertNotNull(company);
 		assertTrue(company.equals(sony));
 
-		assertNull(cyf.find(2000l));
+		assertNull(companyDAO.find(2000l));
 	}
 
 	@Test
 	public void createUpdateRemoveComputer() {
-		ComputerDAO crf = ComputerDAO.INSTANCE;
-		crf.insert(new Computer("Joxit", null, null, CompanyDAO.INSTANCE
+		computerDAO.insert(new Computer("Joxit", null, null, companyDAO
 				.find(17l)));
 
-		Computer jox = crf.find(c -> (c.getName() != null)
+		Computer jox = computerDAO.find(c -> (c.getName() != null)
 				&& c.getName().equals("Joxit"));
 
 		assertNotNull(jox);
-		assertNull(crf.find(c -> c.getName().equals("Joxit42")));
+		assertNull(computerDAO.find(c -> c.getName().equals("Joxit42")));
 		jox.setName("Joxit42");
 
-		crf.update(jox);
-		assertNotNull(crf.find(c -> c.equals(jox)));
+		computerDAO.update(jox);
+		assertNotNull(computerDAO.find(c -> c.equals(jox)));
 
-		crf.remove(jox.getId());
-		assertNull(crf.find(c -> c.equals(jox)));
-		assertNull(crf.find(c -> c.getName().equals("Joxit")));
+		computerDAO.remove(jox.getId());
+		assertNull(computerDAO.find(c -> c.equals(jox)));
+		assertNull(computerDAO.find(c -> c.getName().equals("Joxit")));
 	}
 
 	@Test
 	public void deleteCompany() {
-		assertNotNull(CompanyDAO.INSTANCE.find(43l));
-		CompanyDAO.INSTANCE.remove(43l);
-		assertNull(CompanyDAO.INSTANCE.find(43l));
+		assertNotNull(companyDAO.find(43l));
+		companyDAO.remove(43l);
+		assertNull(companyDAO.find(43l));
 	}
 
 	@Test(expected = DAOException.class)
 	public void invalidCreation() {
-		ComputerDAO.INSTANCE.insert(null);
+		computerDAO.insert(null);
 	}
 
 	@Test(expected = DAOException.class)
 	public void invalidComputerFind() {
-		ComputerDAO.INSTANCE.find((Long) null);
+		computerDAO.find((Long) null);
 	}
 
 	@Test(expected = DAOException.class)
 	public void invalidUpdate() {
-		ComputerDAO.INSTANCE.update(null);
+		computerDAO.update(null);
 	}
 
 	@Test(expected = DAOException.class)
 	public void invalidRemove() {
-		ComputerDAO.INSTANCE.remove(null);
+		computerDAO.remove(null);
 	}
 
 	@Test(expected = DAOException.class)
 	public void invalidCompanyFind() {
-		CompanyDAO.INSTANCE.find((Long) null);
+		companyDAO.find((Long) null);
 	}
 
 	@Test(expected = NullPointerException.class)

@@ -56,7 +56,7 @@ public class ComputerMapper {
 	}
 
 	public static List<ComputerDTO> toDTO(List<Computer> computers) {
-		return computers.parallelStream().map(ComputerMapper::toDTO)
+		return computers.stream().map(ComputerMapper::toDTO)
 				.collect(Collectors.toList());
 	}
 
@@ -73,7 +73,7 @@ public class ComputerMapper {
 	}
 
 	public static List<Computer> toModel(List<ComputerDTO> dto) {
-		return dto.parallelStream().map(ComputerMapper::toModel)
+		return dto.stream().map(ComputerMapper::toModel)
 				.collect(Collectors.toList());
 	}
 }

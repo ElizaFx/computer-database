@@ -1,5 +1,7 @@
 package com.excilys.formation.cdb.validation;
 
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+
 public abstract class Validate<T> {
 	private final String input;
 	private String msg;
@@ -7,6 +9,7 @@ public abstract class Validate<T> {
 
 	public Validate(String input) {
 		this.input = input != null ? input.trim() : null;
+		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 	}
 
 	public boolean hasInput() {

@@ -4,19 +4,36 @@ import java.io.IOException;
 import java.util.List;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.formation.cdb.Utils;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("/applicationContext.xml")
 public class TestCmd {
+
+	@Autowired
+	private CompanyService companyService;
+	@Autowired
+	private ComputerService computerService;
 
 	@BeforeClass
 	public static void setUp() throws IOException {
-		Utils.loadDatabase();
+	}
+
+	@Before
+	public void before() {
+		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 	}
 
 	@AfterClass
@@ -38,7 +55,7 @@ public class TestCmd {
 
 	@Test
 	public void ShowComputerTest() {
-		List<Computer> l = ComputerService.INSTANCE.findAll();
+		List<Computer> l = computerService.findAll();
 		ICommand cmd = new ComputerDetailsCmd(l.get(
 				(int) (Math.random() * l.size())).getId());
 		cmd.execute();
@@ -47,21 +64,19 @@ public class TestCmd {
 	@Test
 	public void CreateUpdateDeleteComputerTest() {
 		ICommand cmd1 = new CreateComputerCmd(new Computer("Joxit", null, null,
-				CompanyService.INSTANCE.find(17l)));
+				companyService.find(17l)));
 		cmd1.execute();
-		Computer computer = ComputerService.INSTANCE
-				.find(c -> (c.getName() != null) && c.getName().equals("Joxit"));
+		Computer computer = computerService.find(c -> (c.getName() != null)
+				&& c.getName().equals("Joxit"));
 		assert (computer != null);
 		computer.setName("Joxit42");
 		ICommand cmd2 = new UpdateComputerCmd(computer);
 		cmd2.execute();
-		assert (ComputerService.INSTANCE.find(c -> c.getName()
-				.equals("Joxit42")) != null);
-		assert (ComputerService.INSTANCE.find(c -> c.getName().equals("Joxit")) == null);
+		assert (computerService.find(c -> c.getName().equals("Joxit42")) != null);
+		assert (computerService.find(c -> c.getName().equals("Joxit")) == null);
 		ICommand cmd3 = new DeleteComputerCmd(computer.getId());
 		cmd3.execute();
-		assert (ComputerService.INSTANCE.find(c -> c.getName()
-				.equals("Joxit42")) == null);
+		assert (computerService.find(c -> c.getName().equals("Joxit42")) == null);
 	}
 
 	@Test

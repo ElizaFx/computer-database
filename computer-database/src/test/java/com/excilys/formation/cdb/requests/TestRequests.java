@@ -9,6 +9,10 @@ import java.io.IOException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.formation.cdb.Utils;
 import com.excilys.formation.cdb.exception.RequestNotFoundException;
@@ -22,7 +26,12 @@ import com.excilys.formation.cdb.ui.requests.MVRequest;
 import com.excilys.formation.cdb.ui.requests.RMRequest;
 import com.excilys.formation.cdb.ui.requests.Request;
 
+@ContextConfiguration("/applicationContext.xml")
+@RunWith(SpringJUnit4ClassRunner.class)
 public class TestRequests {
+
+	@Autowired
+	private ComputerService computerService;
 
 	@BeforeClass
 	public static void setUp() throws IOException {
@@ -82,8 +91,8 @@ public class TestRequests {
 		} catch (RequestNotFoundException e) {
 			fail(sCmd1 + " should be a correct Command! : " + e.getMessage());
 		}
-		Computer computer = ComputerService.INSTANCE
-				.find(c -> (c.getName() != null) && c.getName().equals("Joxit"));
+		Computer computer = computerService.find(c -> (c.getName() != null)
+				&& c.getName().equals("Joxit"));
 		assertNotNull(computer);
 
 		String sCmd2 = MVRequest.CMD + " " + computer.getId() + " "
@@ -96,10 +105,8 @@ public class TestRequests {
 		} catch (RequestNotFoundException e) {
 			fail(sCmd2 + " should be a correct Command! : " + e.getMessage());
 		}
-		assertNotNull(ComputerService.INSTANCE.find(c -> c.getName().equals(
-				"Joxit 42")));
-		assertNull(ComputerService.INSTANCE.find(c -> c.getName().equals(
-				"Joxit")));
+		assertNotNull(computerService.find(c -> c.getName().equals("Joxit 42")));
+		assertNull(computerService.find(c -> c.getName().equals("Joxit")));
 
 		String sCmd3 = RMRequest.CMD + " " + RMRequest.RM_COMPUTER + " "
 				+ computer.getId();
@@ -111,7 +118,7 @@ public class TestRequests {
 			fail(sCmd3 + " should be a correct Command! : " + e.getMessage());
 		}
 
-		assertNull(ComputerService.INSTANCE.find(computer.getId()));
+		assertNull(computerService.find(computer.getId()));
 	}
 
 	@Test

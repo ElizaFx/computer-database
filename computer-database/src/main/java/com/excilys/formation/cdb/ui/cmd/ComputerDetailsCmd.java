@@ -1,19 +1,27 @@
 package com.excilys.formation.cdb.ui.cmd;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.ComputerService;
 
+@ContextConfiguration("/applicationContext.xml")
 public class ComputerDetailsCmd implements ICommand {
 
+	@Autowired
+	private ComputerService computerService;
 	private long id;
 
 	public ComputerDetailsCmd(long id) {
 		this.id = id;
+		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 	}
 
 	@Override
 	public void execute() {
-		Computer computer = ComputerService.INSTANCE.find(id);
+		Computer computer = computerService.find(id);
 
 		if (computer == null) {
 			System.out.println("Computer not found");

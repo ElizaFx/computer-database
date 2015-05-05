@@ -1,15 +1,19 @@
 package com.excilys.formation.cdb.ui.cmd;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.ComputerService;
 
 public class ListComputerCmd implements ICommand {
 
+	@Autowired
+	private ComputerService computerService;
+
 	@Override
 	public void execute() {
 		System.out.println("Début de la liste des elements :");
-		ComputerService.INSTANCE.findAll().forEach(
-				e -> System.out.println(format(e)));
+		computerService.findAll().forEach(e -> System.out.println(format(e)));
 		System.out.println("Fin de la liste des elements");
 	}
 

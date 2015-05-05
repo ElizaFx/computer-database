@@ -2,11 +2,16 @@ package com.excilys.formation.cdb.ui.servlets;
 
 import java.io.IOException;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.model.Computer;
@@ -20,8 +25,20 @@ import com.excilys.formation.cdb.validation.NameValidator;
  * Servlet implementation class AddComputer
  */
 @WebServlet("/addComputer")
+@Controller
 public class AddComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	@Autowired
+	private CompanyService companyService;
+	@Autowired
+	private ComputerService computerService;
+
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
+				config.getServletContext());
+	}
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -36,8 +53,8 @@ public class AddComputer extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("lCompanies", CompanyMapper
-				.toDTO(CompanyService.INSTANCE.findAll()));
+		request.setAttribute("lCompanies",
+				CompanyMapper.toDTO(companyService.findAll()));
 
 		getServletContext().getRequestDispatcher(
 				"/WEB-INF/views/addComputer.jsp").forward(request, response);
@@ -87,7 +104,7 @@ public class AddComputer extends HttpServlet {
 					.introduced(introduced.getOutput())
 					.discontinued(discontinued.getOutput())
 					.company(company.getOutput()).create();
-			ComputerService.INSTANCE.insert(computer);
+			computerService.insert(computer);
 			request.setAttribute("success",
 					"Computer " + computerName.getOutput() + " added");
 		} else {
