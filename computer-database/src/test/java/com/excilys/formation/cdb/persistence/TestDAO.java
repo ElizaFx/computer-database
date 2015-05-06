@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -152,5 +153,13 @@ public class TestDAO {
 	@Test(expected = NullPointerException.class)
 	public void invalidComputerModel() {
 		assertNull(ComputerMapper.toModel((ComputerDTO) null));
+	}
+
+	@Test
+	public void removeComputerByCompany() {
+		List<Computer> computers = computerDAO.findAllByCompany(17l);
+		assertEquals(computers.size(), computerDAO.removeByCompany(17l));
+		// Reset DB state
+		computers.stream().forEach(computerDAO::insert);
 	}
 }

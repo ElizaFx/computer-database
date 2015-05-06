@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.jdbc.core.RowMapper;
+
 import com.excilys.formation.cdb.dto.CompanyDTO;
 import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.exception.DAOException;
@@ -12,7 +14,7 @@ import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.model.Computer.ComputerBuilder;
 import com.excilys.formation.cdb.util.Util;
 
-public class ComputerMapper {
+public class ComputerMapper implements RowMapper<Computer> {
 
 	/**
 	 * @param result
@@ -20,17 +22,7 @@ public class ComputerMapper {
 	 */
 	public static Computer toModel(ResultSet result) {
 		try {
-			ComputerBuilder computer = Computer.build()
-					.id(result.getLong("computer.id"))
-					.name(result.getString("computer.name"));
-			computer.introduced(Util.toLocalDate(result
-					.getTimestamp("computer.introduced")));
-			computer.discontinued(Util.toLocalDate(result
-					.getTimestamp("computer.discontinued")));
-			if (result.getLong("company_id") != 0l) {
-				computer.company(CompanyMapper.toModel(result));
-			}
-			return computer.create();
+			return new ComputerMapper().mapRow(result, 0);
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}
@@ -75,5 +67,20 @@ public class ComputerMapper {
 	public static List<Computer> toModel(List<ComputerDTO> dto) {
 		return dto.stream().map(ComputerMapper::toModel)
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
+		ComputerBuilder computer = Computer.build()
+				.id(rs.getLong("computer.id"))
+				.name(rs.getString("computer.name"));
+		computer.introduced(Util.toLocalDate(rs
+				.getTimestamp("computer.introduced")));
+		computer.discontinued(Util.toLocalDate(rs
+				.getTimestamp("computer.discontinued")));
+		if (rs.getLong("company_id") != 0l) {
+			computer.company(CompanyMapper.toModel(rs));
+		}
+		return computer.create();
 	}
 }

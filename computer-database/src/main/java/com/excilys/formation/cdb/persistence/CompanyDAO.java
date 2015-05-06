@@ -1,23 +1,19 @@
 package com.excilys.formation.cdb.persistence;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+
+import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.persistence.connection.ConnectionFactory;
 
 /**
  *
@@ -28,57 +24,28 @@ public class CompanyDAO implements ICompanyDAO {
 	private final static Logger LOGGER = LoggerFactory
 			.getLogger(CompanyDAO.class);
 
+	private JdbcTemplate jdbcTemplate;
+
 	@Autowired
-	private ConnectionFactory connectionFacotry;
+	public void setDataSource(DataSource dataSource) {
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		System.out.println(jdbcTemplate);
+	}
 
 	@Override
 	public Company find(Long id) {
-		Connection connection = null;
-		PreparedStatement ps = null;
-		ResultSet result = null;
-		Company res = null;
 		if (id == null) {
 			LOGGER.error("Error param null in CompanyDAO.find(id)");
 			throw new DAOException("NullPointerException: Id null!");
 		}
-		try {
-			connection = connectionFacotry.getConnection();
-			ps = connection
-					.prepareStatement("SELECT * FROM company WHERE ID=?");
-			ps.setObject(1, id);
-			result = ps.executeQuery();
-			if (result.next()) {
-				res = CompanyMapper.toModel(result);
-			}
-		} catch (SQLException e) {
-			LOGGER.error("Error in CompanyDAO.find(" + id + ")", e);
-			throw new DAOException(e);
-		} finally {
-			connectionFacotry.close(connection, ps, result);
-		}
-		return res;
+		return jdbcTemplate
+				.query("SELECT * FROM company WHERE ID=?", new CompanyMapper(),
+						id).stream().findFirst().orElse(null);
 	}
 
 	@Override
 	public List<Company> findAll() {
-		List<Company> res = new ArrayList<>();
-		Connection connection = null;
-		Statement statement = null;
-		ResultSet result = null;
-		try {
-			connection = connectionFacotry.getConnection();
-			statement = connection.createStatement();
-			result = statement.executeQuery("select * from company");
-			while (result.next()) {
-				res.add(CompanyMapper.toModel(result));
-			}
-		} catch (SQLException e) {
-			LOGGER.error("Error in CompanyDAO.findAll()", e);
-			throw new DAOException(e);
-		} finally {
-			connectionFacotry.close(connection, statement, result);
-		}
-		return res;
+		return jdbcTemplate.query("select * from company", new CompanyMapper());
 	}
 
 	@Override
@@ -92,50 +59,19 @@ public class CompanyDAO implements ICompanyDAO {
 
 	@Override
 	public int count() {
-		int res = 0;
-		Connection connection = null;
-		Statement statement = null;
-		ResultSet result = null;
-		try {
-			connection = connectionFacotry.getConnection();
-			statement = connection.createStatement();
-			result = statement
-					.executeQuery("SELECT count(*) as size FROM company");
-			if (result.next()) {
-				res = result.getInt("size");
-			}
-		} catch (SQLException e) {
-			LOGGER.error("Error in CompanyDAO.count()", e);
-			throw new DAOException(e);
-		} finally {
-			connectionFacotry.close(connection, statement, result);
-		}
-		return res;
+		return jdbcTemplate.queryForObject(
+				"SELECT count(*) as size FROM company",
+				(rs, rowNum) -> rs.getInt("size"));
 	}
 
 	@Override
 	public int remove(Long id) {
-		int res = 0;
-		Connection connection = null;
-		PreparedStatement ps = null;
 		if (id == null) {
 			LOGGER.error("Error param null in CompanyDAO.remove(id)");
 			throw new DAOException("NullPointerException: Id null!");
 		}
-		try {
-			connection = connectionFacotry.getConnection();
-			ps = connection
-					.prepareStatement("DELETE FROM company WHERE company.id=?");
-			ps.setLong(1, id);
-			res = ps.executeUpdate();
-		} catch (SQLException e) {
-			LOGGER.error("Error in CompanyDAO.remove(" + id + ")", e);
-			throw new DAOException(e);
-		} finally {
-			connectionFacotry.close(connection, ps, null);
-		}
-		LOGGER.info("Company id : {} removed", id);
-		return res;
+		return jdbcTemplate
+				.update("DELETE FROM company WHERE company.id=?", id);
 	}
 
 }
