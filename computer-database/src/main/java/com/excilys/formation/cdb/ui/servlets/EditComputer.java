@@ -2,15 +2,14 @@ package com.excilys.formation.cdb.ui.servlets;
 
 import java.io.IOException;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
@@ -24,83 +23,66 @@ import com.excilys.formation.cdb.validation.NameValidator;
 /**
  * Servlet implementation class EditComputer
  */
-@WebServlet("/editComputer")
-public class EditComputer extends HttpServlet {
+@Controller
+@RequestMapping("/editComputer")
+public class EditComputer {
 	@Autowired
 	private CompanyService companyService;
-	private static final long serialVersionUID = 1L;
 
 	@Autowired
 	private ComputerService computerService;
 
-	@Override
-	public void init(ServletConfig config) throws ServletException {
-		super.init(config);
-		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
-				config.getServletContext());
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		ComputerValidator computer = new ComputerValidator(
-				request.getParameter("id"));
+	@RequestMapping(method = RequestMethod.GET)
+	protected String doGet(
+			@RequestParam(value = "id", required = false) String id,
+			ModelMap model) throws ServletException, IOException {
+		ComputerValidator computer = new ComputerValidator(id);
 
 		if (computer.isValid()) {
-			request.setAttribute("computer",
+			model.addAttribute("computer",
 					ComputerMapper.toDTO(computer.getOutput()));
 		} else {
-			request.setAttribute("danger", "Error: This computer does't exist!");
+			model.addAttribute("danger", "Error: This computer does't exist!");
 		}
 
-		request.setAttribute("lCompanies",
+		model.addAttribute("lCompanies",
 				CompanyMapper.toDTO(companyService.findAll()));
-		request.getServletContext()
-				.getRequestDispatcher("/WEB-INF/views/editComputer.jsp")
-				.forward(request, response);
+		return "editComputer";
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	@RequestMapping(method = RequestMethod.POST)
+	protected String doPost(
+			@RequestParam(value = "id", required = true) String pId,
+			@RequestParam(value = "computerName", required = true) String pComputerName,
+			@RequestParam(value = "introduced", required = false) String pIntroduced,
+			@RequestParam(value = "discontinued", required = false) String pDiscontinued,
+			@RequestParam(value = "companyId", required = false) String pCompanyId,
+			ModelMap model) throws ServletException, IOException {
 
-		NameValidator computerName = new NameValidator(
-				request.getParameter("computerName"));
-		DateValidator introduced = new DateValidator(
-				request.getParameter("introduced"));
-		DateValidator discontinued = new DateValidator(
-				request.getParameter("discontinued"));
-		CompanyValidator company = new CompanyValidator(
-				request.getParameter("companyId"));
+		NameValidator computerName = new NameValidator(pComputerName);
+		DateValidator introduced = new DateValidator(pIntroduced);
+		DateValidator discontinued = new DateValidator(pDiscontinued);
+		CompanyValidator company = new CompanyValidator(pCompanyId);
+		ComputerValidator computer = new ComputerValidator(pId);
 		boolean hasError = false;
-		ComputerValidator computer = new ComputerValidator(
-				request.getParameter("id"));
 		if (!computerName.isValid()) {
-			request.setAttribute("computerNameClass", "has-error");
-			request.setAttribute("nameMessage", computerName.getMsg());
+			model.addAttribute("computerNameClass", "has-error");
+			model.addAttribute("nameMessage", computerName.getMsg());
 			hasError = true;
 		}
 		if (!introduced.isValid()) {
-			request.setAttribute("introducedClass", "has-error");
-			request.setAttribute("introducedMessage", introduced.getMsg());
+			model.addAttribute("introducedClass", "has-error");
+			model.addAttribute("introducedMessage", introduced.getMsg());
 			hasError = true;
 		}
 		if (!discontinued.isValid()) {
-			request.setAttribute("discontinuedClass", "has-error");
-			request.setAttribute("discontinuedMessage", discontinued.getMsg());
+			model.addAttribute("discontinuedClass", "has-error");
+			model.addAttribute("discontinuedMessage", discontinued.getMsg());
 			hasError = true;
 		}
 		if (!company.isValid()) {
-			request.setAttribute("companyClass", "has-error");
-			request.setAttribute("companyMessage", company.getMsg());
+			model.addAttribute("companyClass", "has-error");
+			model.addAttribute("companyMessage", company.getMsg());
 			hasError = true;
 		}
 		if (!hasError) {
@@ -109,32 +91,24 @@ public class EditComputer extends HttpServlet {
 			computer.getOutput().setDiscontinued(discontinued.getOutput());
 			computer.getOutput().setCompany(company.getOutput());
 			computerService.update(computer.getOutput());
-			request.setAttribute("success",
+			model.addAttribute("success",
 					"Computer " + computerName.getOutput() + " edited");
 		} else {
-			resetParameters(request);
-			request.setAttribute("danger", "Error: Check red labels!");
+			model.addAttribute("id", pId);
+			model.addAttribute("computerName", pComputerName);
+			model.addAttribute("introduced", pIntroduced);
+			model.addAttribute("discontinued", pDiscontinued);
+			model.addAttribute("companyId", pCompanyId);
+			model.addAttribute("danger", "Error: Check red labels!");
 		}
 		if (computer.isValid()) {
-			request.setAttribute("computer",
+			model.addAttribute("computer",
 					ComputerMapper.toDTO(computer.getOutput()));
 		} else {
-			request.setAttribute("danger", "Error: This computer does't exist!");
+			model.addAttribute("danger", "Error: This computer does't exist!");
 		}
-		request.setAttribute("lCompanies",
+		model.addAttribute("lCompanies",
 				CompanyMapper.toDTO(companyService.findAll()));
-		request.getServletContext()
-				.getRequestDispatcher("/WEB-INF/views/editComputer.jsp")
-				.forward(request, response);
-	}
-
-	private void resetParameters(HttpServletRequest request) {
-		request.setAttribute("id", request.getParameter("id"));
-		request.setAttribute("computerName",
-				request.getParameter("computerName"));
-		request.setAttribute("introduced", request.getParameter("introduced"));
-		request.setAttribute("discontinued",
-				request.getParameter("discontinued"));
-		request.setAttribute("companyId", request.getParameter("companyId"));
+		return "editComputer";
 	}
 }

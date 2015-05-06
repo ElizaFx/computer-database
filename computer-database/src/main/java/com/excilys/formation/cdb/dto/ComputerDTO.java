@@ -70,7 +70,8 @@ public class ComputerDTO {
 	}
 
 	public final static ComputerDTOBuilder build() {
-		return new ComputerDTOBuilder();
+		ComputerDTOBuilder res = new ComputerDTOBuilder();
+		return res;
 	}
 
 	public final static class ComputerDTOBuilder {

@@ -40,7 +40,6 @@ public class ComputerDAO implements IComputerDAO {
 	@Autowired
 	public void setDataSource(DataSource dataSource) {
 		jdbcTemplate = new JdbcTemplate(dataSource);
-		System.out.println(jdbcTemplate);
 	}
 
 	@Override
@@ -106,7 +105,8 @@ public class ComputerDAO implements IComputerDAO {
 						+ "NAME=?, INTRODUCED=?, DISCONTINUED=?, COMPANY_ID=? WHERE ID=?",
 						model.getName(), Util.toSqlDate(model.getIntroduced()),
 						Util.toSqlDate(model.getDiscontinued()), model
-								.getCompany().getId(), model.getId());
+								.getCompany() != null ? model.getCompany()
+								.getId() : null, model.getId());
 	}
 
 	@Override

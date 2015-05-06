@@ -1,16 +1,11 @@
 package com.excilys.formation.cdb.ui.servlets;
 
-import java.io.IOException;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.service.ComputerService;
@@ -20,62 +15,45 @@ import com.excilys.formation.cdb.validation.LongSelectionValidator;
 /**
  * Servlet implementation class Servlet
  */
-@WebServlet("/dashboard")
-public class DashBoard extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-
+@Controller
+@RequestMapping({ "/dashboard", "/" })
+public class DashBoard {
 	@Autowired
 	private ComputerService computerService;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public DashBoard() {
-		super();
+	@RequestMapping(method = RequestMethod.GET)
+	protected String doGet(
+			@RequestParam(value = "search", required = false) String search,
+			@RequestParam(value = "limit", required = false) String limit,
+			@RequestParam(value = "page", required = false) String page,
+			@RequestParam(value = "orderBy", required = false) String orderBy,
+			@RequestParam(value = "asc", required = false) String asc,
+			ModelMap model) {
+		System.out.println("sa mere");
+		Page<ComputerDTO> pagined = computerService.getPage(search, limit,
+				page, orderBy, asc);
+
+		model.addAttribute("pagined", pagined);
+		return "dashboard";
 	}
 
-	@Override
-	public void init(ServletConfig config) throws ServletException {
-		super.init(config);
-		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
-				config.getServletContext());
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-
-		Page<ComputerDTO> pagined = computerService.getPage(
-				request.getParameter("search"), request.getParameter("limit"),
-				request.getParameter("page"), request.getParameter("orderBy"),
-				request.getParameter("asc"));
-
-		request.setAttribute("pagined", pagined);
-		request.getServletContext()
-				.getRequestDispatcher("/WEB-INF/views/dashboard.jsp")
-				.forward(request, response);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		LongSelectionValidator ids = new LongSelectionValidator(
-				request.getParameter("selection"));
+	@RequestMapping(method = RequestMethod.POST)
+	protected String doPost(
+			@RequestParam(value = "selection", required = true) String selection,
+			@RequestParam(value = "search", required = false) String search,
+			@RequestParam(value = "limit", required = false) String limit,
+			@RequestParam(value = "page", required = false) String page,
+			@RequestParam(value = "orderBy", required = false) String orderBy,
+			@RequestParam(value = "asc", required = false) String asc,
+			ModelMap model) {
+		LongSelectionValidator ids = new LongSelectionValidator(selection);
 
 		if (ids.isValid()) {
 			computerService.remove(ids.getOutput());
-			request.setAttribute("success", "Computers deleted");
+			model.addAttribute("success", "Computers deleted");
 		} else {
-			request.setAttribute("danger", "Error: " + ids.getMsg());
+			model.addAttribute("danger", "Error: " + ids.getMsg());
 		}
-		doGet(request, response);
+		return doGet(search, limit, page, orderBy, asc, model);
 	}
 }

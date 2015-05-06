@@ -29,7 +29,6 @@ public class CompanyDAO implements ICompanyDAO {
 	@Autowired
 	public void setDataSource(DataSource dataSource) {
 		jdbcTemplate = new JdbcTemplate(dataSource);
-		System.out.println(jdbcTemplate);
 	}
 
 	@Override

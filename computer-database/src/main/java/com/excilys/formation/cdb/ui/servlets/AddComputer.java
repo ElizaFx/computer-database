@@ -2,15 +2,14 @@ package com.excilys.formation.cdb.ui.servlets;
 
 import java.io.IOException;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.model.Computer;
@@ -23,77 +22,54 @@ import com.excilys.formation.cdb.validation.NameValidator;
 /**
  * Servlet implementation class AddComputer
  */
-@WebServlet("/addComputer")
-public class AddComputer extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+@Controller
+@RequestMapping("/addComputer")
+public class AddComputer {
 	@Autowired
 	private CompanyService companyService;
 	@Autowired
 	private ComputerService computerService;
 
-	@Override
-	public void init(ServletConfig config) throws ServletException {
-		super.init(config);
-		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
-				config.getServletContext());
-	}
-
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public AddComputer() {
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("lCompanies",
+	@RequestMapping(method = RequestMethod.GET)
+	protected String doGet(ModelMap model) throws ServletException, IOException {
+		model.addAttribute("lCompanies",
 				CompanyMapper.toDTO(companyService.findAll()));
 
-		getServletContext().getRequestDispatcher(
-				"/WEB-INF/views/addComputer.jsp").forward(request, response);
+		return "addComputer";
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	@RequestMapping(method = RequestMethod.POST)
+	protected String doPost(
+			@RequestParam(value = "computerName", required = true) String pComputerName,
+			@RequestParam(value = "introduced", required = false) String pIntroduced,
+			@RequestParam(value = "discontinued", required = false) String pDiscontinued,
+			@RequestParam(value = "companyId", required = false) String pCompanyId,
+			ModelMap model) throws ServletException, IOException {
 
-		NameValidator computerName = new NameValidator(
-				request.getParameter("computerName"));
-		DateValidator introduced = new DateValidator(
-				request.getParameter("introduced"));
-		DateValidator discontinued = new DateValidator(
-				request.getParameter("discontinued"));
-		CompanyValidator company = new CompanyValidator(
-				request.getParameter("companyId"));
+		NameValidator computerName = new NameValidator(pComputerName);
+		DateValidator introduced = new DateValidator(pIntroduced);
+		DateValidator discontinued = new DateValidator(pDiscontinued);
+		CompanyValidator company = new CompanyValidator(pCompanyId);
 		boolean hasError = false;
 
 		if (!computerName.isValid()) {
-			request.setAttribute("computerNameClass", "has-error");
-			request.setAttribute("nameMessage", computerName.getMsg());
+			model.addAttribute("computerNameClass", "has-error");
+			model.addAttribute("nameMessage", computerName.getMsg());
 			hasError = true;
 		}
 		if (!introduced.isValid()) {
-			request.setAttribute("introducedClass", "has-error");
-			request.setAttribute("introducedMessage", introduced.getMsg());
+			model.addAttribute("introducedClass", "has-error");
+			model.addAttribute("introducedMessage", introduced.getMsg());
 			hasError = true;
 		}
 		if (!discontinued.isValid()) {
-			request.setAttribute("introducedClass", "has-error");
-			request.setAttribute("introducedMessage", discontinued.getMsg());
+			model.addAttribute("introducedClass", "has-error");
+			model.addAttribute("introducedMessage", discontinued.getMsg());
 			hasError = true;
 		}
 		if (!company.isValid()) {
-			request.setAttribute("companyClass", "has-error");
-			request.setAttribute("companyMessage", company.getMsg());
+			model.addAttribute("companyClass", "has-error");
+			model.addAttribute("companyMessage", company.getMsg());
 			hasError = true;
 		}
 
@@ -103,22 +79,16 @@ public class AddComputer extends HttpServlet {
 					.discontinued(discontinued.getOutput())
 					.company(company.getOutput()).create();
 			computerService.insert(computer);
-			request.setAttribute("success",
+			model.addAttribute("success",
 					"Computer " + computerName.getOutput() + " added");
 		} else {
-			resetParameters(request);
-			request.setAttribute("danger", "Error: Check red labels!");
+			model.addAttribute("computerName", pComputerName);
+			model.addAttribute("introduced", pIntroduced);
+			model.addAttribute("discontinued", pDiscontinued);
+			model.addAttribute("companyId", pCompanyId);
+			model.addAttribute("danger", "Error: Check red labels!");
 		}
 
-		doGet(request, response);
-	}
-
-	private void resetParameters(HttpServletRequest request) {
-		request.setAttribute("computerName",
-				request.getParameter("computerName"));
-		request.setAttribute("introduced", request.getParameter("introduced"));
-		request.setAttribute("discontinued",
-				request.getParameter("discontinued"));
-		request.setAttribute("companyId", request.getParameter("companyId"));
+		return doGet(model);
 	}
 }
