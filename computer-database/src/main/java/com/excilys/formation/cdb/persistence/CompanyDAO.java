@@ -54,7 +54,7 @@ public class CompanyDAO implements ICompanyDAO {
 			LOGGER.error("Error in CompanyDAO.find(" + id + ")", e);
 			throw new DAOException(e);
 		} finally {
-			connectionFacotry.closeConnection(ps, result);
+			connectionFacotry.close(connection, ps, result);
 		}
 		return res;
 	}
@@ -76,7 +76,7 @@ public class CompanyDAO implements ICompanyDAO {
 			LOGGER.error("Error in CompanyDAO.findAll()", e);
 			throw new DAOException(e);
 		} finally {
-			connectionFacotry.closeConnection(statement, result);
+			connectionFacotry.close(connection, statement, result);
 		}
 		return res;
 	}
@@ -108,7 +108,7 @@ public class CompanyDAO implements ICompanyDAO {
 			LOGGER.error("Error in CompanyDAO.count()", e);
 			throw new DAOException(e);
 		} finally {
-			connectionFacotry.closeConnection(statement, result);
+			connectionFacotry.close(connection, statement, result);
 		}
 		return res;
 	}
@@ -116,13 +116,14 @@ public class CompanyDAO implements ICompanyDAO {
 	@Override
 	public int remove(Long id) {
 		int res = 0;
+		Connection connection = null;
 		PreparedStatement ps = null;
-		Connection connection = connectionFacotry.getConnection();
 		if (id == null) {
 			LOGGER.error("Error param null in CompanyDAO.remove(id)");
 			throw new DAOException("NullPointerException: Id null!");
 		}
 		try {
+			connection = connectionFacotry.getConnection();
 			ps = connection
 					.prepareStatement("DELETE FROM company WHERE company.id=?");
 			ps.setLong(1, id);
@@ -131,7 +132,7 @@ public class CompanyDAO implements ICompanyDAO {
 			LOGGER.error("Error in CompanyDAO.remove(" + id + ")", e);
 			throw new DAOException(e);
 		} finally {
-			connectionFacotry.closeConnection(ps, null);
+			connectionFacotry.close(connection, ps, null);
 		}
 		LOGGER.info("Company id : {} removed", id);
 		return res;

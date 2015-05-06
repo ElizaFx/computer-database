@@ -8,24 +8,24 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.formation.cdb.Utils;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.service.CompanyService;
-import com.excilys.formation.cdb.service.ComputerService;
+import com.excilys.formation.cdb.service.ICompanyService;
+import com.excilys.formation.cdb.service.IComputerService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/applicationContext.xml")
 public class TestCmd {
 
-	@Autowired
-	private CompanyService companyService;
-	@Autowired
-	private ComputerService computerService;
+	private IComputerService computerService = Utils.context
+			.getBean(IComputerService.class);
+
+	private ICompanyService companyService = Utils.context
+			.getBean(ICompanyService.class);
 
 	@BeforeClass
 	public static void setUp() throws IOException {

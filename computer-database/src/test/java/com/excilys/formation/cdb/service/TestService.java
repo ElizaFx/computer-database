@@ -13,7 +13,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -26,10 +25,12 @@ import com.excilys.formation.cdb.util.Util;
 @ContextConfiguration("/applicationContext.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestService {
-	@Autowired
-	private ComputerService computerService;
-	@Autowired
-	private CompanyService companyService;
+
+	private IComputerService computerService = Utils.context
+			.getBean(IComputerService.class);
+
+	private ICompanyService companyService = Utils.context
+			.getBean(ICompanyService.class);
 
 	@Before
 	public void setUp() throws IOException {

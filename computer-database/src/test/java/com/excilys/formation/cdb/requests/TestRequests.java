@@ -10,14 +10,13 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.formation.cdb.Utils;
 import com.excilys.formation.cdb.exception.RequestNotFoundException;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.service.ComputerService;
+import com.excilys.formation.cdb.service.IComputerService;
 import com.excilys.formation.cdb.ui.cmd.ICommand;
 import com.excilys.formation.cdb.ui.requests.CatRequest;
 import com.excilys.formation.cdb.ui.requests.LSRequest;
@@ -30,8 +29,8 @@ import com.excilys.formation.cdb.ui.requests.Request;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestRequests {
 
-	@Autowired
-	private ComputerService computerService;
+	private IComputerService computerService = Utils.context
+			.getBean(IComputerService.class);
 
 	@BeforeClass
 	public static void setUp() throws IOException {

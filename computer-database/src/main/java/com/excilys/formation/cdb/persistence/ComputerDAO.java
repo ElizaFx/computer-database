@@ -46,8 +46,7 @@ public class ComputerDAO implements IComputerDAO {
 		try {
 			connection = connectionFacotry.getConnection();
 			ps = connection
-					.prepareStatement("SELECT * FROM "
-							+ "computer left outer join company on computer.company_id=company.id "
+					.prepareStatement("SELECT * FROM computer left outer join company on computer.company_id=company.id "
 							+ "WHERE computer.ID=?");
 			ps.setObject(1, id);
 			result = ps.executeQuery();
@@ -58,7 +57,7 @@ public class ComputerDAO implements IComputerDAO {
 			LOGGER.error("Error in ComputerDAO.find(" + id + ")", e);
 			throw new DAOException(e);
 		} finally {
-			connectionFacotry.closeConnection(ps, result);
+			connectionFacotry.close(connection, ps, result);
 		}
 		return res;
 	}
@@ -68,14 +67,17 @@ public class ComputerDAO implements IComputerDAO {
 		int res = 0;
 		Connection connection = null;
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 		if (model == null) {
 			LOGGER.error("Error param null in ComputerDAO.insert(id)");
 			throw new DAOException("NullPointerException: Model null!");
 		}
 		try {
 			connection = connectionFacotry.getConnection();
-			ps = connection.prepareStatement("INSERT INTO computer SET "
-					+ "NAME=?, INTRODUCED=?, DISCONTINUED=?, COMPANY_ID=?");
+			ps = connection
+					.prepareStatement(
+							"INSERT INTO computer SET NAME=?, INTRODUCED=?, DISCONTINUED=?, COMPANY_ID=?",
+							Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, model.getName());
 			ps.setDate(2, Util.toSqlDate(model.getIntroduced()));
 			ps.setDate(3, Util.toSqlDate(model.getDiscontinued()));
@@ -85,11 +87,15 @@ public class ComputerDAO implements IComputerDAO {
 				ps.setLong(4, model.getCompany().getId());
 			}
 			res = ps.executeUpdate();
+			rs = ps.getGeneratedKeys();
+			if (rs.next()) {
+				model.setId(rs.getLong(1));
+			}
 		} catch (SQLException e) {
 			LOGGER.error("Error in ComputerDAO.insert(" + model + ")", e);
 			throw new DAOException(e);
 		} finally {
-			connectionFacotry.closeConnection(ps, null);
+			connectionFacotry.close(connection, ps, rs);
 		}
 		return res;
 	}
@@ -97,13 +103,14 @@ public class ComputerDAO implements IComputerDAO {
 	@Override
 	public int remove(Long id) {
 		int res = 0;
+		Connection connection = null;
 		PreparedStatement ps = null;
 		if (id == null) {
 			LOGGER.error("Error param null in CompanyDAO.remove(id)");
 			throw new DAOException("NullPointerException: Id null!");
 		}
-		Connection connection = connectionFacotry.getConnection();
 		try {
+			connection = connectionFacotry.getConnection();
 			ps = connection.prepareStatement("DELETE FROM computer WHERE ID=?");
 			ps.setLong(1, id);
 			res = ps.executeUpdate();
@@ -111,7 +118,7 @@ public class ComputerDAO implements IComputerDAO {
 			LOGGER.error("Error in ComputerDAO.remove(" + id + ")", e);
 			throw new DAOException(e);
 		} finally {
-			connectionFacotry.closeConnection(ps, null);
+			connectionFacotry.close(connection, ps, null);
 		}
 		LOGGER.info("Computer id : {} removed", id);
 		return res;
@@ -145,7 +152,7 @@ public class ComputerDAO implements IComputerDAO {
 			LOGGER.error("Error in ComputerDAO.update(" + model + ")", e);
 			throw new DAOException(e);
 		} finally {
-			connectionFacotry.closeConnection(ps, null);
+			connectionFacotry.close(connection, ps, null);
 		}
 		return res;
 	}
@@ -169,7 +176,7 @@ public class ComputerDAO implements IComputerDAO {
 			LOGGER.error("Error in ComputerDAO.findAll()", e);
 			throw new DAOException(e);
 		} finally {
-			connectionFacotry.closeConnection(statement, result);
+			connectionFacotry.close(connection, statement, result);
 		}
 		return res;
 	}
@@ -210,7 +217,7 @@ public class ComputerDAO implements IComputerDAO {
 			LOGGER.error("Error in ComputerDAO.find(" + search + ")", e);
 			throw new DAOException(e);
 		} finally {
-			connectionFacotry.closeConnection(statement, result);
+			connectionFacotry.close(connection, statement, result);
 		}
 		return res;
 	}
@@ -270,7 +277,7 @@ public class ComputerDAO implements IComputerDAO {
 					+ limit + "," + offset + "," + ob + "," + asc + ")", e);
 			throw new DAOException(e);
 		} finally {
-			connectionFacotry.closeConnection(statement, result);
+			connectionFacotry.close(connection, statement, result);
 		}
 		return res;
 	}
@@ -301,7 +308,7 @@ public class ComputerDAO implements IComputerDAO {
 					+ ")", e);
 			throw new DAOException(e);
 		} finally {
-			connectionFacotry.closeConnection(statement, result);
+			connectionFacotry.close(connection, statement, result);
 		}
 		return res;
 	}
@@ -319,7 +326,7 @@ public class ComputerDAO implements IComputerDAO {
 		try {
 			connection = connectionFacotry.getConnection();
 			statement = connection
-					.prepareStatement("DELETE FROM computer where company.id = ?");
+					.prepareStatement("DELETE FROM computer where company_id = ?");
 			statement.setLong(1, companyId);
 			res = statement.executeUpdate();
 		} catch (SQLException e) {
@@ -327,7 +334,7 @@ public class ComputerDAO implements IComputerDAO {
 					+ ")", e);
 			throw new DAOException(e);
 		} finally {
-			connectionFacotry.closeConnection(statement, result);
+			connectionFacotry.close(connection, statement, result);
 		}
 		return res;
 	}

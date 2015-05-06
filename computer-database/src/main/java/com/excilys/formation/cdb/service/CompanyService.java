@@ -61,23 +61,15 @@ public class CompanyService implements ICompanyService {
 		return companyDAO.count();
 	}
 
-	@Transactional(rollbackFor = RuntimeException.class)
+	@Transactional
 	@Override
 	public int remove(Long id) {
 		int res = 0;
-		System.out.println(TransactionSynchronizationManager
-				.isSynchronizationActive());
-		System.out.println(connectionFacotry.getConnection());
-
-		connectionFacotry.createTransactionConnection();
-		System.out.println(connectionFacotry.getConnection());
-		computerDAO.findAllByCompany(id).stream()
-				.forEach(c -> computerDAO.remove(c.getId()));
-		System.out.println(connectionFacotry.getConnection());
+		LOGGER.info("Begin of transaction remove compnay " + id);
+		int nbComputers = computerDAO.removeByCompany(id);
 		res = companyDAO.remove(id);
-
-		connectionFacotry.closeTransactionConnection();
-
+		LOGGER.info("End of transaction remove compnay" + id + " "
+				+ nbComputers + " computers deleted");
 		return res;
 	}
 }
