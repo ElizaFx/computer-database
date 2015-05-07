@@ -1,5 +1,11 @@
 package com.excilys.formation.cdb.dto;
 
+import org.springframework.validation.Errors;
+
+import com.excilys.formation.cdb.validation.CompanyValidator;
+import com.excilys.formation.cdb.validation.DateValidator;
+import com.excilys.formation.cdb.validation.NameValidator;
+
 public class ComputerDTO {
 	private Long id;
 	private String name;
@@ -37,6 +43,10 @@ public class ComputerDTO {
 		this.name = name;
 	}
 
+	public void setComputerName(String name) {
+		this.name = name;
+	}
+
 	public String getIntroduced() {
 		return introduced;
 	}
@@ -69,9 +79,41 @@ public class ComputerDTO {
 		this.companyName = companyName;
 	}
 
+	public boolean supports(Class<?> clazz) {
+		return ComputerDTO.class.equals(clazz);
+	}
+
+	public void validate(Errors errors) {
+		NameValidator computerName = new NameValidator(name);
+		DateValidator introduced = new DateValidator(this.introduced);
+		DateValidator discontinued = new DateValidator(this.discontinued);
+		CompanyValidator company = new CompanyValidator(companyId.toString());
+
+		if (!computerName.isValid()) {
+			errors.rejectValue("name", null, computerName.getMsg());
+		}
+		if (!introduced.isValid()) {
+			errors.rejectValue("introduced", null, introduced.getMsg());
+		}
+		if (!discontinued.isValid()) {
+			errors.rejectValue("discontinued", null, discontinued.getMsg());
+		}
+		if (!company.isValid()) {
+			errors.rejectValue("company", null, company.getMsg());
+		}
+	}
+
 	public final static ComputerDTOBuilder build() {
-		ComputerDTOBuilder res = new ComputerDTOBuilder();
+		ComputerDTOBuilder res = new ComputerDTO.ComputerDTOBuilder();
 		return res;
+	}
+
+	@Override
+	public String toString() {
+		return "ComputerDTO [id=" + id + ", name=" + name + ", introduced="
+				+ introduced + ", discontinued=" + discontinued
+				+ ", companyId=" + companyId + ", companyName=" + companyName
+				+ "]";
 	}
 
 	public final static class ComputerDTOBuilder {

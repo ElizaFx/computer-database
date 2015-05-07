@@ -25,5 +25,4 @@
 	<context:component-scan base-package="com.excilys.formation.cdb.persistence" />
 	<context:component-scan base-package="com.excilys.formation.cdb.service" />
 	<context:component-scan base-package="com.excilys.formation.cdb.ui" />
-
 </beans>

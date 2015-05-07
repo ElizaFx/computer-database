@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb;
+package com.excilys.formation.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,6 +26,10 @@ public class Utils {
 	@Autowired
 	private static ConnectionFactory connectionFactory = context
 			.getBean(ConnectionFactory.class);
+
+	public Utils() {
+
+	}
 
 	public void loadDatabase() throws IOException {
 		BufferedReader f = new BufferedReader(new InputStreamReader(Utils.class

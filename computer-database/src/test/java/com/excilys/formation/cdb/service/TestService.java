@@ -16,11 +16,11 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.excilys.formation.cdb.Utils;
 import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.util.Util;
+import com.excilys.formation.util.Utils;
 
 @ContextConfiguration("/applicationContext.xml")
 @RunWith(SpringJUnit4ClassRunner.class)

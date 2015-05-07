@@ -33,7 +33,7 @@ public interface IComputerDAO {
 			} else if (COMPANY.name().equalsIgnoreCase(s)) {
 				return COMPANY;
 			}
-			return null;
+			return ID;
 		}
 	}
 

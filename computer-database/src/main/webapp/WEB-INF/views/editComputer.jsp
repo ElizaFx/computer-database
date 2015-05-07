@@ -11,7 +11,7 @@
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<div class="label label-default pull-right">id:
-						${computer.getId()}</div>
+						${computer.getId()} </div>
 					<h1>Edit Computer</h1>
 					<c:if test="${success != null}">
 						<div class="alert alert-success" role="alert">${success}</div>
@@ -22,36 +22,40 @@
 					<form action="editComputer?id=${computer.getId()}" method="POST">
 						<input type="hidden" value="${computer.getId()}" />
 						<fieldset>
-							<div class="form-group ${computerNameClass}">
+							<div class="form-group <c:if
+										test="${errors.hasFieldErrors('name')}">has-error</c:if>">
 								<label for="computerName">Computer name</label> <input
 									type="text" class="form-control" id="computerName"
 									name="computerName" placeholder="Computer name"
 									value="${computer.getName()}" required><span
 									class="help-block">Required <c:if
-										test="${computerNameMessage != null}">
-										<br />${computerNameMessage}</c:if></span>
+										test="${errors.hasFieldErrors('name')}">
+										<br />${errors.getFieldError('name').getDefaultMessage()}</c:if></span>
 							</div>
-							<div class="form-group ${introducedClass}">
+							<div class="form-group <c:if
+										test="${errors.hasFieldErrors('introduced')}">has-error</c:if>">
 								<label for="introduced">Introduced date</label> <input
 									type="date" class="form-control" id="introduced"
 									name="introduced" placeholder="Introduced date"
 									value="${computer.getIntroduced()}"><span class="help-block">Pattern
 									YYYY-MM-dd or dd-MM-YYYY. Delimiters can be - or . or / <c:if
-										test="${introducedMessage != null}">
-										<br />${introducedMessage}</c:if>
+										test="${errors.hasFieldErrors('introduced')}">
+										<br />${errors.getFieldError('introduced').getDefaultMessage()}</c:if>
 								</span>
 							</div>
-							<div class="form-group ${discontinuedClass}">
+							<div class="form-group <c:if
+										test="${errors.hasFieldErrors('discontinued')}">has-error</c:if>">
 								<label for="discontinued">Discontinued date</label> <input
 									type="date" class="form-control" id="discontinued"
 									name="discontinued" placeholder="Discontinued date"
 									value="${computer.getDiscontinued()}"><span class="help-block">Pattern
 									YYYY-MM-dd or dd-MM-YYYY. Delimiters can be - or . or / <c:if
-										test="${discontinuedMessage != null}">
-										<br />${discontinuedMessage}</c:if>
+										test="${errors.hasFieldErrors('discontinued')}">
+										<br />${errors.getFieldError('discontinued').getDefaultMessage()}</c:if>
 								</span>
 							</div>
-							<div class="form-group ${companyIdClass}">
+							<div class="form-group <c:if
+										test="${errors.hasFieldErrors('company')}">has-error</c:if>">
 								<label for="companyId">Company</label> <select
 									class="form-control" id="companyId" name="companyId">
 									<option value="0">--</option>
@@ -59,7 +63,7 @@
 										<option value="${company.getId()}"
 											${computer.getCompanyId() == company.getId() ? "selected" : "" }>${company.getName() }</option>
 									</c:forEach>
-								</select><span class="help-block">${companyIdMessage}</span>
+								</select><span class="help-block">${errors.getFieldError('company').getDefaultMessage()}</span>
 							</div>
 						</fieldset>
 						<div class="actions pull-right">

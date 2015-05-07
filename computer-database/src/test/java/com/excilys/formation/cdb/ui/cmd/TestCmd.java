@@ -12,10 +12,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.excilys.formation.cdb.Utils;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.ICompanyService;
 import com.excilys.formation.cdb.service.IComputerService;
+import com.excilys.formation.util.Utils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/applicationContext.xml")

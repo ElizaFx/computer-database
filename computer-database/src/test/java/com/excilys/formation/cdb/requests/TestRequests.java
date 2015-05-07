@@ -13,7 +13,6 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.excilys.formation.cdb.Utils;
 import com.excilys.formation.cdb.exception.RequestNotFoundException;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.IComputerService;
@@ -24,6 +23,7 @@ import com.excilys.formation.cdb.ui.requests.MKRequest;
 import com.excilys.formation.cdb.ui.requests.MVRequest;
 import com.excilys.formation.cdb.ui.requests.RMRequest;
 import com.excilys.formation.cdb.ui.requests.Request;
+import com.excilys.formation.util.Utils;
 
 @ContextConfiguration("/applicationContext.xml")
 @RunWith(SpringJUnit4ClassRunner.class)

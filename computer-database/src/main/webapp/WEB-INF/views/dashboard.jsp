@@ -50,23 +50,23 @@
 						</span></th>
 						<th>Computer name <mylib:caret name="name"
 								orderBy="${pagined.getObName()}" asc="${pagined.isAsc()}" search="${pagined.getSearch()}"
-			page="${pagined.getCurPage()}" limit="${pagined.getLimit()}" /></th>
+			page="${pagined.getPage()}" limit="${pagined.getLimit()}" /></th>
 						<th>Introduced date<mylib:caret name="introduced"
 								orderBy="${pagined.getObName()}" asc="${pagined.isAsc()}" search="${pagined.getSearch()}"
-			page="${pagined.getCurPage()}" limit="${pagined.getLimit()}"/></th>
+			page="${pagined.getPage()}" limit="${pagined.getLimit()}"/></th>
 						<!-- Table header for Discontinued Date -->
 						<th>Discontinued date<mylib:caret name="discontinued"
 								orderBy="${pagined.getObName()}" asc="${pagined.isAsc()}" search="${pagined.getSearch()}"
-			page="${pagined.getCurPage()}" limit="${pagined.getLimit()}"/></th>
+			page="${pagined.getPage()}" limit="${pagined.getLimit()}"/></th>
 						<!-- Table header for Company -->
 						<th>Company<mylib:caret name="company"
 								orderBy="${pagined.getObName()}" asc="${pagined.isAsc()}" search="${pagined.getSearch()}"
-			page="${pagined.getCurPage()}" limit="${pagined.getLimit()}"/></th>
+			page="${pagined.getPage()}" limit="${pagined.getLimit()}"/></th>
 					</tr>
 				</thead>
 				<!-- Browse attribute computers -->
 				<tbody id="results">
-					<c:forEach items="${pagined.getPage()}" var="computer">
+					<c:forEach items="${pagined.getPagination()}" var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${computer.getId()}"></td>
@@ -83,7 +83,7 @@
 	<footer class="navbar-fixed-bottom">
 		<mylib:page begin="${pagined.getFirstPage()}"
 			end="${pagined.getLastPage()}" search="${pagined.getSearch()}"
-			current="${pagined.getCurPage()}" limit="${pagined.getLimit()}"
+			current="${pagined.getPage()}" limit="${pagined.getLimit()}"
 			pagemax="${pagined.getPageMax()}" orderBy="${pagined.getObName()}"
 			asc="${pagined.isAsc()}" />
 	</footer>

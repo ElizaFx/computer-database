@@ -11,7 +11,7 @@ import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.ComputerDAO;
 import com.excilys.formation.cdb.persistence.IComputerDAO.OrderBy;
-import com.excilys.formation.cdb.ui.Page;
+import com.excilys.formation.cdb.ui.Pagination;
 import com.excilys.formation.cdb.util.Util;
 
 @Service
@@ -115,7 +115,7 @@ public class ComputerService implements IComputerService {
 	}
 
 	@Override
-	public Page<ComputerDTO> getPage(String search, String sLimit,
+	public Pagination<ComputerDTO> getPage(String search, String sLimit,
 			String sCurPage, String sOrderBy, String sAsc) {
 
 		OrderBy ob = OrderBy.map(sOrderBy);
@@ -133,7 +133,7 @@ public class ComputerService implements IComputerService {
 			limit = Integer.parseInt(sLimit);
 		}
 
-		return new Page<>(this, search, count, curPage, limit, 5, ob, asc);
+		return new Pagination<>(this, search, count, curPage, limit, 5, ob, asc);
 
 	}
 

@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 
 import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.ui.Page;
+import com.excilys.formation.cdb.ui.Pagination;
 
 public interface IComputerService extends Paginable<ComputerDTO> {
 	/**
@@ -65,7 +65,7 @@ public interface IComputerService extends Paginable<ComputerDTO> {
 	 */
 	public int count(String search);
 
-	public Page<ComputerDTO> getPage(String search, String limit,
+	public Pagination<ComputerDTO> getPage(String search, String limit,
 			String curPage, String orderBy, String asc);
 
 	/**

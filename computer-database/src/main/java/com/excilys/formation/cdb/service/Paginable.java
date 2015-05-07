@@ -23,4 +23,6 @@ public interface Paginable<T> {
 	public List<T> pagination(String search, int limit, int offset, OrderBy ob,
 			boolean asc);
 
+	public int count(String search);
+
 }
