@@ -8,12 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.persistence.CompanyDAO;
 import com.excilys.formation.cdb.persistence.ComputerDAO;
-import com.excilys.formation.cdb.persistence.connection.ConnectionFactory;
 
 @Service
 public class CompanyService implements ICompanyService {
@@ -21,8 +19,6 @@ public class CompanyService implements ICompanyService {
 	private CompanyDAO companyDAO;
 	@Autowired
 	private ComputerDAO computerDAO;
-	@Autowired
-	private ConnectionFactory connectionFacotry;
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(CompanyService.class);
@@ -32,8 +28,6 @@ public class CompanyService implements ICompanyService {
 	 */
 	@Override
 	public List<Company> findAll() {
-		System.out.println(TransactionSynchronizationManager
-				.isSynchronizationActive());
 		return companyDAO.findAll();
 	}
 
