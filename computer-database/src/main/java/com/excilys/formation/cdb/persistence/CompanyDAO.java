@@ -3,8 +3,6 @@ package com.excilys.formation.cdb.persistence;
 import java.util.List;
 import java.util.function.Predicate;
 
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +22,8 @@ public class CompanyDAO implements ICompanyDAO {
 	private final static Logger LOGGER = LoggerFactory
 			.getLogger(CompanyDAO.class);
 
-	private JdbcTemplate jdbcTemplate;
-
 	@Autowired
-	public void setDataSource(DataSource dataSource) {
-		jdbcTemplate = new JdbcTemplate(dataSource);
-	}
+	private JdbcTemplate jdbcTemplate;
 
 	@Override
 	public Company find(Long id) {

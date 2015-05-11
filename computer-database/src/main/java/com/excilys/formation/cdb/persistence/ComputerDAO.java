@@ -6,8 +6,6 @@ import java.sql.Types;
 import java.util.List;
 import java.util.function.Predicate;
 
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,6 @@ import org.springframework.stereotype.Repository;
 import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.persistence.connection.ConnectionFactory;
 import com.excilys.formation.cdb.util.Util;
 
 /**
@@ -33,14 +30,7 @@ public class ComputerDAO implements IComputerDAO {
 			.getLogger(ComputerDAO.class);
 
 	@Autowired
-	private ConnectionFactory connectionFacotry;
-
 	private JdbcTemplate jdbcTemplate;
-
-	@Autowired
-	public void setDataSource(DataSource dataSource) {
-		jdbcTemplate = new JdbcTemplate(dataSource);
-	}
 
 	@Override
 	public Computer find(Long id) {
