@@ -19,7 +19,8 @@
 		<property name="password" value="qwerty1234" />
 	</bean>
 
-    <mvc:annotation-driven />
+
+	<mvc:annotation-driven />
 	<!-- Spring configuration for annotations -->
 	<context:annotation-config />
 	<context:component-scan base-package="com.excilys.formation.cdb.persistence" />

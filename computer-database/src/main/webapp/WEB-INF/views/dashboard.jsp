@@ -2,14 +2,18 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mylib"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <!DOCTYPE html>
 <html>
-<%@include file="/WEB-INF/import/head.jsp" %>
+<%@include file="/WEB-INF/import/head.jsp"%>
 <body>
-<%@include file="/WEB-INF/import/header.jsp" %>
+	<%@include file="/WEB-INF/import/header.jsp"%>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${pagined.getNbItems() } Computers found</h1>
+			<h1 id="homeTitle">
+				<spring:message code="dashboard.homeTitle"
+					arguments="${pagined.getNbItems() }"></spring:message>
+			</h1>
 			<c:if test="${success != null}">
 				<div class="alert alert-success" role="alert">${success}</div>
 			</c:if>
@@ -20,15 +24,16 @@
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
 						<input type="search" id="searchbox" name="search"
-							class="form-control" placeholder="Search name" value="${pagined.getSearch()}" /> <input
-							type="submit" id="searchsubmit" value="Filter by name"
-							class="btn btn-primary" />
+							class="form-control" placeholder="<spring:message code='dashboard.searchName'/>"
+							value="${pagined.getSearch()}" /> <input type="submit"
+							id="searchsubmit" value="Filter by name" class="btn btn-primary" />
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addComputer">Add
-						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
-						onclick="$.fn.toggleEditMode();">Edit</a>
+					<a class="btn btn-success" id="addComputer" href="addComputer"><spring:message
+							code="dashboard.addComputer" /></a> <a class="btn btn-default"
+						id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message
+							code="dashboard.edit" /></a>
 				</div>
 			</div>
 		</div>
@@ -48,20 +53,28 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name <mylib:caret name="name"
-								orderBy="${pagined.getObName()}" asc="${pagined.isAsc()}" search="${pagined.getSearch()}"
-			page="${pagined.getPage()}" limit="${pagined.getLimit()}" /></th>
-						<th>Introduced date<mylib:caret name="introduced"
-								orderBy="${pagined.getObName()}" asc="${pagined.isAsc()}" search="${pagined.getSearch()}"
-			page="${pagined.getPage()}" limit="${pagined.getLimit()}"/></th>
+						<th><spring:message
+							code="global.computerName" /><mylib:caret name="name"
+								orderBy="${pagined.getObName()}" asc="${pagined.isAsc()}"
+								search="${pagined.getSearch()}" page="${pagined.getPage()}"
+								limit="${pagined.getLimit()}" /></th>
+						<th><spring:message
+							code="global.introducedDate" /><mylib:caret name="introduced"
+								orderBy="${pagined.getObName()}" asc="${pagined.isAsc()}"
+								search="${pagined.getSearch()}" page="${pagined.getPage()}"
+								limit="${pagined.getLimit()}" /></th>
 						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date<mylib:caret name="discontinued"
-								orderBy="${pagined.getObName()}" asc="${pagined.isAsc()}" search="${pagined.getSearch()}"
-			page="${pagined.getPage()}" limit="${pagined.getLimit()}"/></th>
+						<th><spring:message
+							code="global.discontinuedDate" /><mylib:caret name="discontinued"
+								orderBy="${pagined.getObName()}" asc="${pagined.isAsc()}"
+								search="${pagined.getSearch()}" page="${pagined.getPage()}"
+								limit="${pagined.getLimit()}" /></th>
 						<!-- Table header for Company -->
-						<th>Company<mylib:caret name="company"
-								orderBy="${pagined.getObName()}" asc="${pagined.isAsc()}" search="${pagined.getSearch()}"
-			page="${pagined.getPage()}" limit="${pagined.getLimit()}"/></th>
+						<th><spring:message
+							code="global.company" /><mylib:caret name="company"
+								orderBy="${pagined.getObName()}" asc="${pagined.isAsc()}"
+								search="${pagined.getSearch()}" page="${pagined.getPage()}"
+								limit="${pagined.getLimit()}" /></th>
 					</tr>
 				</thead>
 				<!-- Browse attribute computers -->

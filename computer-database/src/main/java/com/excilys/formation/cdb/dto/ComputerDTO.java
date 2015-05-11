@@ -87,7 +87,8 @@ public class ComputerDTO {
 		NameValidator computerName = new NameValidator(name);
 		DateValidator introduced = new DateValidator(this.introduced);
 		DateValidator discontinued = new DateValidator(this.discontinued);
-		CompanyValidator company = new CompanyValidator(companyId.toString());
+		CompanyValidator company = new CompanyValidator(
+				companyId == null ? null : companyId.toString());
 
 		if (!computerName.isValid()) {
 			errors.rejectValue("name", null, computerName.getMsg());
