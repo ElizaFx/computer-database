@@ -119,6 +119,12 @@
 			<version>${org.springframework.version}</version>
 			<scope>compile</scope>
 		</dependency>
+		<!-- Hibernate Validator for @Valid -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>5.1.3.Final</version>
+		</dependency>
 		<!-- TESTS -->
 		<dependency>
 			<groupId>junit</groupId>

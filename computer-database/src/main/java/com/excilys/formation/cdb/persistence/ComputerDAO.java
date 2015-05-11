@@ -39,9 +39,9 @@ public class ComputerDAO implements IComputerDAO {
 			throw new DAOException("NullPointerException: ID null!");
 		}
 		return jdbcTemplate
-				.query("SELECT * FROM computer left outer join company on computer.company_id=company.id "
-						+ "WHERE computer.ID=?", new ComputerMapper(), id)
-				.stream().findFirst().orElse(null);
+				.query("SELECT * FROM computer left outer join company on computer.company_id=company.id WHERE computer.ID=?",
+						new ComputerMapper(), id).stream().findFirst()
+				.orElse(null);
 	}
 
 	@Override
@@ -91,8 +91,7 @@ public class ComputerDAO implements IComputerDAO {
 			throw new DAOException("NullPointerException: Model null!");
 		}
 		return jdbcTemplate
-				.update("UPDATE computer SET "
-						+ "NAME=?, INTRODUCED=?, DISCONTINUED=?, COMPANY_ID=? WHERE ID=?",
+				.update("UPDATE computer SET NAME=?, INTRODUCED=?, DISCONTINUED=?, COMPANY_ID=? WHERE ID=?",
 						model.getName(), Util.toSqlDate(model.getIntroduced()),
 						Util.toSqlDate(model.getDiscontinued()), model
 								.getCompany() != null ? model.getCompany()
@@ -102,8 +101,7 @@ public class ComputerDAO implements IComputerDAO {
 	@Override
 	public List<Computer> findAll() {
 		return jdbcTemplate
-				.query("SELECT * FROM "
-						+ "computer left outer join company on computer.company_id=company.id",
+				.query("SELECT * FROM computer left outer join company on computer.company_id=company.id",
 						new ComputerMapper());
 	}
 
@@ -121,9 +119,7 @@ public class ComputerDAO implements IComputerDAO {
 		search = search != null ? "%" + search + "%" : "%";
 		return jdbcTemplate
 				.queryForObject(
-						"SELECT count(*) as size FROM "
-								+ "computer left outer join company on computer.company_id=company.id "
-								+ "where computer.name like ? or company.name like ?;",
+						"SELECT count(*) as size FROM computer left outer join company on computer.company_id=company.id where computer.name like ? or company.name like ?;",
 						(rs, rowNum) -> rs.getInt("size"), search, search);
 	}
 
@@ -152,8 +148,7 @@ public class ComputerDAO implements IComputerDAO {
 	public List<Computer> pagination(String search, int limit, int offset,
 			OrderBy ob, boolean asc) {
 		String sql = "SELECT * from "
-				+ "computer left outer join company on computer.company_id=company.id "
-				+ "where computer.name like ? or company.name like ? order by "
+				+ "computer left outer join company on computer.company_id=company.id where computer.name like ? or company.name like ? order by "
 				+ (ob == null ? OrderBy.ID : ob) + (asc ? " " : " desc ")
 				+ "limit ? offset ? ";
 		search = search != null ? "%" + search + "%" : "%";
@@ -168,10 +163,8 @@ public class ComputerDAO implements IComputerDAO {
 			throw new DAOException("NullPointerException: Id null!");
 		}
 		return jdbcTemplate
-				.query("SELECT * FROM "
-						+ "computer left outer join company on computer.company_id=company.id "
-						+ "where company.id = ?", new ComputerMapper(),
-						companyId);
+				.query("SELECT * FROM computer left outer join company on computer.company_id=company.id where company.id = ?",
+						new ComputerMapper(), companyId);
 	}
 
 	@Override

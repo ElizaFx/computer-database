@@ -12,7 +12,7 @@
 		<div class="container">
 			<h1 id="homeTitle">
 				<spring:message code="dashboard.homeTitle"
-					arguments="${pagined.getNbItems() }"></spring:message>
+					arguments="${pagined.getNbItems() }"/>
 			</h1>
 			<c:if test="${success != null}">
 				<div class="alert alert-success" role="alert">${success}</div>
@@ -26,7 +26,7 @@
 						<input type="search" id="searchbox" name="search"
 							class="form-control" placeholder="<spring:message code='dashboard.searchName'/>"
 							value="${pagined.getSearch()}" /> <input type="submit"
-							id="searchsubmit" value="Filter by name" class="btn btn-primary" />
+							id="searchsubmit" value="<spring:message code='dashboard.filterByName'/>" class="btn btn-primary" />
 					</form>
 				</div>
 				<div class="pull-right">
