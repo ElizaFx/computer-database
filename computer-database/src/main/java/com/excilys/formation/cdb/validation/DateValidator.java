@@ -13,11 +13,11 @@ public class DateValidator extends Validate<LocalDate> {
 			date = Util.parseDate(getInput());
 			if ((date != null)
 					&& ((date.toEpochDay() < 0) || (date.toEpochDay() > Integer.MAX_VALUE))) {
-				setWarningMsg("Range 1970-01-01 to 2038-01-19");
+				setWarningMsg("error.badDate");
 				date = null;
 			}
 		} else if (hasInput()) {
-			setErrorMsg("Malformed date");
+			setErrorMsg("error.malformedDate");
 		}
 	}
 

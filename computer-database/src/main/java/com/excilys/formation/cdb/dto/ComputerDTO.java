@@ -39,6 +39,10 @@ public class ComputerDTO {
 		return name;
 	}
 
+	public String getComputerName() {
+		return name;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -91,16 +95,16 @@ public class ComputerDTO {
 				companyId == null ? null : companyId.toString());
 
 		if (!computerName.isValid()) {
-			errors.rejectValue("name", null, computerName.getMsg());
+			errors.rejectValue("name", computerName.getMsg());
 		}
 		if (!introduced.isValid()) {
-			errors.rejectValue("introduced", null, introduced.getMsg());
+			errors.rejectValue("introduced", introduced.getMsg());
 		}
 		if (!discontinued.isValid()) {
-			errors.rejectValue("discontinued", null, discontinued.getMsg());
+			errors.rejectValue("discontinued", discontinued.getMsg());
 		}
 		if (!company.isValid()) {
-			errors.rejectValue("company", null, company.getMsg());
+			errors.rejectValue("company", company.getMsg());
 		}
 	}
 

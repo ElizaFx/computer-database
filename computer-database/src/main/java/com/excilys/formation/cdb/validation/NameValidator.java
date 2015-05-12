@@ -5,7 +5,7 @@ public class NameValidator extends Validate<String> {
 	public NameValidator(String input) {
 		super(input);
 		if ((getInput() == null) || getInput().isEmpty()) {
-			setErrorMsg("Empty name");
+			setErrorMsg("error.empty");
 		}
 	}
 

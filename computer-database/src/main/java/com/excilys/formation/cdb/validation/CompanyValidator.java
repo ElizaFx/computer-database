@@ -18,11 +18,11 @@ public class CompanyValidator extends Validate<Company> {
 			if (companyId != 0) {
 				company = companyService.find(companyId);
 				if (company == null) {
-					setErrorMsg("Incorrect company ID : This company doesn't exist");
+					setErrorMsg("error.unknownCompany");
 				}
 			}
 		} else if (hasInput()) {
-			setErrorMsg("Incorrect company ID : Malformed company ID");
+			setErrorMsg("error.malformedCompanyID");
 		}
 	}
 

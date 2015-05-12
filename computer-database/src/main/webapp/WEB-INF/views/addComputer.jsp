@@ -1,73 +1,88 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!DOCTYPE html>
 <html>
-<%@include file="/WEB-INF/import/head.jsp" %>
+<%@include file="/WEB-INF/import/head.jsp"%>
 <body>
-<%@include file="/WEB-INF/import/header.jsp" %>
+	<%@include file="/WEB-INF/import/header.jsp"%>
 	<section id="main">
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<h1>Add Computer</h1>
 					<c:if test="${success != null}">
-						<div class="alert alert-success" role="alert">${success}</div>
+						<div class="alert alert-success" role="alert">
+							<spring:message code="${success}"
+								arguments="${computer.name}" />
+						</div>
 					</c:if>
 					<c:if test="${danger != null}">
-						<div class="alert alert-danger" role="alert">${danger}</div>
+						<div class="alert alert-danger" role="alert">
+							<spring:message code="${danger}" />
+						</div>
 					</c:if>
-					<form action="addComputer" method="POST">
+					<form:form action="addComputer" method="POST"
+						modelAttribute="computer">
 						<fieldset>
-							<div class="form-group <c:if
+							<div
+								class="form-group <c:if
 										test="${errors.hasFieldErrors('name')}">has-error</c:if>">
-								<label for="computerName">Computer name</label> <input
-									type="text" class="form-control" id="computerName"
-									name="computerName" placeholder="Computer name"
-									value="${computer.getName()}" required><span
-									class="help-block">Required <c:if
-										test="${errors.hasFieldErrors('name')}">
-										<br />${errors.getFieldError('name').getDefaultMessage()}</c:if></span>
+								<form:label path="computerName">Computer name</form:label>
+								<form:input path="computerName" type="text" class="form-control"
+									id="computerName" name="computerName"
+									placeholder="Computer name" value="${computer.name}"
+									required="true" />
+								<span class="help-block">Required <br /> <form:errors
+										path="computerName" /></span>
 							</div>
-							<div class="form-group <c:if
+							<div
+								class="form-group <c:if
 										test="${errors.hasFieldErrors('introduced')}">has-error</c:if>">
-								<label for="introduced">Introduced date</label> <input
-									type="date" class="form-control" id="introduced"
-									name="introduced" placeholder="Introduced date"
-									value="${computer.getIntroduced()}"><span class="help-block">Pattern
-									YYYY-MM-dd or dd-MM-YYYY. Delimiters can be - or . or / <c:if
-										test="${errors.hasFieldErrors('introduced')}">
-										<br />${errors.getFieldError('introduced').getDefaultMessage()}</c:if>
+								<form:label path="introduced">Introduced date</form:label>
+								<form:input path="introduced" type="date" class="form-control"
+									id="introduced" name="introduced" placeholder="Introduced date"
+									value="${computer.introduced}" />
+								<span class="help-block">Pattern YYYY-MM-dd or
+									dd-MM-YYYY. Delimiters can be - or . or / <br /> <form:errors
+										path="introduced" />
 								</span>
 							</div>
-							<div class="form-group <c:if
+							<div
+								class="form-group <c:if
 										test="${errors.hasFieldErrors('discontinued')}">has-error</c:if>">
-								<label for="discontinued">Discontinued date</label> <input
-									type="date" class="form-control" id="discontinued"
-									name="discontinued" placeholder="Discontinued date"
-									value="${computer.getDiscontinued()}"><span class="help-block">Pattern
-									YYYY-MM-dd or dd-MM-YYYY. Delimiters can be - or . or / <c:if
-										test="${errors.hasFieldErrors('discontinued')}">
-										<br />${errors.getFieldError('discontinued').getDefaultMessage()}</c:if>
+								<form:label path="discontinued">Discontinued date</form:label>
+								<form:input path="discontinued" type="date" class="form-control"
+									id="discontinued" name="discontinued"
+									placeholder="Discontinued date"
+									value="${computer.discontinued}" />
+								<span class="help-block">Pattern YYYY-MM-dd or
+									dd-MM-YYYY. Delimiters can be - or . or / <br /> <form:errors
+										path="discontinued" />
 								</span>
 							</div>
-							<div class="form-group <c:if
+							<div
+								class="form-group <c:if
 										test="${errors.hasFieldErrors('company')}">has-error</c:if>">
-								<label for="companyId">Company</label> <select
-									class="form-control" id="companyId" name="companyId">
-									<option value="0">--</option>
+								<form:label path="companyId">Company</form:label>
+								<form:select path="companyId" class="form-control"
+									id="companyId" name="companyId">
+									<form:option value="0" selected='true'>--</form:option>
 									<c:forEach items="${lCompanies}" var="company">
-										<option value="${company.getId()}"
-											${computer.getCompanyId() == company.getId() ? "selected" : "" }>${company.getName() }</option>
+										<option value="${company.id}"
+											${computer.companyId == company.id ? 'selected' : '' }>${company.name }</option>
 									</c:forEach>
-								</select><span class="help-block">${errors.getFieldError('company').getDefaultMessage()}</span>
+								</form:select>
+								<br />
+								<form:errors class="help-block" path="companyId" />
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
 							<input type="submit" value="Add" class="btn btn-primary">
 							or <a href="dashboard" class="btn btn-default">Cancel</a>
 						</div>
-					</form>
+					</form:form>
 				</div>
 			</div>
 		</div>

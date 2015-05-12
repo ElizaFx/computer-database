@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mylib"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!DOCTYPE html>
 <html>
 <%@include file="/WEB-INF/import/head.jsp"%>
@@ -22,12 +23,12 @@
 			</c:if>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
-					<form id="searchForm" action="#" method="GET" class="form-inline">
+					<form:form id="searchForm" action="#" method="GET" class="form-inline">
 						<input type="search" id="searchbox" name="search"
 							class="form-control" placeholder="<spring:message code='dashboard.searchName'/>"
 							value="${pagined.getSearch()}" /> <input type="submit"
 							id="searchsubmit" value="<spring:message code='dashboard.filterByName'/>" class="btn btn-primary" />
-					</form>
+					</form:form>
 				</div>
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer" href="addComputer"><spring:message
@@ -37,9 +38,9 @@
 				</div>
 			</div>
 		</div>
-		<form id="deleteForm" action="#" method="POST">
+		<form:form id="deleteForm" action="#" method="POST">
 			<input type="hidden" name="selection" value="">
-		</form>
+		</form:form>
 		<div class="container" style="margin-top: 10px;">
 			<table class="table table-striped table-bordered">
 				<thead>

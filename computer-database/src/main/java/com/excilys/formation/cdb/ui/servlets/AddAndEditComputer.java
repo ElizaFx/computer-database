@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.mapper.CompanyMapper;
@@ -28,42 +29,50 @@ public class AddAndEditComputer {
 	private ComputerService computerService;
 
 	@RequestMapping(value = "/editComputer", method = RequestMethod.GET)
-	protected String doEditGet(
+	protected ModelAndView doEditGet(
 			@RequestParam(value = "id", required = false) Long id,
 			ModelMap model) {
 		return processGet("editComputer", id, model);
 	}
 
 	@RequestMapping(value = "/addComputer", method = RequestMethod.GET)
-	protected String doAddGet(ModelMap model) {
+	protected ModelAndView doAddGet(ModelMap model) {
 		return processGet("addComputer", null, model);
 	}
 
-	private String processGet(String path, Long id, ModelMap model) {
+	private ModelAndView processGet(String path, Long id, ModelMap model) {
+		ComputerDTO dto = null;
 		if ("editComputer".equals(path)) {
 			Computer computer = id == null ? null : computerService.find(id);
 			if (computer != null) {
-				model.addAttribute("computer", ComputerMapper.toDTO(computer));
+				dto = ComputerMapper.toDTO(computer);
 			} else {
-				model.addAttribute("danger",
-						"Error: This computer does't exist!");
+				dto = new ComputerDTO();
+				model.addAttribute("danger", "error.unknownComputer");
 			}
+		} else {
+			dto = new ComputerDTO();
 		}
 
 		model.addAttribute("lCompanies",
 				CompanyMapper.toDTO(companyService.findAll()));
-		return path;
+		return new ModelAndView(path, "computer", dto);
 	}
 
 	@RequestMapping(value = "/editComputer", method = RequestMethod.POST)
-	protected String doEditPost(@ModelAttribute ComputerDTO computer,
+	protected String doEditPost(
+			@ModelAttribute("computer") ComputerDTO computer,
 			BindingResult result, ModelMap model) {
+		System.out.println(model);
+		System.out.println(computer);
 		return processPost("editComputer", computer, result, model);
 	}
 
 	@RequestMapping(value = "/addComputer", method = RequestMethod.POST)
-	protected String doAddPost(@ModelAttribute ComputerDTO computer,
+	protected String doAddPost(
+			@ModelAttribute("computer") ComputerDTO computer,
 			BindingResult result, ModelMap model) {
+		System.out.println(computer);
 		return processPost("addComputer", computer, result, model);
 	}
 
@@ -80,16 +89,15 @@ public class AddAndEditComputer {
 			} else {
 				computerService.update(ComputerMapper.toModel(computer));
 			}
-			model.addAttribute("success", "Computer " + computer.getName()
-					+ (addComputer ? " added" : " edited"));
+			model.addAttribute("success", path + ".success");
 		} else {
-			model.addAttribute("danger", "Error: Check red labels!");
+			model.addAttribute("danger", "error.checkRedLabels");
 		}
 
 		if (process && (!addComputer || hasErrors)) {
 			model.addAttribute("computer", computer);
 		} else if (!addComputer) {
-			model.addAttribute("danger", "Error: This computer does't exist!");
+			model.addAttribute("danger", "error.unknownComputer");
 		}
 
 		model.addAttribute("errors", result);
