@@ -14,8 +14,7 @@
 					<h1>Add Computer</h1>
 					<c:if test="${success != null}">
 						<div class="alert alert-success" role="alert">
-							<spring:message code="${success}"
-								arguments="${computerName}" />
+							<spring:message code="${success}" arguments="${computerName}" />
 						</div>
 					</c:if>
 					<c:if test="${danger != null}">
@@ -29,10 +28,14 @@
 							<div
 								class="form-group <c:if
 										test="${errors.hasFieldErrors('name')}">has-error</c:if>">
-								<form:label path="computerName">Computer name</form:label>
+								<form:label path="computerName">
+									<spring:message code="global.computerName" />
+								</form:label>
+								<spring:message code="global.computerName"
+									var="computerNameMessage" />
 								<form:input path="computerName" type="text" class="form-control"
 									id="computerName" name="computerName"
-									placeholder="Computer name" value="${computer.name}"
+									placeholder="${computerNameMessage}" value="${computer.name}"
 									required="true" />
 								<span class="help-block">Required <br /> <form:errors
 										path="computerName" /></span>
@@ -40,9 +43,14 @@
 							<div
 								class="form-group <c:if
 										test="${errors.hasFieldErrors('introduced')}">has-error</c:if>">
-								<form:label path="introduced">Introduced date</form:label>
+								<form:label path="introduced">
+									<spring:message code="global.introducedDate" />
+								</form:label>
+								<spring:message code="global.introducedDate"
+									var="introducedDateMessage" />
 								<form:input path="introduced" type="date" class="form-control"
-									id="introduced" name="introduced" placeholder="Introduced date"
+									id="introduced" name="introduced"
+									placeholder="${introducedDateMessage}"
 									value="${computer.introduced}" />
 								<span class="help-block">Pattern YYYY-MM-dd or
 									dd-MM-YYYY. Delimiters can be - or . or / <br /> <form:errors
@@ -52,10 +60,14 @@
 							<div
 								class="form-group <c:if
 										test="${errors.hasFieldErrors('discontinued')}">has-error</c:if>">
-								<form:label path="discontinued">Discontinued date</form:label>
+								<form:label path="discontinued">
+									<spring:message code="global.discontinuedDate" />
+								</form:label>
+								<spring:message code="global.discontinuedDate"
+									var="discontinuedDateMessage" />
 								<form:input path="discontinued" type="date" class="form-control"
 									id="discontinued" name="discontinued"
-									placeholder="Discontinued date"
+									placeholder='${discontinuedDateMessage}'
 									value="${computer.discontinued}" />
 								<span class="help-block">Pattern YYYY-MM-dd or
 									dd-MM-YYYY. Delimiters can be - or . or / <br /> <form:errors
@@ -65,7 +77,9 @@
 							<div
 								class="form-group <c:if
 										test="${errors.hasFieldErrors('company')}">has-error</c:if>">
-								<form:label path="companyId">Company</form:label>
+								<form:label path="companyId">
+									<spring:message code="global.company" />
+								</form:label>
 								<form:select path="companyId" class="form-control"
 									id="companyId" name="companyId">
 									<form:option value="0" selected='true'>--</form:option>
@@ -79,8 +93,12 @@
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-							<input type="submit" value="Add" class="btn btn-primary">
-							or <a href="dashboard" class="btn btn-default">Cancel</a>
+							<spring:message code="global.add" var="addMessage" />
+							<input type="submit" value="${addMessage}"
+								class="btn btn-primary">
+							<spring:message code="global.or" />
+							<a href="dashboard" class="btn btn-default"><spring:message
+								code="global.cancel" /></a>
 						</div>
 					</form:form>
 				</div>
