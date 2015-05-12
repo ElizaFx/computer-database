@@ -63,8 +63,6 @@ public class AddAndEditComputer {
 	protected String doEditPost(
 			@ModelAttribute("computer") ComputerDTO computer,
 			BindingResult result, ModelMap model) {
-		System.out.println(model);
-		System.out.println(computer);
 		return processPost("editComputer", computer, result, model);
 	}
 
@@ -72,7 +70,6 @@ public class AddAndEditComputer {
 	protected String doAddPost(
 			@ModelAttribute("computer") ComputerDTO computer,
 			BindingResult result, ModelMap model) {
-		System.out.println(computer);
 		return processPost("addComputer", computer, result, model);
 	}
 
@@ -86,6 +83,8 @@ public class AddAndEditComputer {
 		if (!hasErrors && process) {
 			if (addComputer) {
 				computerService.insert(ComputerMapper.toModel(computer));
+				model.put("computer", new ComputerDTO());
+				model.addAttribute("computerName", computer.getComputerName());
 			} else {
 				computerService.update(ComputerMapper.toModel(computer));
 			}
@@ -99,7 +98,7 @@ public class AddAndEditComputer {
 		} else if (!addComputer) {
 			model.addAttribute("danger", "error.unknownComputer");
 		}
-
+		System.out.println(model);
 		model.addAttribute("errors", result);
 		model.addAttribute("lCompanies",
 				CompanyMapper.toDTO(companyService.findAll()));
