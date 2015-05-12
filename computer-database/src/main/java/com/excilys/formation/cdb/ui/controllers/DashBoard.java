@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.ui.servlets;
+package com.excilys.formation.cdb.ui.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
