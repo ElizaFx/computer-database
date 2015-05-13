@@ -34,10 +34,8 @@ function isDate(sDate) {
 	if (locale == null) {
 		$.getScript('js/jquery.cookie.js', function(dependency) {
 			locale = $.cookie("computerDatabaseLocale")
-			console.log(locale)
 		});
 	}
-	console.log(locale)
 	if (value.match("^\\d{2}([/.-])\\d{2}\\1\\d{4}$"))
 		if (locale == "fr")
 			isoDate = sDate.replace(/(\d{2}).(\d{2}).(\d{4})/, "$3-$2-$1");
@@ -45,7 +43,6 @@ function isDate(sDate) {
 			isoDate = sDate.replace(/(\d{2}).(\d{2}).(\d{4})/, "$3-$1-$2");
 	else
 		return false;
-	console.log(isoDate)
 	try {
 		var d = new Date(isoDate);
 		return d.toISOString().indexOf(isoDate) == 0

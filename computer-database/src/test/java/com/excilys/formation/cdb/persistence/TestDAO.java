@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.AfterClass;
@@ -24,7 +25,6 @@ import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.validation.DateValidator;
 import com.excilys.formation.util.Utils;
 
 /**
@@ -68,7 +68,7 @@ public class TestDAO {
 		Computer elfII = new Computer();
 		elfII.setId(20l);
 		elfII.setName("ELF II");
-		elfII.setIntroduced(new DateValidator("1977-01-01").getOutput());
+		elfII.setIntroduced(LocalDate.of(1977, 1, 1));
 		Company netronics = new Company();
 		netronics.setId(4l);
 		netronics.setName("Netronics");

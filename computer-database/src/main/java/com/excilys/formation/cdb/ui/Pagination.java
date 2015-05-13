@@ -208,14 +208,4 @@ public class Pagination<T> {
 	public void setOrderBy(String orderBy) {
 		this.orderBy = orderBy;
 	}
-
-	public boolean supports(Class<?> clazz) {
-
-		return Pagination.class.equals(clazz);
-	}
-
-	public void validate(Object target, Errors errors) {
-		System.out.println("in validate fonction");
-
-	}
 }

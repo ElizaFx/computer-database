@@ -11,7 +11,9 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
-					<h1>Add Computer</h1>
+					<h1>
+						<spring:message code="addComputer.title" />
+					</h1>
 					<c:if test="${success != null}">
 						<div class="alert alert-success" role="alert">
 							<spring:message code="${success}" arguments="${computerName}" />
@@ -37,7 +39,7 @@
 									id="computerName" name="computerName"
 									placeholder="${computerNameMessage}" value="${computer.name}"
 									required="true" />
-								<span class="help-block">Required <br /> <form:errors
+								<span class="help-block"><spring:message code="global.required" /><br /> <form:errors
 										path="computerName" /></span>
 							</div>
 							<div
@@ -52,9 +54,7 @@
 									id="introduced" name="introduced"
 									placeholder="${introducedDateMessage}"
 									value="${computer.introduced}" />
-								<span class="help-block">Pattern YYYY-MM-dd or
-									dd-MM-YYYY. Delimiters can be - or . or / <br /> <form:errors
-										path="introduced" />
+								<span class="help-block"><form:errors path="introduced" />
 								</span>
 							</div>
 							<div
@@ -69,9 +69,7 @@
 									id="discontinued" name="discontinued"
 									placeholder='${discontinuedDateMessage}'
 									value="${computer.discontinued}" />
-								<span class="help-block">Pattern YYYY-MM-dd or
-									dd-MM-YYYY. Delimiters can be - or . or / <br /> <form:errors
-										path="discontinued" />
+								<span class="help-block"><form:errors path="discontinued" />
 								</span>
 							</div>
 							<div
@@ -98,7 +96,7 @@
 								class="btn btn-primary">
 							<spring:message code="global.or" />
 							<a href="dashboard" class="btn btn-default"><spring:message
-								code="global.cancel" /></a>
+									code="global.cancel" /></a>
 						</div>
 					</form:form>
 				</div>

@@ -13,7 +13,9 @@
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<div class="label label-default pull-right">id:
 						${computer.id}</div>
-					<h1>Edit Computer</h1>
+					<h1>
+						<spring:message code="editComputer.title" />
+					</h1>
 					<c:if test="${success != null}">
 						<div class="alert alert-success" role="alert">
 							<spring:message code="${success}" arguments="${computer.name}" />
@@ -40,7 +42,7 @@
 									id="computerName" name="computerName"
 									placeholder="${computerNameMessage}" value="${computer.name}"
 									required="true" />
-								<span class="help-block">Required <br /> <form:errors
+								<span class="help-block"><spring:message code="global.required" /> <br /> <form:errors
 										path="computerName" /></span>
 							</div>
 							<div
@@ -55,9 +57,7 @@
 									id="introduced" name="introduced"
 									placeholder="${introducedDateMessage}"
 									value="${computer.introduced}" />
-								<span class="help-block">Pattern YYYY-MM-dd or
-									dd-MM-YYYY. Delimiters can be - or . or / <br /> <form:errors
-										path="introduced" />
+								<span class="help-block"><form:errors path="introduced" />
 								</span>
 							</div>
 							<div
@@ -72,9 +72,7 @@
 									id="discontinued" name="discontinued"
 									placeholder='${discontinuedDateMessage}'
 									value="${computer.discontinued}" />
-								<span class="help-block">Pattern YYYY-MM-dd or
-									dd-MM-YYYY. Delimiters can be - or . or / <br /> <form:errors
-										path="discontinued" />
+								<span class="help-block"><form:errors path="discontinued" />
 								</span>
 							</div>
 							<div
@@ -96,8 +94,9 @@
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-						<spring:message code="global.edit" var="editMessage"/>
-							<input type="submit" value="${editMessage }" class="btn btn-primary">
+							<spring:message code="global.edit" var="editMessage" />
+							<input type="submit" value="${editMessage }"
+								class="btn btn-primary">
 							<spring:message code="global.or" />
 							<a href="dashboard" class="btn btn-default"><spring:message
 									code="global.cancel" /></a>
