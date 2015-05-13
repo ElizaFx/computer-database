@@ -4,6 +4,9 @@
 <header class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
 		<a class="navbar-brand"
-			href="${pageContext.request.contextPath}/dashboard"> <spring:message code="global.title" /></a>
+			href="${pageContext.request.contextPath}/dashboard">${param.id }<spring:message code="global.title" /></a>
+			
+			<a class="navbar-right navbar-brand" href="?locale=en"><img alt="english" src="flags/en.svg"></a>
+			<a class="navbar-right navbar-brand" href="?locale=fr"><img alt="french" src="flags/fr.svg"></a>
 	</div>
 </header>

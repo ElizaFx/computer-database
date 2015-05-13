@@ -52,12 +52,14 @@
 			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
+				<spring:message code="dashboard.confirmDeletion"
+					var="confirmDeletionMessage" />
 						<!-- Variable declarations for passing labels as parameters -->
 						<!-- Table header for Computer Name -->
 						<th class="editMode" style="width: 60px; height: 22px;"><input
 							type="checkbox" id="selectall" /> <span
 							style="vertical-align: top;"> - <a href="#"
-								id="deleteSelected" onclick="$.fn.deleteSelected();"> <i
+								id="deleteSelected" onclick="$.fn.deleteSelected('${confirmDeletionMessage}');"> <i
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
