@@ -1,3 +1,5 @@
+var locale = null;
+
 $("#computerName").keyup(function(e) {
 	elt = $(this);
 	parent = elt.parent();
@@ -27,15 +29,23 @@ function validateDate(elt) {
 		parent.removeClass("has-error").removeClass("has-success")
 	}
 }
-
 function isDate(sDate) {
 	var isoDate
+	if (locale == null) {
+		$.getScript('js/jquery.cookie.js', function(dependency) {
+			locale = $.cookie("computerDatabaseLocale")
+			console.log(locale)
+		});
+	}
+	console.log(locale)
 	if (value.match("^\\d{2}([/.-])\\d{2}\\1\\d{4}$"))
-		isoDate = sDate.replace(/(\d{2}).(\d{2}).(\d{4})/, "$3-$2-$1");
-	else if (value.match("^\\d{4}([/.-])\\d{2}\\1\\d{2}$"))
-		isoDate = sDate.replace(/[/.]/g, "-");
+		if (locale == "fr")
+			isoDate = sDate.replace(/(\d{2}).(\d{2}).(\d{4})/, "$3-$2-$1");
+		else
+			isoDate = sDate.replace(/(\d{2}).(\d{2}).(\d{4})/, "$3-$1-$2");
 	else
 		return false;
+	console.log(isoDate)
 	try {
 		var d = new Date(isoDate);
 		return d.toISOString().indexOf(isoDate) == 0
