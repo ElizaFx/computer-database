@@ -1,7 +1,10 @@
 package com.excilys.formation.cdb.dto;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 public class CompanyDTO {
 	private Long id;
+	@NotBlank
 	private String name;
 
 	/**

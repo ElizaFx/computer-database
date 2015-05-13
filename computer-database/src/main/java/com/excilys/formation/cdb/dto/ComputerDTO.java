@@ -1,15 +1,16 @@
 package com.excilys.formation.cdb.dto;
 
-import org.springframework.validation.Errors;
+import org.hibernate.validator.constraints.NotBlank;
 
-import com.excilys.formation.cdb.validation.CompanyValidator;
-import com.excilys.formation.cdb.validation.DateValidator;
-import com.excilys.formation.cdb.validation.NameValidator;
+import com.excilys.formation.cdb.validation.DateField;
 
 public class ComputerDTO {
 	private Long id;
+	@NotBlank
 	private String name;
+	@DateField
 	private String introduced;
+	@DateField
 	private String discontinued;
 	private Long companyId;
 	private String companyName;
@@ -39,16 +40,17 @@ public class ComputerDTO {
 		return name;
 	}
 
+	@NotBlank
 	public String getComputerName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName(@NotBlank String name) {
+		this.name = name.trim();
 	}
 
-	public void setComputerName(String name) {
-		this.name = name;
+	public void setComputerName(@NotBlank String name) {
+		this.name = name.trim();
 	}
 
 	public String getIntroduced() {
@@ -81,31 +83,6 @@ public class ComputerDTO {
 
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
-	}
-
-	public boolean supports(Class<?> clazz) {
-		return ComputerDTO.class.equals(clazz);
-	}
-
-	public void validate(Errors errors) {
-		NameValidator computerName = new NameValidator(name);
-		DateValidator introduced = new DateValidator(this.introduced);
-		DateValidator discontinued = new DateValidator(this.discontinued);
-		CompanyValidator company = new CompanyValidator(
-				companyId == null ? null : companyId.toString());
-
-		if (!computerName.isValid()) {
-			errors.rejectValue("name", computerName.getMsg());
-		}
-		if (!introduced.isValid()) {
-			errors.rejectValue("introduced", introduced.getMsg());
-		}
-		if (!discontinued.isValid()) {
-			errors.rejectValue("discontinued", discontinued.getMsg());
-		}
-		if (!company.isValid()) {
-			errors.rejectValue("company", company.getMsg());
-		}
 	}
 
 	public final static ComputerDTOBuilder build() {
@@ -162,4 +139,5 @@ public class ComputerDTO {
 			return computer;
 		}
 	}
+
 }

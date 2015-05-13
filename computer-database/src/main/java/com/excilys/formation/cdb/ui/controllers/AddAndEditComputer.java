@@ -1,5 +1,7 @@
 package com.excilys.formation.cdb.ui.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -61,21 +63,20 @@ public class AddAndEditComputer {
 
 	@RequestMapping(value = "/editComputer", method = RequestMethod.POST)
 	protected String doEditPost(
-			@ModelAttribute("computer") ComputerDTO computer,
+			@Valid @ModelAttribute("computer") ComputerDTO computer,
 			BindingResult result, ModelMap model) {
 		return processPost("editComputer", computer, result, model);
 	}
 
 	@RequestMapping(value = "/addComputer", method = RequestMethod.POST)
 	protected String doAddPost(
-			@ModelAttribute("computer") ComputerDTO computer,
+			@Valid @ModelAttribute("computer") ComputerDTO computer,
 			BindingResult result, ModelMap model) {
 		return processPost("addComputer", computer, result, model);
 	}
 
 	private String processPost(String path, ComputerDTO computer,
 			BindingResult result, ModelMap model) {
-		computer.validate(result);
 		boolean hasErrors = result.hasErrors();
 		boolean addComputer = "addComputer".equals(path);
 		boolean process = addComputer
