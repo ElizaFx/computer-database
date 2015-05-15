@@ -5,7 +5,14 @@
 	<artifactId>computer-database</artifactId>
 	<version>1.5.0-SNAPSHOT</version>
 	<packaging>war</packaging>
+	<repositories>
+		<repository>
+			<id>version99</id>
+			<url>http://version99.qos.ch/</url>
+		</repository>
+	</repositories>
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<maven.compiler.plugin.version>3.1</maven.compiler.plugin.version>
 		<maven.war.plugin.version>2.4</maven.war.plugin.version>
@@ -15,10 +22,13 @@
 		<junit.version>4.12</junit.version>
 		<org.mockito.version>1.10.19</org.mockito.version>
 		<org.slf4j.version>1.7.12</org.slf4j.version>
+		<ch.qos.logback.version>1.1.3</ch.qos.logback.version>
+		<empty.99.version>99-empty</empty.99.version>
 		<jstl.version>1.2</jstl.version>
 		<org.seleniumhq.selenium.version>2.45.0</org.seleniumhq.selenium.version>
 		<com.jolbox.version>0.8.0.RELEASE</com.jolbox.version>
 		<org.springframework.version>4.1.6.RELEASE</org.springframework.version>
+		<org.hibernate.validator.version>5.1.3.Final</org.hibernate.validator.version>
 	</properties>
 	<build>
 		<plugins>
@@ -28,14 +38,16 @@
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
+					<outputEncoding>${project.build.sourceEncoding}</outputEncoding>
+					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>${maven.war.plugin.version}</version>
 				<configuration>
-					<warSourceDirectory>src/main/webapp/</warSourceDirectory>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<outputEncoding>${project.build.sourceEncoding}</outputEncoding>
+					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -68,7 +80,7 @@
 			<version>${jstl.version}</version>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- Connection pool -->
+		<!-- Connection pool and dataSource used -->
 		<dependency>
 			<groupId>com.jolbox</groupId>
 			<artifactId>bonecp</artifactId>
@@ -76,10 +88,24 @@
 			<scope>compile</scope>
 		</dependency>
 		<!-- LOGGER -->
+		<!-- Force spring commons-logging dependency, this is an empty jar -->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>${empty.99.version}</version>
+		</dependency>
+		<!-- my logging specification is slf4j -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-site</artifactId>
+			<artifactId>jcl-over-slf4j</artifactId>
 			<version>${org.slf4j.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- logging implementation, classic artifact for showing logs-->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${ch.qos.logback.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<!-- Spring -->
@@ -101,6 +127,7 @@
 			<version>${org.springframework.version}</version>
 			<scope>compile</scope>
 		</dependency>
+		<!-- Spring Transaction -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
@@ -123,7 +150,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>5.1.3.Final</version>
+			<version>${org.hibernate.validator.version}</version>
 		</dependency>
 		<!-- TESTS -->
 		<dependency>

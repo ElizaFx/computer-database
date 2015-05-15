@@ -1,5 +1,6 @@
+SET NAMES utf8 
 drop schema if exists `computer-database-db-test`;
-  create schema if not exists `computer-database-db-test`;
+  create schema if not exists `computer-database-db-test` DEFAULT CHARSET=utf8;
   use `computer-database-db-test`;
 
   drop table if exists computer;

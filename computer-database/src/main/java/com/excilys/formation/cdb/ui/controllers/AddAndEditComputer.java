@@ -99,7 +99,6 @@ public class AddAndEditComputer {
 		} else if (!addComputer) {
 			model.addAttribute("danger", "error.unknownComputer");
 		}
-		System.out.println(model);
 		model.addAttribute("errors", result);
 		model.addAttribute("lCompanies",
 				CompanyMapper.toDTO(companyService.findAll()));

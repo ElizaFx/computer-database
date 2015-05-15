@@ -1,5 +1,6 @@
+SET NAMES utf8 
 drop schema if exists `computer-database-db`;
-  create schema if not exists `computer-database-db`;
+  create schema if not exists `computer-database-db` DEFAULT CHARSET=utf8;
   use `computer-database-db`;
 
   drop table if exists computer;
