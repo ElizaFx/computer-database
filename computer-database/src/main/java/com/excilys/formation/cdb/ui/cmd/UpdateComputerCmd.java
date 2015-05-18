@@ -26,13 +26,8 @@ public class UpdateComputerCmd implements ICommand {
 		if (computer == null) {
 			System.out.println("Update failed : Computer is null");
 		}
-		if (computerService.update(computer) == 1) {
-			System.out.println("Entry updated." + computer);
-		} else {
-			System.out
-					.println("An error has occured, entry not updated."
-							+ ((computer.getId() == null) ? " Maybe because of the null id"
-									: ""));
-		}
+		computerService.update(computer);
+		System.out.println("Entry updated." + computer);
+
 	}
 }

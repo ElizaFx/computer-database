@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.persistence.ComputerDAO;
+import com.excilys.formation.cdb.persistence.IComputerDAO;
 import com.excilys.formation.cdb.persistence.IComputerDAO.OrderBy;
 import com.excilys.formation.cdb.ui.Pagination;
 import com.excilys.formation.cdb.util.Util;
@@ -18,7 +18,7 @@ import com.excilys.formation.cdb.util.Util;
 public class ComputerService implements IComputerService {
 
 	@Autowired
-	private ComputerDAO computerDAO;
+	private IComputerDAO computerDAO;
 
 	/**
 	 * @return all row of the table of Computer
@@ -44,8 +44,8 @@ public class ComputerService implements IComputerService {
 	 * @return the row count inserted
 	 */
 	@Override
-	public int insert(Computer model) {
-		return computerDAO.insert(model);
+	public void insert(Computer model) {
+		computerDAO.insert(model);
 	}
 
 	/**
@@ -53,11 +53,10 @@ public class ComputerService implements IComputerService {
 	 * request
 	 *
 	 * @param model
-	 * @return the row count removed
 	 */
 	@Override
-	public int remove(Long id) {
-		return computerDAO.remove(id);
+	public void remove(Computer model) {
+		computerDAO.remove(model);
 	}
 
 	/**
@@ -65,11 +64,10 @@ public class ComputerService implements IComputerService {
 	 * and request
 	 *
 	 * @param model
-	 * @return the row count updated
 	 */
 	@Override
-	public int update(Computer model) {
-		return computerDAO.update(model);
+	public void update(Computer model) {
+		computerDAO.update(model);
 	}
 
 	/**
@@ -138,11 +136,10 @@ public class ComputerService implements IComputerService {
 	}
 
 	@Override
-	public int remove(List<Long> output) {
+	public void remove(List<Long> output) {
 		if (output != null) {
-			return output.stream().mapToInt(this::remove).sum();
+			output.stream().forEach(c -> remove(find(c)));
 		}
-		return 0;
 	}
 
 	@Override

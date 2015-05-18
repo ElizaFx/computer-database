@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.formation.cdb.dto.ComputerDTO;
-import com.excilys.formation.cdb.service.ComputerService;
+import com.excilys.formation.cdb.service.IComputerService;
 import com.excilys.formation.cdb.ui.Pagination;
 import com.excilys.formation.cdb.validation.LongSelectionValidator;
 
@@ -21,7 +21,7 @@ import com.excilys.formation.cdb.validation.LongSelectionValidator;
 @RequestMapping({ "/dashboard", "/" })
 public class DashBoard {
 	@Autowired
-	private ComputerService computerService;
+	private IComputerService computerService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	protected String doGet(@ModelAttribute Pagination<ComputerDTO> mPage,

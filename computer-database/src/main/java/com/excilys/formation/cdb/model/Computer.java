@@ -3,19 +3,36 @@ package com.excilys.formation.cdb.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.excilys.formation.cdb.mapper.DateMapper;
+
 /**
  * This class is the object version of a Computer from the Database.
  *
  * @author Joxit
  */
+@Entity
+@Table(name = "computer")
 public class Computer implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
+	@Convert(converter = DateMapper.class)
 	private LocalDate introduced;
+	@Convert(converter = DateMapper.class)
 	private LocalDate discontinued;
+	@ManyToOne
 	private Company company;
 
 	/**

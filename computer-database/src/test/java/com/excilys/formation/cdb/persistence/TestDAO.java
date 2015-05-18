@@ -36,9 +36,9 @@ import com.excilys.formation.util.Utils;
 public class TestDAO {
 
 	@Autowired
-	private CompanyDAO companyDAO;
+	private ICompanyDAO companyDAO;
 	@Autowired
-	private ComputerDAO computerDAO;
+	private IComputerDAO computerDAO;
 
 	@BeforeClass
 	public static void setUp() throws IOException {
@@ -55,6 +55,7 @@ public class TestDAO {
 		assertEquals(273, computerDAO.findAll().size());
 		assertEquals(273, computerDAO.count());
 		assertEquals(30, computerDAO.findAllByCompany(1l).size());
+		assertEquals(36, computerDAO.count("Apple"));
 	}
 
 	@Test
@@ -108,7 +109,7 @@ public class TestDAO {
 		computerDAO.update(jox);
 		assertNotNull(computerDAO.find(c -> c.equals(jox)));
 
-		computerDAO.remove(jox.getId());
+		computerDAO.remove(jox);
 		assertNull(computerDAO.find(c -> c.equals(jox)));
 		assertNull(computerDAO.find(c -> c.getName().equals("Joxit")));
 	}

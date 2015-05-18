@@ -10,15 +10,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.persistence.CompanyDAO;
-import com.excilys.formation.cdb.persistence.ComputerDAO;
+import com.excilys.formation.cdb.persistence.ICompanyDAO;
+import com.excilys.formation.cdb.persistence.IComputerDAO;
 
 @Service
 public class CompanyService implements ICompanyService {
 	@Autowired
-	private CompanyDAO companyDAO;
+	private ICompanyDAO companyDAO;
 	@Autowired
-	private ComputerDAO computerDAO;
+	private IComputerDAO computerDAO;
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(CompanyService.class);

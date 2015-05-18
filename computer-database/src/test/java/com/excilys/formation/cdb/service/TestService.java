@@ -99,7 +99,7 @@ public class TestService {
 		computerService.update(jox);
 		assertNotNull(computerService.find(c -> c.equals(jox)));
 
-		computerService.remove(jox.getId());
+		computerService.remove(jox);
 		assertNull(computerService.find(c -> c.equals(jox)));
 		assertNull(computerService.find(c -> c.getName().equals("Joxit")));
 	}
@@ -138,7 +138,7 @@ public class TestService {
 
 	@Test(expected = DAOException.class)
 	public void invalidRemove() {
-		computerService.remove((Long) null);
+		computerService.remove((Computer) null);
 	}
 
 }

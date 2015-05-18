@@ -59,7 +59,7 @@ public interface IComputerDAO {
 	 * @param model
 	 * @return the row count inserted
 	 */
-	public int insert(Computer model);
+	public void insert(Computer model);
 
 	/**
 	 * Remove model from the table. Must call removeRequest with the right
@@ -68,7 +68,7 @@ public interface IComputerDAO {
 	 * @param model
 	 * @return the row count removed
 	 */
-	public int remove(Long model);
+	public void remove(Computer model);
 
 	/**
 	 * Update model from the table. Must call updateRequest with the right id
@@ -77,7 +77,7 @@ public interface IComputerDAO {
 	 * @param model
 	 * @return the row count updated
 	 */
-	public int update(Computer model);
+	public void update(Computer model);
 
 	/**
 	 * @param id

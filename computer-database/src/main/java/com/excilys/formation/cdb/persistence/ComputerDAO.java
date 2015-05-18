@@ -1,36 +1,39 @@
 package com.excilys.formation.cdb.persistence;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.sql.Types;
 import java.util.List;
 import java.util.function.Predicate;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.util.Util;
 
 /**
  *
  * @author Joxit
  */
 @Repository
+@Transactional
 public class ComputerDAO implements IComputerDAO {
 	private final static Logger LOGGER = LoggerFactory
 			.getLogger(ComputerDAO.class);
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	@PersistenceContext
+	private EntityManager em;
 
 	@Override
 	public Computer find(Long id) {
@@ -38,71 +41,43 @@ public class ComputerDAO implements IComputerDAO {
 			LOGGER.error("Error param null in ComputerDAO.find(id)");
 			throw new DAOException("NullPointerException: ID null!");
 		}
-		return jdbcTemplate
-				.query("SELECT * FROM computer left outer join company on computer.company_id=company.id WHERE computer.ID=?",
-						new ComputerMapper(), id).stream().findFirst()
-				.orElse(null);
+		return em.find(Computer.class, id);
 	}
 
 	@Override
-	public int insert(Computer model) {
-		int res = 0;
-		if (model == null) {
-			LOGGER.error("Error param null in ComputerDAO.insert(id)");
-			throw new DAOException("NullPointerException: Model null!");
-		}
-		PreparedStatementCreator psc = con -> {
-			PreparedStatement ps1 = con
-					.prepareStatement(
-							"INSERT INTO computer SET NAME=?, INTRODUCED=?, DISCONTINUED=?, COMPANY_ID=?",
-							Statement.RETURN_GENERATED_KEYS);
-			ps1.setString(1, model.getName());
-			ps1.setDate(2, Util.toSqlDate(model.getIntroduced()));
-			ps1.setDate(3, Util.toSqlDate(model.getDiscontinued()));
-			if (model.getCompany() == null) {
-				ps1.setNull(4, Types.BIGINT);
-			} else {
-				ps1.setLong(4, model.getCompany().getId());
-			}
-			return ps1;
-		};
-
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-		res = jdbcTemplate.update(psc, keyHolder);
-		Number key = keyHolder.getKey();
-		model.setId(key != null ? key.longValue() : null);
-		return res;
-	}
-
-	@Override
-	public int remove(Long id) {
-		if (id == null) {
-			LOGGER.error("Error param null in CompanyDAO.remove(id)");
+	public void insert(Computer computer) {
+		if (computer == null) {
+			LOGGER.error("Error param null in CompanyDAO.insert(computer)");
 			throw new DAOException("NullPointerException: Id null!");
 		}
-
-		return jdbcTemplate.update("DELETE FROM computer WHERE ID=?", id);
+		/* merge fix detached entity passed to persist */
+		em.persist(em.merge(computer));
 	}
 
 	@Override
-	public int update(Computer model) {
-		if (model == null) {
+	public void remove(Computer computer) {
+		if (computer == null) {
+			LOGGER.error("Error param null in CompanyDAO.remove(computer)");
+			throw new DAOException("NullPointerException: Id null!");
+		}
+		em.remove(find(computer.getId()));
+	}
+
+	@Override
+	public void update(Computer computer) {
+		if (computer == null) {
 			LOGGER.error("Error param null in CompanyDAO.update(model)");
 			throw new DAOException("NullPointerException: Model null!");
 		}
-		return jdbcTemplate
-				.update("UPDATE computer SET NAME=?, INTRODUCED=?, DISCONTINUED=?, COMPANY_ID=? WHERE ID=?",
-						model.getName(), Util.toSqlDate(model.getIntroduced()),
-						Util.toSqlDate(model.getDiscontinued()), model
-								.getCompany() != null ? model.getCompany()
-								.getId() : null, model.getId());
+		computer.setId(em.merge(computer).getId());
 	}
 
 	@Override
 	public List<Computer> findAll() {
-		return jdbcTemplate
-				.query("SELECT * FROM computer left outer join company on computer.company_id=company.id",
-						new ComputerMapper());
+		CriteriaQuery<Computer> cq = em.getCriteriaBuilder().createQuery(
+				Computer.class);
+		cq.select(cq.from(Computer.class));
+		return em.createQuery(cq).getResultList();
 	}
 
 	@Override
@@ -125,7 +100,12 @@ public class ComputerDAO implements IComputerDAO {
 
 	@Override
 	public int count() {
-		return count("");
+		CriteriaQuery<Long> cq = em.getCriteriaBuilder()
+				.createQuery(Long.class);
+		Root<Computer> rt = cq.from(Computer.class);
+		cq.select(em.getCriteriaBuilder().count(rt));
+		Query q = em.createQuery(cq);
+		return ((Long) q.getSingleResult()).intValue();
 	}
 
 	@Override

@@ -2,15 +2,23 @@ package com.excilys.formation.cdb.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * This class is the object version of a Company from the Database.
  *
  * @author Joxit
  */
+@SuppressWarnings("serial")
+@Entity
+@Table(name = "company")
 public class Company implements Serializable {
-
-	private static final long serialVersionUID = 1L;
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
 

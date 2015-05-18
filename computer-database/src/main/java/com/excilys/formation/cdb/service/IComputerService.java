@@ -25,25 +25,23 @@ public interface IComputerService extends Paginable<ComputerDTO> {
 	 * @param model
 	 * @return the row count inserted
 	 */
-	public int insert(Computer model);
+	public void insert(Computer model);
 
 	/**
 	 * Remove model from the table. Must call removeRequest with the right
 	 * request
 	 *
 	 * @param id
-	 * @return the row count removed
 	 */
-	public int remove(Long id);
+	public void remove(Computer id);
 
 	/**
 	 * Update model from the table. Must call updateRequest with the right id
 	 * and request
 	 *
 	 * @param model
-	 * @return the row count updated
 	 */
-	public int update(Computer model);
+	public void update(Computer model);
 
 	/**
 	 * @param id
@@ -63,6 +61,7 @@ public interface IComputerService extends Paginable<ComputerDTO> {
 	 *            name of the computer to search
 	 * @return count the number of computers
 	 */
+	@Override
 	public int count(String search);
 
 	public Pagination<ComputerDTO> getPage(String search, String limit,
@@ -74,7 +73,7 @@ public interface IComputerService extends Paginable<ComputerDTO> {
 	 *            of all computers
 	 * @return number of deletions
 	 */
-	public int remove(List<Long> ids);
+	public void remove(List<Long> ids);
 
 	/**
 	 * 

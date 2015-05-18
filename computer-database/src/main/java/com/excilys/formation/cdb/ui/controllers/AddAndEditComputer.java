@@ -16,8 +16,8 @@ import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.service.CompanyService;
-import com.excilys.formation.cdb.service.ComputerService;
+import com.excilys.formation.cdb.service.ICompanyService;
+import com.excilys.formation.cdb.service.IComputerService;
 
 /**
  * Servlet implementation class EditComputer
@@ -25,10 +25,10 @@ import com.excilys.formation.cdb.service.ComputerService;
 @Controller
 public class AddAndEditComputer {
 	@Autowired
-	private CompanyService companyService;
+	private ICompanyService companyService;
 
 	@Autowired
-	private ComputerService computerService;
+	private IComputerService computerService;
 
 	@RequestMapping(value = "/editComputer", method = RequestMethod.GET)
 	protected ModelAndView doEditGet(

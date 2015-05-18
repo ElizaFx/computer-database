@@ -3,11 +3,15 @@ package com.excilys.formation.cdb.persistence;
 import java.util.List;
 import java.util.function.Predicate;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.mapper.CompanyMapper;
@@ -18,12 +22,15 @@ import com.excilys.formation.cdb.model.Company;
  * @author Joxit
  */
 @Repository
+@Transactional
 public class CompanyDAO implements ICompanyDAO {
 	private final static Logger LOGGER = LoggerFactory
 			.getLogger(CompanyDAO.class);
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	@PersistenceContext
+	private EntityManager em;
 
 	@Override
 	public Company find(Long id) {
@@ -31,9 +38,7 @@ public class CompanyDAO implements ICompanyDAO {
 			LOGGER.error("Error param null in CompanyDAO.find(id)");
 			throw new DAOException("NullPointerException: Id null!");
 		}
-		return jdbcTemplate
-				.query("SELECT * FROM company WHERE ID=?", new CompanyMapper(),
-						id).stream().findFirst().orElse(null);
+		return em.find(Company.class, id);
 	}
 
 	@Override
