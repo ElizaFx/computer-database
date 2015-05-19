@@ -36,7 +36,6 @@ public interface ICompanyDAO {
 	 * @param connection
 	 *            for a transaction
 	 * @param model
-	 * @return the row count removed
 	 */
-	public int remove(Long model);
+	public void remove(Long model);
 }

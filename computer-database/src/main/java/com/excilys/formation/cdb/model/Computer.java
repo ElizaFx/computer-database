@@ -18,8 +18,8 @@ import com.excilys.formation.cdb.mapper.DateMapper;
  *
  * @author Joxit
  */
-@Entity
 @Table(name = "computer")
+@Entity
 public class Computer implements Serializable {
 
 	private static final long serialVersionUID = 1L;

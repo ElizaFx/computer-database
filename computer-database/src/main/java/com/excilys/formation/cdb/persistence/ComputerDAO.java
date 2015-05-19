@@ -5,19 +5,20 @@ import java.util.function.Predicate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.formation.cdb.exception.DAOException;
-import com.excilys.formation.cdb.mapper.ComputerMapper;
+import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
 
 /**
@@ -30,8 +31,6 @@ public class ComputerDAO implements IComputerDAO {
 	private final static Logger LOGGER = LoggerFactory
 			.getLogger(ComputerDAO.class);
 
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
 	@PersistenceContext
 	private EntityManager em;
 
@@ -55,12 +54,12 @@ public class ComputerDAO implements IComputerDAO {
 	}
 
 	@Override
-	public void remove(Computer computer) {
-		if (computer == null) {
+	public void remove(Long id) {
+		if (id == null) {
 			LOGGER.error("Error param null in CompanyDAO.remove(computer)");
 			throw new DAOException("NullPointerException: Id null!");
 		}
-		em.remove(find(computer.getId()));
+		em.remove(find(id));
 	}
 
 	@Override
@@ -91,21 +90,26 @@ public class ComputerDAO implements IComputerDAO {
 
 	@Override
 	public int count(String search) {
-		search = search != null ? "%" + search + "%" : "%";
-		return jdbcTemplate
-				.queryForObject(
-						"SELECT count(*) as size FROM computer left outer join company on computer.company_id=company.id where computer.name like ? or company.name like ?;",
-						(rs, rowNum) -> rs.getInt("size"), search, search);
+		search = search == null ? "%" : "%" + search + "%";
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+		Join<Computer, Company> leftJoin = cq.from(Computer.class).join(
+				"company", JoinType.LEFT);
+		// use .join and JoinType.LEFT because default join when selecting table
+		// field is cross join
+		cq.select(cb.count(leftJoin.getParent().get("id"))).where(
+				cb.or(cb.like(leftJoin.get("name"), search),
+						cb.like(leftJoin.getParent().get("name"), search)));
+
+		return em.createQuery(cq).getSingleResult().intValue();
 	}
 
 	@Override
 	public int count() {
 		CriteriaQuery<Long> cq = em.getCriteriaBuilder()
 				.createQuery(Long.class);
-		Root<Computer> rt = cq.from(Computer.class);
-		cq.select(em.getCriteriaBuilder().count(rt));
-		Query q = em.createQuery(cq);
-		return ((Long) q.getSingleResult()).intValue();
+		cq.select(em.getCriteriaBuilder().count(cq.from(Computer.class)));
+		return em.createQuery(cq).getSingleResult().intValue();
 	}
 
 	@Override
@@ -127,13 +131,20 @@ public class ComputerDAO implements IComputerDAO {
 	@Override
 	public List<Computer> pagination(String search, int limit, int offset,
 			OrderBy ob, boolean asc) {
-		String sql = "SELECT * from "
-				+ "computer left outer join company on computer.company_id=company.id where computer.name like ? or company.name like ? order by "
-				+ (ob == null ? OrderBy.ID : ob) + (asc ? " " : " desc ")
-				+ "limit ? offset ? ";
-		search = search != null ? "%" + search + "%" : "%";
-		return jdbcTemplate.query(sql, new ComputerMapper(), search, search,
-				limit, offset);
+		search = search == null ? "%" : "%" + search + "%";
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Computer> cq = cb.createQuery(Computer.class);
+		Join<Computer, Company> leftJoin = cq.from(Computer.class).join(
+				"company", JoinType.LEFT);
+		// use .join and JoinType.LEFT because default join when selecting table
+		// field is cross join
+		cq.select(leftJoin.getParent()).where(
+				cb.or(cb.like(leftJoin.get("name"), search),
+						cb.like(leftJoin.getParent().get("name"), search)));
+		cq.orderBy(asc ? cb.asc(ob.toOrder(leftJoin)) : cb.desc(ob
+				.toOrder(leftJoin)));
+		return em.createQuery(cq).setFirstResult(offset).setMaxResults(limit)
+				.getResultList();
 	}
 
 	@Override
@@ -142,9 +153,16 @@ public class ComputerDAO implements IComputerDAO {
 			LOGGER.error("Error param null in CompanyDAO.remove(id)");
 			throw new DAOException("NullPointerException: Id null!");
 		}
-		return jdbcTemplate
-				.query("SELECT * FROM computer left outer join company on computer.company_id=company.id where company.id = ?",
-						new ComputerMapper(), companyId);
+
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Computer> cq = cb.createQuery(Computer.class);
+		Join<Computer, Company> leftJoin = cq.from(Computer.class).join(
+				"company", JoinType.LEFT);
+		// use .join and JoinType.LEFT because default join when selecting table
+		// field is cross join
+		cq.select(leftJoin.getParent()).where(
+				cb.equal(leftJoin.get("id"), companyId));
+		return em.createQuery(cq).getResultList();
 	}
 
 	@Override
@@ -153,8 +171,11 @@ public class ComputerDAO implements IComputerDAO {
 			LOGGER.error("Error param null in CompanyDAO.remove(id)");
 			throw new DAOException("NullPointerException: Id null!");
 		}
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaDelete<Computer> cq = cb.createCriteriaDelete(Computer.class);
+		Root<Computer> rt = cq.from(Computer.class);
 
-		return jdbcTemplate.update("DELETE FROM computer where company_id = ?",
-				companyId);
+		cq.where(cb.equal(rt.get("company").get("id"), companyId));
+		return em.createQuery(cq).executeUpdate();
 	}
 }

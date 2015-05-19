@@ -3,6 +3,10 @@ package com.excilys.formation.cdb.persistence;
 import java.util.List;
 import java.util.function.Predicate;
 
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Path;
+
+import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
 
 public interface IComputerDAO {
@@ -34,6 +38,13 @@ public interface IComputerDAO {
 				return COMPANY;
 			}
 			return ID;
+		}
+
+		public Path<Object> toOrder(Join<Computer, Company> join) {
+			if (equals(COMPANY)) {
+				return join.get("name");
+			}
+			return join.getParent().get(name().toLowerCase());
 		}
 	}
 
@@ -68,7 +79,7 @@ public interface IComputerDAO {
 	 * @param model
 	 * @return the row count removed
 	 */
-	public void remove(Computer model);
+	public void remove(Long model);
 
 	/**
 	 * Update model from the table. Must call updateRequest with the right id

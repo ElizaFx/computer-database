@@ -58,12 +58,11 @@ public class CompanyService implements ICompanyService {
 	@Transactional
 	@Override
 	public int remove(Long id) {
-		int res = 0;
 		LOGGER.info("Begin of transaction remove compnay " + id);
 		int nbComputers = computerDAO.removeByCompany(id);
-		res = companyDAO.remove(id);
+		companyDAO.remove(id);
 		LOGGER.info("End of transaction remove compnay" + id + " "
 				+ nbComputers + " computers deleted");
-		return res;
+		return nbComputers;
 	}
 }

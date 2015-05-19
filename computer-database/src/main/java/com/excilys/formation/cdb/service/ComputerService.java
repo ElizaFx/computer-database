@@ -56,7 +56,7 @@ public class ComputerService implements IComputerService {
 	 */
 	@Override
 	public void remove(Computer model) {
-		computerDAO.remove(model);
+		computerDAO.remove(model == null ? null : model.getId());
 	}
 
 	/**

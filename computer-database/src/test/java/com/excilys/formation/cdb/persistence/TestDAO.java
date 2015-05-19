@@ -109,7 +109,7 @@ public class TestDAO {
 		computerDAO.update(jox);
 		assertNotNull(computerDAO.find(c -> c.equals(jox)));
 
-		computerDAO.remove(jox);
+		computerDAO.remove(jox.getId());
 		assertNull(computerDAO.find(c -> c.equals(jox)));
 		assertNull(computerDAO.find(c -> c.getName().equals("Joxit")));
 	}

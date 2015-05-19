@@ -5,16 +5,14 @@ import java.util.function.Predicate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaQuery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.formation.cdb.exception.DAOException;
-import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.model.Company;
 
 /**
@@ -27,8 +25,6 @@ public class CompanyDAO implements ICompanyDAO {
 	private final static Logger LOGGER = LoggerFactory
 			.getLogger(CompanyDAO.class);
 
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
 	@PersistenceContext
 	private EntityManager em;
 
@@ -43,7 +39,10 @@ public class CompanyDAO implements ICompanyDAO {
 
 	@Override
 	public List<Company> findAll() {
-		return jdbcTemplate.query("select * from company", new CompanyMapper());
+		CriteriaQuery<Company> cq = em.getCriteriaBuilder().createQuery(
+				Company.class);
+		cq.select(cq.from(Company.class));
+		return em.createQuery(cq).getResultList();
 	}
 
 	@Override
@@ -57,19 +56,19 @@ public class CompanyDAO implements ICompanyDAO {
 
 	@Override
 	public int count() {
-		return jdbcTemplate.queryForObject(
-				"SELECT count(*) as size FROM company",
-				(rs, rowNum) -> rs.getInt("size"));
+		CriteriaQuery<Long> cq = em.getCriteriaBuilder()
+				.createQuery(Long.class);
+		cq.select(em.getCriteriaBuilder().count(cq.from(Company.class)));
+		return em.createQuery(cq).getSingleResult().intValue();
 	}
 
 	@Override
-	public int remove(Long id) {
+	public void remove(Long id) {
 		if (id == null) {
 			LOGGER.error("Error param null in CompanyDAO.remove(id)");
 			throw new DAOException("NullPointerException: Id null!");
 		}
-		return jdbcTemplate
-				.update("DELETE FROM company WHERE company.id=?", id);
+		em.remove(find(id));
 	}
 
 }
