@@ -6,13 +6,15 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 public class DateFieldValidator implements
 		ConstraintValidator<DateField, String> {
-	private static Logger LOGGER;
+	private static Logger LOGGER = LoggerFactory
+			.getLogger(DateFieldValidator.class);
 	@Autowired
 	private MessageSource messageSource;
 
@@ -31,8 +33,10 @@ public class DateFieldValidator implements
 		if (!trimed.matches("^\\d{2}([/.-])\\d{2}\\1\\d{4}$")) {
 			return false;
 		}
+		System.out.println("dfv" + messageSource);
 		String pattern = messageSource.getMessage("global.datePattern", null,
 				LocaleContextHolder.getLocale());
+		System.out.println(pattern);
 		String[] dateSplited = trimed.split("[/.-]");
 		String[] patternSplited = pattern.split("[/.-]");
 		if (patternSplited.length < 3) {
@@ -45,8 +49,6 @@ public class DateFieldValidator implements
 	}
 
 	private boolean isCorrectDate(int year, int month, int dayOfMonth) {
-		System.out
-				.println("isCorrect " + year + "-" + month + "-" + dayOfMonth);
 		if (dayOfMonth > 28) {
 			int dom = 31;
 			switch (month) {

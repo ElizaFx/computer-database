@@ -30,6 +30,9 @@ public class AddAndEditComputer {
 	@Autowired
 	private IComputerService computerService;
 
+	@Autowired
+	private ComputerMapper computerMapper;
+
 	@RequestMapping(value = "/editComputer", method = RequestMethod.GET)
 	protected ModelAndView doEditGet(
 			@RequestParam(value = "id", required = false) Long id,
@@ -47,7 +50,7 @@ public class AddAndEditComputer {
 		if ("editComputer".equals(path)) {
 			Computer computer = id == null ? null : computerService.find(id);
 			if (computer != null) {
-				dto = ComputerMapper.toDTO(computer);
+				dto = computerMapper.toDTO(computer);
 			} else {
 				dto = new ComputerDTO();
 				model.addAttribute("danger", "error.unknownComputer");
@@ -83,11 +86,11 @@ public class AddAndEditComputer {
 				|| (computerService.find(computer.getId()) != null);
 		if (!hasErrors && process) {
 			if (addComputer) {
-				computerService.insert(ComputerMapper.toModel(computer));
+				computerService.insert(computerMapper.toModel(computer));
 				model.put("computer", new ComputerDTO());
 				model.addAttribute("computerName", computer.getComputerName());
 			} else {
-				computerService.update(ComputerMapper.toModel(computer));
+				computerService.update(computerMapper.toModel(computer));
 			}
 			model.addAttribute("success", path + ".success");
 		} else {

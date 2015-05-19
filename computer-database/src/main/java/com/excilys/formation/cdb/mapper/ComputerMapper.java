@@ -5,28 +5,21 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.excilys.formation.cdb.dto.CompanyDTO;
 import com.excilys.formation.cdb.dto.ComputerDTO;
-import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.model.Computer.ComputerBuilder;
 import com.excilys.formation.cdb.util.Util;
 
+@Component
 public class ComputerMapper implements RowMapper<Computer> {
 
-	/**
-	 * @param result
-	 * @return result translated in the model
-	 */
-	public static Computer toModel(ResultSet result) {
-		try {
-			return new ComputerMapper().mapRow(result, 0);
-		} catch (SQLException e) {
-			throw new DAOException(e);
-		}
-	}
+	@Autowired
+	private DateLocaleMapper dateLocaleMapper;
 
 	public static String getCompanyName(Computer c) {
 		return (c == null) || (c.getCompany() == null) ? null : c.getCompany()
@@ -38,25 +31,31 @@ public class ComputerMapper implements RowMapper<Computer> {
 				.getId();
 	}
 
-	public static ComputerDTO toDTO(Computer computer) {
-		return ComputerDTO.build().id(computer.getId())
+	public ComputerDTO toDTO(Computer computer) {
+		return ComputerDTO
+				.build()
+				.id(computer.getId())
 				.name(computer.getName())
-				.introduced(Util.formatDate(computer.getIntroduced()))
-				.discontinued(Util.formatDate(computer.getDiscontinued()))
+				.introduced(dateLocaleMapper.toString(computer.getIntroduced()))
+				.discontinued(
+						dateLocaleMapper.toString(computer.getDiscontinued()))
 				.companyId(getCompanyId(computer))
 				.companyName(getCompanyName(computer)).create();
 	}
 
-	public static List<ComputerDTO> toDTO(List<Computer> computers) {
-		return computers.stream().map(ComputerMapper::toDTO)
-				.collect(Collectors.toList());
+	public List<ComputerDTO> toDTO(List<Computer> computers) {
+		return computers.stream().map(this::toDTO).collect(Collectors.toList());
 	}
 
-	public static Computer toModel(ComputerDTO dto) {
-		Computer computer = Computer.build().id(dto.getId())
+	public Computer toModel(ComputerDTO dto) {
+		Computer computer = Computer
+				.build()
+				.id(dto.getId())
 				.name(dto.getName())
-				.introduced(Util.parseDate(dto.getIntroduced()))
-				.discontinued(Util.parseDate(dto.getDiscontinued())).create();
+				.introduced(dateLocaleMapper.toLocalDate(dto.getIntroduced()))
+				.discontinued(
+						dateLocaleMapper.toLocalDate(dto.getDiscontinued()))
+				.create();
 		if ((dto.getCompanyId() != null) && (dto.getCompanyId() != 0l)) {
 			computer.setCompany(CompanyMapper.toModel(CompanyDTO.build()
 					.id(dto.getCompanyId()).name(dto.getCompanyName()).create()));
@@ -64,9 +63,8 @@ public class ComputerMapper implements RowMapper<Computer> {
 		return computer;
 	}
 
-	public static List<Computer> toModel(List<ComputerDTO> dto) {
-		return dto.stream().map(ComputerMapper::toModel)
-				.collect(Collectors.toList());
+	public List<Computer> toModel(List<ComputerDTO> dto) {
+		return dto.stream().map(this::toModel).collect(Collectors.toList());
 	}
 
 	@Override

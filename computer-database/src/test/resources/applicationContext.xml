@@ -28,9 +28,9 @@
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan" value="com.excilys.formation.cdb.model" />
-		     <property name="jpaVendorAdapter">
-            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
-        </property>
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
 		<property name="jpaProperties">
 			<props>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
@@ -40,9 +40,13 @@
 		</property>
 	</bean>
 
-	<bean id="transactionManager"
-		class="org.springframework.orm.jpa.JpaTransactionManager">
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:locales/messages" />
+		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
 	<mvc:annotation-driven />
 	<!-- Spring configuration for annotations -->
@@ -50,6 +54,7 @@
 	<context:component-scan base-package="com.excilys.formation.cdb.persistence" />
 	<context:component-scan base-package="com.excilys.formation.cdb.service" />
 	<context:component-scan base-package="com.excilys.formation.cdb.ui" />
+	<context:component-scan base-package="com.excilys.formation.cdb.mapper" />
 
 	<tx:annotation-driven />
 </beans>

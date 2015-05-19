@@ -40,6 +40,12 @@
 		</property>
 	</bean>
 
+    <bean id="messageSource"
+        class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="classpath:locales/messages" />
+        <property name="defaultEncoding" value="UTF-8" />
+    </bean>
+	
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
@@ -49,6 +55,7 @@
 	<context:component-scan base-package="com.excilys.formation.cdb.persistence" />
 	<context:component-scan base-package="com.excilys.formation.cdb.service" />
 	<context:component-scan base-package="com.excilys.formation.cdb.ui" />
+	<context:component-scan base-package="com.excilys.formation.cdb.mapper" />
 
 	<tx:annotation-driven />
 </beans>

@@ -20,6 +20,9 @@ public class ComputerService implements IComputerService {
 	@Autowired
 	private IComputerDAO computerDAO;
 
+	@Autowired
+	private ComputerMapper computerMapper;
+
 	/**
 	 * @return all row of the table of Computer
 	 */
@@ -108,7 +111,7 @@ public class ComputerService implements IComputerService {
 		if (offset < 0) {
 			offset = 0;
 		}
-		return ComputerMapper.toDTO(computerDAO.pagination(search, limit,
+		return computerMapper.toDTO(computerDAO.pagination(search, limit,
 				offset, ob, asc));
 	}
 

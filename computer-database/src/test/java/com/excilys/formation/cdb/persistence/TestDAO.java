@@ -36,6 +36,8 @@ import com.excilys.formation.util.Utils;
 public class TestDAO {
 
 	@Autowired
+	private ComputerMapper computerMapper;
+	@Autowired
 	private ICompanyDAO companyDAO;
 	@Autowired
 	private IComputerDAO computerDAO;
@@ -153,7 +155,7 @@ public class TestDAO {
 
 	@Test(expected = NullPointerException.class)
 	public void invalidComputerModel() {
-		assertNull(ComputerMapper.toModel((ComputerDTO) null));
+		assertNull(computerMapper.toModel((ComputerDTO) null));
 	}
 
 	@Test
