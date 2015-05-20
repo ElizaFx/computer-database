@@ -52,7 +52,9 @@ public class ComputerDAO implements IComputerDAO {
 			throw new DAOException("NullPointerException: Id null!");
 		}
 		/* merge fix detached entity passed to persist */
-		em.persist(em.merge(computer));
+		Computer c = em.merge(computer);
+		em.persist(c);
+		computer.setId(c != null ? c.getId() : null);
 	}
 
 	@Override
@@ -72,7 +74,7 @@ public class ComputerDAO implements IComputerDAO {
 			LOGGER.error("Error param null in CompanyDAO.update(model)");
 			throw new DAOException("NullPointerException: Model null!");
 		}
-		computer.setId(em.merge(computer).getId());
+		em.merge(computer);
 	}
 
 	@Override
