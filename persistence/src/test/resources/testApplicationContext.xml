@@ -11,6 +11,7 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd">
 
+	<import resource="classpath:applicationContext.xml" />
 	<!-- Data Source -->
 	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
 		destroy-method="close">
@@ -21,5 +22,4 @@
 		<property name="password" value="qwerty1234" />
 	</bean>
 
-	<import resource="classpath:applicationContext.xml" />
 </beans>

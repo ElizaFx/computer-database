@@ -12,9 +12,10 @@
 
 	<authentication-manager>
 		<authentication-provider>
-			<user-service>
-				<user name="joxit" password="test" authorities="ROLE_USER" />
-			</user-service>
+			<jdbc-user-service data-source-ref="dataSource" />
 		</authentication-provider>
 	</authentication-manager>
+
+	<!-- Enable annotation-based security @Secured -->
+	<global-method-security secured-annotations="enabled" />
 </beans:beans>
