@@ -35,6 +35,8 @@ public class TestDAO {
 	private ICompanyDAO companyDAO;
 	@Autowired
 	private IComputerDAO computerDAO;
+	@Autowired
+	private IUserDAO userDAO;
 
 	@BeforeClass
 	public static void setUp() throws IOException {
@@ -148,5 +150,10 @@ public class TestDAO {
 		assertEquals(computers.size(), computerDAO.removeByCompany(17l));
 		// Reset DB state
 		computers.stream().forEach(computerDAO::insert);
+	}
+
+	@Test
+	public void securityTest() {
+		System.out.println(userDAO.find("joxit"));
 	}
 }

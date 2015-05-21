@@ -14,10 +14,7 @@
 	</http>
 
 	<authentication-manager>
-		<authentication-provider>
-			<jdbc-user-service id="jdbcDaoImpl"
-				data-source-ref="dataSource" />
-		</authentication-provider>
+		<authentication-provider user-service-ref="userService"/>
 	</authentication-manager>
 
 	<!-- Enable annotation-based security @Secured -->
@@ -25,7 +22,7 @@
 
 	<beans:bean id="digestFilter"
 		class="org.springframework.security.web.authentication.www.DigestAuthenticationFilter">
-		<beans:property name="userDetailsService" ref="jdbcDaoImpl" />
+		<beans:property name="userDetailsService" ref="userService" />
 		<beans:property name="authenticationEntryPoint" ref="digestEntryPoint" />
 	</beans:bean>
 
