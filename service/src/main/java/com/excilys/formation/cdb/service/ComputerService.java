@@ -144,9 +144,10 @@ public class ComputerService implements IComputerService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void remove(List<Long> output) {
 		if (output != null) {
-			output.stream().forEach(c -> remove(find(c)));
+			output.stream().forEach(computerDAO::remove);
 		}
 	}
 
