@@ -36,36 +36,42 @@
 							class="btn btn-primary" />
 					</form:form>
 				</div>
-				<div class="pull-right">
-					<spring:message code='global.edit' var="editMessage" />
-					<spring:message code='global.view' var="viewMessage" />
-					<a class="btn btn-success" id="addComputer" href="addComputer"><spring:message
-							code="dashboard.addComputer" /></a> <a class="btn btn-default"
-						id="editComputer" href="#"
-						onclick="$.fn.toggleEditMode('${editMessage}', '${viewMessage}');"><spring:message
-							code="global.edit" /></a>
-				</div>
+				<sec:authorize access="hasRole('ROLE_ADMIN')">
+					<div class="pull-right">
+						<spring:message code='global.edit' var="editMessage" />
+						<spring:message code='global.view' var="viewMessage" />
+						<a class="btn btn-success" id="addComputer" href="addComputer"><spring:message
+								code="dashboard.addComputer" /></a> <a class="btn btn-default"
+							id="editComputer" href="#"
+							onclick="$.fn.toggleEditMode('${editMessage}', '${viewMessage}');"><spring:message
+								code="global.edit" /></a>
+					</div>
+				</sec:authorize>
 			</div>
 		</div>
-		<form:form id="deleteForm" action="#" method="POST">
-			<input type="hidden" name="selection" value="">
-		</form:form>
+		<sec:authorize access="hasRole('ROLE_ADMIN')">
+			<form:form id="deleteForm" action="#" method="POST">
+				<input type="hidden" name="selection" value="">
+			</form:form>
+		</sec:authorize>
 		<div class="container" style="margin-top: 10px;">
 			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
-						<spring:message code="dashboard.confirmDeletion"
-							var="confirmDeletionMessage" />
-						<!-- Variable declarations for passing labels as parameters -->
-						<!-- Table header for Computer Name -->
-						<th class="editMode" style="width: 60px; height: 22px;"><input
-							type="checkbox" id="selectall" /> <span
-							style="vertical-align: top;"> - <a href="#"
-								id="deleteSelected"
-								onclick="$.fn.deleteSelected('${confirmDeletionMessage}');">
-									<i class="fa fa-trash-o fa-lg"></i>
-							</a>
-						</span></th>
+						<sec:authorize access="hasRole('ROLE_ADMIN')">
+							<spring:message code="dashboard.confirmDeletion"
+								var="confirmDeletionMessage" />
+							<!-- Variable declarations for passing labels as parameters -->
+							<!-- Table header for Computer Name -->
+							<th class="editMode" style="width: 60px; height: 22px;"><input
+								type="checkbox" id="selectall" /> <span
+								style="vertical-align: top;"> - <a href="#"
+									id="deleteSelected"
+									onclick="$.fn.deleteSelected('${confirmDeletionMessage}');">
+										<i class="fa fa-trash-o fa-lg"></i>
+								</a>
+							</span></th>
+						</sec:authorize>
 						<th><spring:message code="global.computerName" /> <mylib:caret
 								name="name" orderBy="${pagined.getObName()}"
 								asc="${pagined.isAsc()}" search="${pagined.getSearch()}"
@@ -90,8 +96,10 @@
 				<tbody id="results">
 					<c:forEach items="${pagined.getPagination()}" var="computer">
 						<tr>
-							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="${computer.getId()}"></td>
+							<sec:authorize access="hasRole('ROLE_ADMIN')">
+								<td class="editMode"><input type="checkbox" name="cb"
+									class="cb" value="${computer.getId()}"></td>
+							</sec:authorize>
 							<td><a href="editComputer?id=${computer.getId()}" onclick=""><c:out
 										value='${computer.getName()}' /></a></td>
 							<td>${computer.getIntroduced()}</td>
@@ -105,8 +113,7 @@
 	</section>
 	<footer class="navbar-fixed-bottom">
 		<mylib:page begin="${pagined.getFirstPage()}"
-			end="${pagined.getLastPage()}"
-			search="${pagined.getSearch()}"
+			end="${pagined.getLastPage()}" search="${pagined.getSearch()}"
 			current="${pagined.getPage()}" limit="${pagined.getLimit()}"
 			pagemax="${pagined.getPageMax()}" orderBy="${pagined.getObName()}"
 			asc="${pagined.isAsc()}" />

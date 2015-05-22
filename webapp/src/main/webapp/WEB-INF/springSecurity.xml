@@ -6,13 +6,20 @@
 	http://www.springframework.org/schema/security/spring-security.xsd">
 
 	<!-- entry-point-ref show the popup, we want a stateless connection -->
-	<http auto-config="true" use-expressions="true" create-session="stateless"
-		entry-point-ref="digestEntryPoint">
+	<http auto-config="true" use-expressions="true" create-session="never">
+		<intercept-url pattern="/login/**" access="hasAnyRole('ROLE_ANONYMOUS')"
+			method="GET" />
+		<intercept-url pattern="/dashboard/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"
+			method="GET" />
 		<intercept-url pattern="/dashboard/**" access="hasRole('ROLE_ADMIN')"
 			method="POST" />
-		<intercept-url pattern="/addComputer/**" access="hasRole('ROLE_USER')" />
-		<intercept-url pattern="/editComputer/**" access="hasRole('ROLE_USER')" />
-		<custom-filter ref="digestFilter" position="DIGEST_AUTH_FILTER" />
+		<intercept-url pattern="/addComputer/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/editComputer/**" access="hasRole('ROLE_ADMIN')" />
+		<form-login login-page="/login" 
+			authentication-failure-url="/login?error" 
+			username-parameter="j_username"
+			password-parameter="j_password"/>
+			<logout logout-success-url="/dashboard"/>
 		<csrf disabled="true" />
 	</http>
 
@@ -23,16 +30,4 @@
 	<!-- Enable annotation-based security @Secured -->
 	<!-- <global-method-security secured-annotations="enabled" /> -->
 
-	<beans:bean id="digestFilter"
-		class="org.springframework.security.web.authentication.www.DigestAuthenticationFilter">
-		<beans:property name="userDetailsService" ref="userService" />
-		<beans:property name="authenticationEntryPoint" ref="digestEntryPoint" />
-	</beans:bean>
-
-	<beans:bean id="digestEntryPoint"
-		class="org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint">
-		<beans:property name="realmName" value="Please enter your credentials." />
-		<beans:property name="key" value="acegi" />
-		<beans:property name="nonceValiditySeconds" value="10" />
-	</beans:bean>
 </beans:beans>
