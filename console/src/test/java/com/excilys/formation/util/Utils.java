@@ -20,8 +20,7 @@ public class Utils {
 			"testApplicationContext.xml");
 
 	@Autowired
-	private static JdbcTemplate jdbcTemplate = context
-			.getBean(JdbcTemplate.class);
+	private JdbcTemplate jdbcTemplate = context.getBean(JdbcTemplate.class);
 
 	public Utils() {
 

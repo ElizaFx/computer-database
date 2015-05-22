@@ -5,16 +5,19 @@
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security.xsd">
 
+	<!-- entry-point-ref show the popup, we want a stateless connection -->
 	<http auto-config="true" use-expressions="true" create-session="stateless"
 		entry-point-ref="digestEntryPoint">
-		<intercept-url pattern="/dashboard*" access="hasRole('ROLE_ADMIN')" method="POST"/>
-		<intercept-url pattern="/addComputer*" access="hasRole('ROLE_USER')" />
-		<intercept-url pattern="/editComputer*" access="hasRole('ROLE_USER')" />
-		<custom-filter ref="digestFilter" after="BASIC_AUTH_FILTER" />
+		<intercept-url pattern="/dashboard" access="hasRole('ROLE_ADMIN')"
+			method="POST" />
+		<intercept-url pattern="/addComputer" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/editComputer" access="hasRole('ROLE_USER')" />
+		<custom-filter ref="digestFilter" position="DIGEST_AUTH_FILTER" />
+		<csrf disabled="true" />
 	</http>
 
 	<authentication-manager>
-		<authentication-provider user-service-ref="userService"/>
+		<authentication-provider user-service-ref="userService" />
 	</authentication-manager>
 
 	<!-- Enable annotation-based security @Secured -->
@@ -28,10 +31,8 @@
 
 	<beans:bean id="digestEntryPoint"
 		class="org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint">
-		<beans:property name="realmName"
-			value="Please enter your credentials." />
+		<beans:property name="realmName" value="Please enter your credentials." />
 		<beans:property name="key" value="acegi" />
 		<beans:property name="nonceValiditySeconds" value="10" />
 	</beans:bean>
-
 </beans:beans>

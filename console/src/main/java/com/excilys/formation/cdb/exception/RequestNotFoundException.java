@@ -1,6 +1,6 @@
 package com.excilys.formation.cdb.exception;
 
-public class RequestNotFoundException extends Exception {
+public class RequestNotFoundException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
 	public RequestNotFoundException(String msg) {

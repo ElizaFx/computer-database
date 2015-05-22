@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.excilys.formation.cdb.exception.RequestNotFoundException;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.IComputerService;
+import com.excilys.formation.cdb.ui.CLI;
 import com.excilys.formation.cdb.ui.cmd.ICommand;
 import com.excilys.formation.cdb.ui.requests.CatRequest;
 import com.excilys.formation.cdb.ui.requests.LSRequest;
@@ -25,7 +27,7 @@ import com.excilys.formation.cdb.ui.requests.RMRequest;
 import com.excilys.formation.cdb.ui.requests.Request;
 import com.excilys.formation.util.Utils;
 
-@ContextConfiguration("/applicationContext.xml")
+@ContextConfiguration("/testApplicationContext.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestRequests {
 
@@ -42,40 +44,33 @@ public class TestRequests {
 		new Utils().unloadDatabase();
 	}
 
+	@Before
+	public void before() {
+		CLI.context = Utils.context;
+	}
+
 	@Test
 	public void ListComputerTest() {
 		String cmd = LSRequest.CMD + " " + LSRequest.LIST_COMPUTER;
-		try {
-			ICommand command;
-			command = new Request(cmd).processCommand();
-			command.execute();
-		} catch (RequestNotFoundException e) {
-			fail(cmd + " should be a correct Command! : " + e.getMessage());
-		}
+		ICommand command;
+		command = new Request(cmd).processCommand();
+		command.execute();
 	}
 
 	@Test
 	public void ListCompanyTest() {
 		String cmd = LSRequest.CMD + " " + LSRequest.LIST_COMPANIES;
-		try {
-			ICommand command;
-			command = new Request(cmd).processCommand();
-			command.execute();
-		} catch (RequestNotFoundException e) {
-			fail(cmd + " should be a correct Command! : " + e.getMessage());
-		}
+		ICommand command;
+		command = new Request(cmd).processCommand();
+		command.execute();
 	}
 
 	@Test
 	public void ShowComputerTest() {
 		String cmd = CatRequest.CMD + " 20";
-		try {
-			ICommand command;
-			command = new Request(cmd).processCommand();
-			command.execute();
-		} catch (RequestNotFoundException e) {
-			fail(cmd + " should be a correct Command! : " + e.getMessage());
-		}
+		ICommand command;
+		command = new Request(cmd).processCommand();
+		command.execute();
 	}
 
 	@Test
@@ -83,39 +78,32 @@ public class TestRequests {
 		String sCmd1 = MKRequest.CMD + " " + MKRequest.NAME + " Joxit "
 				+ MKRequest.COMPANY_ID + " 17";
 
-		try {
-			ICommand cmd;
-			cmd = new Request(sCmd1).processCommand();
-			cmd.execute();
-		} catch (RequestNotFoundException e) {
-			fail(sCmd1 + " should be a correct Command! : " + e.getMessage());
-		}
+		ICommand cmd;
+		cmd = new Request(sCmd1).processCommand();
+		cmd.execute();
+
 		Computer computer = computerService.find(c -> (c.getName() != null)
 				&& c.getName().equals("Joxit"));
+		System.out.println(computer + " " + computerService.findAll());
 		assertNotNull(computer);
 
 		String sCmd2 = MVRequest.CMD + " " + computer.getId() + " "
 				+ MVRequest.INTRODUCED + " 17-02-1993 " + MVRequest.NAME
 				+ "\"Joxit 42\"";
-		try {
-			ICommand cmd2;
-			cmd2 = new Request(sCmd2).processCommand();
-			cmd2.execute();
-		} catch (RequestNotFoundException e) {
-			fail(sCmd2 + " should be a correct Command! : " + e.getMessage());
-		}
+
+		ICommand cmd2;
+		cmd2 = new Request(sCmd2).processCommand();
+		cmd2.execute();
+
 		assertNotNull(computerService.find(c -> c.getName().equals("Joxit 42")));
 		assertNull(computerService.find(c -> c.getName().equals("Joxit")));
 
 		String sCmd3 = RMRequest.CMD + " " + RMRequest.RM_COMPUTER + " "
 				+ computer.getId();
-		try {
-			ICommand cmd3;
-			cmd3 = new Request(sCmd3).processCommand();
-			cmd3.execute();
-		} catch (RequestNotFoundException e) {
-			fail(sCmd3 + " should be a correct Command! : " + e.getMessage());
-		}
+
+		ICommand cmd3;
+		cmd3 = new Request(sCmd3).processCommand();
+		cmd3.execute();
 
 		assertNull(computerService.find(computer.getId()));
 	}
@@ -139,7 +127,7 @@ public class TestRequests {
 	}
 
 	@Test(expected = RequestNotFoundException.class)
-	public void invalidCatRequestBadCmd() throws RequestNotFoundException {
+	public void invalidCatRequestBadCmd() {
 		ICommand command;
 		command = new Request(CatRequest.CMD + " bad command man")
 				.processCommand();
@@ -147,7 +135,7 @@ public class TestRequests {
 	}
 
 	@Test(expected = RequestNotFoundException.class)
-	public void invalidCatRequestNegativeCmd() throws RequestNotFoundException {
+	public void invalidCatRequestNegativeCmd() {
 
 		ICommand command;
 		command = new Request(CatRequest.CMD + " -9").processCommand();
@@ -171,14 +159,14 @@ public class TestRequests {
 	}
 
 	@Test(expected = RequestNotFoundException.class)
-	public void invalidRMRequestNegativeCmd() throws RequestNotFoundException {
+	public void invalidRMRequestNegativeCmd() {
 		ICommand command;
 		command = new Request(RMRequest.CMD + " -17").processCommand();
 		command.execute();
 	}
 
 	@Test
-	public void invalidRMRequestOutOfBoundCmd() throws RequestNotFoundException {
+	public void invalidRMRequestOutOfBoundCmd() {
 		ICommand command;
 		command = new Request(RMRequest.CMD + " " + RMRequest.RM_COMPUTER
 				+ " 10007").processCommand();
@@ -187,7 +175,7 @@ public class TestRequests {
 	}
 
 	@Test(expected = RequestNotFoundException.class)
-	public void invalidLSRequests() throws RequestNotFoundException {
+	public void invalidLSRequests() {
 		ICommand command;
 		command = new Request(LSRequest.CMD + " bad command man")
 				.processCommand();
