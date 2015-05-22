@@ -8,10 +8,10 @@
 	<!-- entry-point-ref show the popup, we want a stateless connection -->
 	<http auto-config="true" use-expressions="true" create-session="stateless"
 		entry-point-ref="digestEntryPoint">
-		<intercept-url pattern="/dashboard" access="hasRole('ROLE_ADMIN')"
+		<intercept-url pattern="/dashboard/**" access="hasRole('ROLE_ADMIN')"
 			method="POST" />
-		<intercept-url pattern="/addComputer" access="hasRole('ROLE_USER')" />
-		<intercept-url pattern="/editComputer" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/addComputer/**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/editComputer/**" access="hasRole('ROLE_USER')" />
 		<custom-filter ref="digestFilter" position="DIGEST_AUTH_FILTER" />
 		<csrf disabled="true" />
 	</http>

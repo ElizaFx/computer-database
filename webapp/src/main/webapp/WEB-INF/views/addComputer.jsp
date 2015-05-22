@@ -16,7 +16,8 @@
 					</h1>
 					<c:if test="${success != null}">
 						<div class="alert alert-success" role="alert">
-							<spring:message code="${success}" arguments="${computerName}" />
+							<spring:message code="${success}" arguments="${computerName}" var="successMessage" />
+							<c:out value='${successMessage }'/>
 						</div>
 					</c:if>
 					<c:if test="${danger != null}">

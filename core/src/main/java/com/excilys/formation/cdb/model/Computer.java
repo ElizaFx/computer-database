@@ -161,8 +161,8 @@ public class Computer implements Serializable {
 	@Override
 	public String toString() {
 		return "Computer [id=" + id + ", name=" + name + ", introduced="
-				+ introduced + ", discontinued=" + discontinued
-				+ ", companyId=" + company + "]";
+				+ introduced + ", discontinued=" + discontinued + ", company="
+				+ company + "]";
 	}
 
 	@Override
