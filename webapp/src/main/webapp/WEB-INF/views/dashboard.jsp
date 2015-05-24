@@ -100,8 +100,12 @@
 								<td class="editMode"><input type="checkbox" name="cb"
 									class="cb" value="${computer.getId()}"></td>
 							</sec:authorize>
-							<td><a href="editComputer?id=${computer.getId()}" onclick=""><c:out
-										value='${computer.getName()}' /></a></td>
+							<td><sec:authorize access="hasRole('ROLE_ADMIN')">
+									<a href="editComputer?id=${computer.getId()}" onclick=""><c:out
+											value='${computer.getName()}' /></a>
+								</sec:authorize><sec:authorize access="not hasRole('ROLE_ADMIN')">
+									<c:out value='${computer.getName()}' />
+								</sec:authorize></td>
 							<td>${computer.getIntroduced()}</td>
 							<td>${computer.getDiscontinued()}</td>
 							<td>${computer.getCompanyName()}</td>
