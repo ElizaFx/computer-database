@@ -16,11 +16,11 @@ public class Login {
 
 		ModelAndView model = new ModelAndView();
 		if (error != null) {
-			model.addObject("error", "Invalid username and password!");
+			model.addObject("error", "login.error");
 		}
 
 		if (logout != null) {
-			model.addObject("msg", "You've been logged out successfully.");
+			model.addObject("logout", "login.logout");
 		}
 		model.setViewName("login");
 

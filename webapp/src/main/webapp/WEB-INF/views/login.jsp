@@ -1,31 +1,43 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <!DOCTYPE html>
 <html>
 <%@include file="/WEB-INF/import/head.jsp"%>
 <body>
-<%@include file="/WEB-INF/import/header.jsp"%>
-	<div class="container">
-		<form class="form-signin" id="formLogin" action="login"
+	<%@include file="/WEB-INF/import/header.jsp"%>
+	<div class="container" style="max-width: 330px">
+		<form class="form-horizontal" id="formLogin" action="login"
 			method='POST'>
-			<h2 class="form-signin-heading">Please sign in</h2>
-			<c:if test="${not empty error}">
-				<div class="error">${error}</div>
-			</c:if>
-			<c:if test="${not empty msg}">
-				<div class="msg">${msg}</div>
-			</c:if>
-			<label class="sr-only">User</label> <input type="text"
-				id="j_username" name="j_username" class="form-control" placeholder="Login" required
-				autofocus> <label class="sr-only">Password</label> <input
-				type="password" id="j_password" name="j_password" class="form-control"
-				placeholder="Password" required>
-			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign
-				in</button>
-			<input type="hidden" name="${_csrf.parameterName}"
-				value="${_csrf.token}" />
-
+				<h1 class="form-group">
+					<spring:message code="login.homeTitle" />
+				</h1>
+				<c:if test="${not empty error}">
+					<div class="alert alert-danger form-group" role="alert"><spring:message code="${error}"/></div>
+				</c:if>
+				<c:if test="${not empty msg}">
+					<div class="alert alert-info form-group" role="alert"><spring:message code="${logout}"/></div>
+				</c:if>
+				<div class="form-group">
+					<label class="sr-only"><spring:message code="login.user" /></label><input
+						type="text" id="j_username" name="j_username" class="form-control"
+						placeholder="<spring:message code="login.login"/>" required
+						autofocus>
+				</div>
+				<div class="form-group">
+					<label class="sr-only"><spring:message
+							code="login.password" /></label> <input type="password" id="j_password"
+						name="j_password" class="form-control"
+						placeholder="<spring:message code="login.password"/>" required>
+				</div>
+				<div class="form-group">
+					<button class="btn btn-lg btn-primary btn-block" type="submit">
+						<spring:message code="login.signin" />
+					</button>
+					<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}" />
+				</div>
 		</form>
 
 	</div>

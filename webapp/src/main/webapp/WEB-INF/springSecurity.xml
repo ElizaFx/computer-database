@@ -9,21 +9,19 @@
 	<http auto-config="true" use-expressions="true" create-session="never">
 		<intercept-url pattern="/login/**" access="hasAnyRole('ROLE_ANONYMOUS')"
 			method="GET" />
-		<intercept-url pattern="/" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"
-			method="GET" />
+		<intercept-url pattern="/"
+			access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')" method="GET" />
 		<intercept-url pattern="/" access="hasRole('ROLE_ADMIN')"
 			method="POST" />
-		<intercept-url pattern="/dashboard/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"
-			method="GET" />
+		<intercept-url pattern="/dashboard/**"
+			access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')" method="GET" />
 		<intercept-url pattern="/dashboard/**" access="hasRole('ROLE_ADMIN')"
 			method="POST" />
 		<intercept-url pattern="/addComputer/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/editComputer/**" access="hasRole('ROLE_ADMIN')" />
-		<form-login login-page="/login" 
-			authentication-failure-url="/login?error" 
-			username-parameter="j_username"
-			password-parameter="j_password"/>
-			<logout logout-success-url="/dashboard"/>
+		<form-login login-page="/login" authentication-failure-url="/login?error"
+			username-parameter="j_username" password-parameter="j_password" />
+		<logout logout-success-url="/login?logout" />
 		<csrf disabled="true" />
 	</http>
 
