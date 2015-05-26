@@ -21,7 +21,6 @@
 	<mvc:annotation-driven />
 	
 	<!-- i18n -->
-	
     <bean id="messageSource"
         class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="basename" value="classpath:locales/messages" />
