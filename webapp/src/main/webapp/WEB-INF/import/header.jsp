@@ -9,13 +9,15 @@
 		<a class="navbar-brand"
 			href="${pageContext.request.contextPath}/dashboard"><spring:message
 				code="global.title" /></a>
-		<sec:authorize access="not isAnonymous()">
-			<form class="navbar-right navbar-brand" method="get"
-				action="<c:url value="/logout" />">
-				<input class="btn btn-primary" type="submit" value="Log out" /> <input
-					type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-			</form>
-		</sec:authorize>
-		<mylib:lang id="${param.id }" />
+		<div class="navbar-right">
+			<mylib:lang id="${param.id }" />
+			<sec:authorize access="not isAnonymous()">
+				<form class="navbar-brand" method="get" action="<c:url value="/logout" />">
+					<input class="btn btn-primary btn-sm" type="submit" value="Log out" />
+					<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}" />
+				</form>
+			</sec:authorize>
+		</div>
 	</div>
 </header>

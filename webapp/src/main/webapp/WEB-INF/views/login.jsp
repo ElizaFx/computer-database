@@ -16,7 +16,7 @@
 				<c:if test="${not empty error}">
 					<div class="alert alert-danger form-group" role="alert"><spring:message code="${error}"/></div>
 				</c:if>
-				<c:if test="${not empty msg}">
+				<c:if test="${not empty logout}">
 					<div class="alert alert-info form-group" role="alert"><spring:message code="${logout}"/></div>
 				</c:if>
 				<div class="form-group">
