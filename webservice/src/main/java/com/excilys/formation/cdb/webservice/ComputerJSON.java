@@ -39,52 +39,50 @@
  */
 package com.excilys.formation.cdb.webservice;
 
+import java.util.List;
+
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
-import com.excilys.formation.cdb.service.ICompanyService;
 import com.excilys.formation.cdb.service.IComputerService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Path("findall/{type:(companies)|(computers)}")
+@Path("json/computers")
 @Controller
-public class ListAll {
+public class ComputerJSON {
 
 	@Autowired
 	private IComputerService computerService;
 	@Autowired
-	private ICompanyService companyService;
-	@Autowired
 	private ComputerMapper computerMapper;
 
 	@GET
+	@Path("findAll")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getHello(@PathParam("type") String type) {
-		ObjectMapper om = new ObjectMapper();
-
-		if ("companies".equals(type)) {
-			try {
-				return om.writeValueAsString(companyService.findAll());
-			} catch (JsonProcessingException e) {
-				e.printStackTrace();
-			}
-		} else if ("computers".equals(type)) {
-			try {
-				return om.writeValueAsString(computerMapper
-						.toDTO(computerService.findAll()));
-			} catch (JsonProcessingException e) {
-				e.printStackTrace();
-			}
-		}
-		return "";
+	public List<ComputerDTO> findAll() {
+		return computerMapper.toDTO(computerService.findAll());
 	}
 
+	@GET
+	@Path("find/{id:[0-9]+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ComputerDTO find(@PathParam("id") Long id) {
+		return computerMapper.toDTO(computerService.find(id));
+	}
+
+	@POST
+	@Path("create")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void create(@QueryParam(value = "computer") ComputerDTO computer) {
+		computerService.insert(computerMapper.toModel(computer));
+	}
 }

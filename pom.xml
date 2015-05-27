@@ -45,6 +45,8 @@
 		<org.springframework.security.version>4.0.1.RELEASE</org.springframework.security.version>
 		<org.hibernate.validator.version>5.1.3.Final</org.hibernate.validator.version>
 		<org.hibernate.core.version>4.3.9.Final</org.hibernate.core.version>
+		<org.glassfish.jersey.version>2.17</org.glassfish.jersey.version>
+		<com.fasterxml.jackson.core.version>2.5.3</com.fasterxml.jackson.core.version>
 	</properties>
 	<build>
 		<plugins>
@@ -204,6 +206,35 @@
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-taglibs</artifactId>
 				<version>${org.springframework.security.version}</version>
+			</dependency>
+			<!-- Jersey and Jackson for JSON rest and webservice -->
+			<!-- Server -->
+			<dependency>
+				<groupId>org.glassfish.jersey.containers</groupId>
+				<artifactId>jersey-container-servlet</artifactId>
+				<version>${org.glassfish.jersey.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish.jersey.ext</groupId>
+				<artifactId>jersey-spring3</artifactId>
+				<version>${org.glassfish.jersey.version}</version>
+			</dependency>
+			<!-- Client -->
+			<dependency>
+				<groupId>org.glassfish.jersey.core</groupId>
+				<artifactId>jersey-client</artifactId>
+				<version>${org.glassfish.jersey.version}</version>
+			</dependency>
+			<!-- Plugin for Jackson -->
+			<dependency>
+				<groupId>org.glassfish.jersey.media</groupId>
+				<artifactId>jersey-media-json-jackson</artifactId>
+				<version>${org.glassfish.jersey.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${com.fasterxml.jackson.core.version}</version>
 			</dependency>
 			<!-- Ensure that all the transitive dependencies of Spring Security use 
 				the Spring ${org.springframework.version} modules -->

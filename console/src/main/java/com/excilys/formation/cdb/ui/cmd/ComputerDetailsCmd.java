@@ -1,15 +1,13 @@
 package com.excilys.formation.cdb.ui.cmd;
 
+import javax.ws.rs.core.Response;
+
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.service.IComputerService;
+import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.ui.CLI;
 
 public class ComputerDetailsCmd implements ICommand {
-
-	private IComputerService computerService = CLI.context.getBean(
-			"computerService", IComputerService.class);
 	private long id;
 
 	public ComputerDetailsCmd(long id) {
@@ -19,17 +17,19 @@ public class ComputerDetailsCmd implements ICommand {
 
 	@Override
 	public void execute() {
-		Computer computer = computerService.find(id);
+		Response response = CLI.getWebTarget().path("computers/find/" + id)
+				.request().get();
 
-		if (computer == null) {
+		if (response.getStatus() != 200) {
 			System.out.println("Computer not found");
 			return;
 		}
+		ComputerDTO computer = response.readEntity(ComputerDTO.class);
 
 		System.out.println("The choosen computer is : " + computer.getName());
 		System.out.println("Its id is : " + computer.getId());
-		if (computer.getCompany() != null) {
-			System.out.println("The vendor is : " + computer.getCompany());
+		if (computer.getCompanyName() != null) {
+			System.out.println("The vendor is : " + computer.getCompanyName());
 		} else {
 			System.out.println("Vendor unknown");
 		}
