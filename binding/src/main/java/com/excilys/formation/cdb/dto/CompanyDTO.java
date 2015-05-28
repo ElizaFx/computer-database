@@ -1,10 +1,7 @@
 package com.excilys.formation.cdb.dto;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import org.hibernate.validator.constraints.NotBlank;
 
-@XmlRootElement
 public class CompanyDTO {
 	private Long id;
 	@NotBlank

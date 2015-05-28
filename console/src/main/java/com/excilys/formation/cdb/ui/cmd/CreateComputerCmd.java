@@ -38,11 +38,14 @@ public class CreateComputerCmd implements ICommand {
 		Response response = WebServiceUtils.postComputerResponse(computer,
 				MediaType.APPLICATION_JSON_TYPE);
 		if (response.getStatus() == 200) {
+			System.out.println(response + " " + response.getHeaders() + " "
+					+ response.getEntity());
 			System.out.println("Entry insered."
 					+ response.readEntity(ComputerDTO.class));
 		} else {
 			System.out.println("Sorry, something goes wrong. Status: "
 					+ response.getStatus());
 		}
+		response.close();
 	}
 }

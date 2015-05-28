@@ -75,7 +75,8 @@ public class WebServiceUtils {
 		if ((response.getStatus() != 200) || !response.hasEntity()) {
 			return null;
 		}
-		return response.readEntity(ComputerDTO.class);
+		ComputerDTO res = response.readEntity(ComputerDTO.class);
+		return res;
 	}
 
 	public static CompanyDTO getCompany(Long id) {
@@ -83,17 +84,23 @@ public class WebServiceUtils {
 		if ((response.getStatus() != 200) || !response.hasEntity()) {
 			return null;
 		}
-		return response.readEntity(CompanyDTO.class);
+		CompanyDTO res = response.readEntity(CompanyDTO.class);
+		response.close();
+		return res;
 	}
 
 	public static List<ComputerDTO> findAllComputer() {
 		Response response = getFindAllComputerResponse();
 		if ((response.getStatus() != 200) || !response.hasEntity()) {
 			System.out.println(response);
+			response.close();
 			return null;
 		}
-		return response.readEntity(new GenericType<List<ComputerDTO>>() {
-		});
+		List<ComputerDTO> res = response
+				.readEntity(new GenericType<List<ComputerDTO>>() {
+				});
+		response.close();
+		return res;
 	}
 
 	public static List<CompanyDTO> findAllCompany() {
@@ -101,7 +108,9 @@ public class WebServiceUtils {
 		if ((response.getStatus() != 200) || !response.hasEntity()) {
 			return null;
 		}
-		return response.readEntity(new GenericType<List<CompanyDTO>>() {
-		});
+		List<CompanyDTO> res = response
+				.readEntity(new GenericType<List<CompanyDTO>>() {
+				});
+		return res;
 	}
 }

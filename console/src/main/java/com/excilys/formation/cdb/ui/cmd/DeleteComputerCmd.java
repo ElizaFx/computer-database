@@ -29,6 +29,7 @@ public class DeleteComputerCmd implements ICommand {
 			System.out.println("Sorry, something goes wrong. Status: "
 					+ response.getStatus());
 		}
+		response.close();
 	}
 
 }

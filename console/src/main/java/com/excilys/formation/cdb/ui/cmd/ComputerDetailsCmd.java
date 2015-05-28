@@ -22,9 +22,11 @@ public class ComputerDetailsCmd implements ICommand {
 
 		if (response.getStatus() != 200) {
 			System.out.println("Computer not found");
+			response.close();
 			return;
 		}
 		ComputerDTO computer = response.readEntity(ComputerDTO.class);
+		response.close();
 
 		System.out.println("The choosen computer is : " + computer.getName());
 		System.out.println("Its id is : " + computer.getId());

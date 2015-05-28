@@ -30,6 +30,7 @@ public class DeleteCompanyCmd implements ICommand {
 			System.out.println("Sorry, something goes wrong. Status: "
 					+ response.getStatus());
 		}
+		response.close();
 	}
 
 }

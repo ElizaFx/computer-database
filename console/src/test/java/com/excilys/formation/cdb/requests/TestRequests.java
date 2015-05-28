@@ -1,8 +1,12 @@
 package com.excilys.formation.cdb.requests;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,13 +77,11 @@ public class TestRequests {
 		ICommand cmd2;
 		cmd2 = new Request(sCmd2).processCommand();
 		cmd2.execute();
-
-		assertNotNull(WebServiceUtils.findAllComputer().stream()
-				.filter(c -> c.getName().equals("Joxit 42")).findFirst()
-				.orElse(null));
-		assertNull(WebServiceUtils.findAllComputer().stream()
-				.filter(c -> c.getName().equals("Joxit")).findFirst()
-				.orElse(null));
+		List<ComputerDTO> computers = WebServiceUtils.findAllComputer();
+		assertTrue(computers.stream().anyMatch(
+				c -> "Joxit 42".equals(c.getName())));
+		assertFalse(computers.stream().anyMatch(
+				c -> "Joxit".equals(c.getName())));
 
 		String sCmd3 = RMRequest.CMD + " " + RMRequest.RM_COMPUTER + " "
 				+ computer.getId();

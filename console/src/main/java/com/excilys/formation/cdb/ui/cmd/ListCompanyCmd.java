@@ -19,6 +19,7 @@ public class ListCompanyCmd implements ICommand {
 			System.out.println("Empty. Status: " + response.getStatus());
 		}
 		System.out.println("Fin de la liste des elements");
+		response.close();
 	}
 
 	public String format(CompanyDTO entity) {

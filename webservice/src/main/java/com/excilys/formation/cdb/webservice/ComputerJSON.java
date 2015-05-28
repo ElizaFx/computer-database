@@ -3,23 +3,23 @@ package com.excilys.formation.cdb.webservice;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.IComputerService;
 
-@Path("json/computer")
+@RestController
+@RequestMapping("/json/computer")
 public class ComputerJSON {
 
 	@Autowired
@@ -27,44 +27,39 @@ public class ComputerJSON {
 	@Autowired
 	private ComputerMapper computerMapper;
 
-	@GET
-	@Path("findAll")
+	@RequestMapping(value = "findAll", method = RequestMethod.GET)
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<ComputerDTO> findAll() {
 		return computerMapper.toDTO(computerService.findAll());
 	}
 
-	@GET
-	@Path("find/{id:[0-9]+}")
+	@RequestMapping(value = "find/{id:[0-9]+}", method = RequestMethod.GET)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ComputerDTO find(@PathParam("id") Long id) {
+	public ComputerDTO find(@PathVariable("id") Long id) {
 		return computerMapper.toDTO(computerService.find(id));
 	}
 
-	@POST
-	@Path("create")
+	@RequestMapping(value = "create", method = RequestMethod.POST)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ComputerDTO create(ComputerDTO computer) {
+	public ComputerDTO create(@RequestBody ComputerDTO computer) {
 		Computer c = computerMapper.toModel(computer);
 		computerService.insert(c);
 		return computerMapper.toDTO(c);
 	}
 
-	@PUT
-	@Path("edit")
+	@RequestMapping(value = "edit", method = RequestMethod.PUT)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ComputerDTO edit(ComputerDTO computer) {
+	public ComputerDTO edit(@RequestBody ComputerDTO computer) {
 		Computer c = computerMapper.toModel(computer);
 		computerService.update(c);
 		return computerMapper.toDTO(c);
 	}
 
-	@DELETE
-	@Path("remove/{id}")
+	@RequestMapping(value = "remove/{id:[0-9]+}", method = RequestMethod.DELETE)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void remove(@PathParam("id") Long id) {
+	public void remove(@PathVariable("id") Long id) {
 		computerService.remove(computerService.find(id));
 	}
 }

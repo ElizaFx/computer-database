@@ -57,15 +57,15 @@ public class TestCmd {
 		ICommand cmd2 = new UpdateComputerCmd(computer);
 		cmd2.execute();
 		assertNotNull(WebServiceUtils.findAllComputer().stream()
-				.filter(c -> c.getName().equals("Joxit42")).findFirst()
+				.filter(c -> "Joxit42".equals(c.getName())).findFirst()
 				.orElse(null));
 		assertNull(WebServiceUtils.findAllComputer().stream()
-				.filter(c -> c.getName().equals("Joxit")).findFirst()
+				.filter(c -> "Joxit".equals(c.getName())).findFirst()
 				.orElse(null));
 		ICommand cmd3 = new DeleteComputerCmd(computer.getId());
 		cmd3.execute();
 		assertNull(WebServiceUtils.findAllComputer().stream()
-				.filter(c -> c.getName().equals("Joxit42")).findFirst()
+				.filter(c -> "Joxit42".equals(c.getName())).findFirst()
 				.orElse(null));
 	}
 

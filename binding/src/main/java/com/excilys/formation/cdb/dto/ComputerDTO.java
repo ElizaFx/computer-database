@@ -1,12 +1,9 @@
 package com.excilys.formation.cdb.dto;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.excilys.formation.cdb.validation.DateField;
 
-@XmlRootElement
 public class ComputerDTO {
 	private Long id;
 	@NotBlank
@@ -49,11 +46,11 @@ public class ComputerDTO {
 	}
 
 	public void setName(@NotBlank String name) {
-		this.name = name.trim();
+		this.name = name != null ? name.trim() : null;
 	}
 
 	public void setComputerName(@NotBlank String name) {
-		this.name = name.trim();
+		this.name = name != null ? name.trim() : null;
 	}
 
 	public String getIntroduced() {
