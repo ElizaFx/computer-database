@@ -6,12 +6,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-
-import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.client.HttpUrlConnectorProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -27,20 +21,7 @@ public class CLI {
 	}
 
 	public static ApplicationContext context = new ClassPathXmlApplicationContext(
-			"serviceApplicationContext.xml");
-	public static Client client;
-	static {
-		client = ClientBuilder
-				.newBuilder()
-				.withConfig(
-						new ClientConfig()
-								.connectorProvider(new HttpUrlConnectorProvider()))
-				.build();
-	}
-
-	public static WebTarget getWebTarget() {
-		return client.target("http://localhost:8080/webservice/json");
-	}
+			"bindingApplicationContext.xml");
 
 	public static void main(String[] args) throws IOException {
 		CLI cli = new CLI();

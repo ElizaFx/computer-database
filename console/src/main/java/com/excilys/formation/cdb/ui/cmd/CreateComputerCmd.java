@@ -1,34 +1,48 @@
 package com.excilys.formation.cdb.ui.cmd;
 
-import java.time.LocalDate;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.service.IComputerService;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.excilys.formation.cdb.dto.CompanyDTO;
+import com.excilys.formation.cdb.dto.ComputerDTO;
+import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.ui.CLI;
+import com.excilys.formation.cdb.util.WebServiceUtils;
 
 public class CreateComputerCmd implements ICommand {
 
-	private IComputerService computerService = (IComputerService) CLI.context
-			.getBean("computerService");
-	private final Computer computer;
+	@Autowired
+	private ComputerMapper computerMapper = CLI.context.getBean(
+			"computerMapper", ComputerMapper.class);
+	private final ComputerDTO computer;
 
-	public CreateComputerCmd(Computer computer) {
+	public CreateComputerCmd(ComputerDTO computer) {
 		this.computer = computer;
 	}
 
-	public CreateComputerCmd(String name, LocalDate introduced,
-			LocalDate discontinued, Company company) {
-		this(new Computer(name, introduced, discontinued, company));
+	public CreateComputerCmd(String name, String introduced,
+			String discontinued, CompanyDTO company) {
+		this(new ComputerDTO(null, name, introduced, discontinued,
+				company != null ? company.getId() : null,
+				company != null ? company.getName() : null));
 	}
 
 	@Override
 	public void execute() {
 		if (computer == null) {
 			System.out.println("Create failed : Computer is null");
+			return;
 		}
-		computerService.insert(computer);
-		System.out.println("Entry insered." + computer);
-
+		Response response = WebServiceUtils.postComputerResponse(computer,
+				MediaType.APPLICATION_JSON_TYPE);
+		if (response.getStatus() == 200) {
+			System.out.println("Entry insered."
+					+ response.readEntity(ComputerDTO.class));
+		} else {
+			System.out.println("Sorry, something goes wrong. Status: "
+					+ response.getStatus());
+		}
 	}
 }

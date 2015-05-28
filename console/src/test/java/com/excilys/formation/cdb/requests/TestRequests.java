@@ -4,20 +4,13 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
-
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.exception.RequestNotFoundException;
-import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.service.IComputerService;
-import com.excilys.formation.cdb.ui.CLI;
 import com.excilys.formation.cdb.ui.cmd.ICommand;
 import com.excilys.formation.cdb.ui.requests.CatRequest;
 import com.excilys.formation.cdb.ui.requests.LSRequest;
@@ -25,29 +18,11 @@ import com.excilys.formation.cdb.ui.requests.MKRequest;
 import com.excilys.formation.cdb.ui.requests.MVRequest;
 import com.excilys.formation.cdb.ui.requests.RMRequest;
 import com.excilys.formation.cdb.ui.requests.Request;
-import com.excilys.formation.util.Utils;
+import com.excilys.formation.cdb.util.WebServiceUtils;
 
-@ContextConfiguration("/testApplicationContext.xml")
+@ContextConfiguration("/bindingApplicationContext.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestRequests {
-
-	private IComputerService computerService = Utils.context
-			.getBean(IComputerService.class);
-
-	@BeforeClass
-	public static void setUp() throws IOException {
-		new Utils().loadDatabase();
-	}
-
-	@AfterClass
-	public static void reset() throws IOException {
-		new Utils().unloadDatabase();
-	}
-
-	@Before
-	public void before() {
-		CLI.context = Utils.context;
-	}
 
 	@Test
 	public void ListComputerTest() {
@@ -82,21 +57,29 @@ public class TestRequests {
 		cmd = new Request(sCmd1).processCommand();
 		cmd.execute();
 
-		Computer computer = computerService.find(c -> (c.getName() != null)
-				&& c.getName().equals("Joxit"));
-		System.out.println(computer + " " + computerService.findAll());
+		ComputerDTO computer = WebServiceUtils
+				.findAllComputer()
+				.stream()
+				.filter(c -> (c.getName() != null)
+						&& c.getName().equals("Joxit")).findFirst()
+				.orElse(null);
+		System.out.println(computer + " " + WebServiceUtils.findAllComputer());
 		assertNotNull(computer);
 
 		String sCmd2 = MVRequest.CMD + " " + computer.getId() + " "
-				+ MVRequest.INTRODUCED + " 17-02-1993 " + MVRequest.NAME
+				+ MVRequest.INTRODUCED + " 17/02/1993 " + MVRequest.NAME
 				+ "\"Joxit 42\"";
 
 		ICommand cmd2;
 		cmd2 = new Request(sCmd2).processCommand();
 		cmd2.execute();
 
-		assertNotNull(computerService.find(c -> c.getName().equals("Joxit 42")));
-		assertNull(computerService.find(c -> c.getName().equals("Joxit")));
+		assertNotNull(WebServiceUtils.findAllComputer().stream()
+				.filter(c -> c.getName().equals("Joxit 42")).findFirst()
+				.orElse(null));
+		assertNull(WebServiceUtils.findAllComputer().stream()
+				.filter(c -> c.getName().equals("Joxit")).findFirst()
+				.orElse(null));
 
 		String sCmd3 = RMRequest.CMD + " " + RMRequest.RM_COMPUTER + " "
 				+ computer.getId();
@@ -105,7 +88,7 @@ public class TestRequests {
 		cmd3 = new Request(sCmd3).processCommand();
 		cmd3.execute();
 
-		assertNull(computerService.find(computer.getId()));
+		assertNull(WebServiceUtils.getComputer(computer.getId()));
 	}
 
 	@Test

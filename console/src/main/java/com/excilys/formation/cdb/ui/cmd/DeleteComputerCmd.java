@@ -1,29 +1,33 @@
 package com.excilys.formation.cdb.ui.cmd;
 
+import javax.ws.rs.core.Response;
+
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.service.IComputerService;
-import com.excilys.formation.cdb.ui.CLI;
+import com.excilys.formation.cdb.util.WebServiceUtils;
 
 public class DeleteComputerCmd implements ICommand {
-	private IComputerService computerService = (IComputerService) CLI.context
-			.getBean("computerService");
-	private final Computer computer;
+	private final Long id;
 
 	public DeleteComputerCmd(Computer computer) {
-		this.computer = computer;
+		id = computer.getId();
 	}
 
 	public DeleteComputerCmd(Long id) {
-		computer = computerService.find(id);
+		this.id = id;
 	}
 
 	@Override
 	public void execute() {
-		if (computer == null) {
+		if (id == null) {
 			System.out.println("Delete failed : Computer is null");
+			return;
+		}
+		Response response = WebServiceUtils.deleteComputerResponse(id);
+		if (response.getStatus() == 204) {
+			System.out.println("Entry removed.");
 		} else {
-			computerService.remove(computer);
-			System.out.println("Entry deleted." + computer);
+			System.out.println("Sorry, something goes wrong. Status: "
+					+ response.getStatus());
 		}
 	}
 

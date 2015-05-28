@@ -5,7 +5,7 @@ import javax.ws.rs.core.Response;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.formation.cdb.dto.ComputerDTO;
-import com.excilys.formation.cdb.ui.CLI;
+import com.excilys.formation.cdb.util.WebServiceUtils;
 
 public class ComputerDetailsCmd implements ICommand {
 	private long id;
@@ -17,8 +17,8 @@ public class ComputerDetailsCmd implements ICommand {
 
 	@Override
 	public void execute() {
-		Response response = CLI.getWebTarget().path("computers/find/" + id)
-				.request().get();
+		Response response = WebServiceUtils.getWebTarget("computer/find/" + id)
+				.get();
 
 		if (response.getStatus() != 200) {
 			System.out.println("Computer not found");

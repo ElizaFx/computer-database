@@ -3,54 +3,22 @@ package com.excilys.formation.cdb.ui.cmd;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.service.ICompanyService;
-import com.excilys.formation.cdb.service.IComputerService;
-import com.excilys.formation.cdb.ui.CLI;
-import com.excilys.formation.util.Utils;
+import com.excilys.formation.cdb.dto.CompanyDTO;
+import com.excilys.formation.cdb.dto.ComputerDTO;
+import com.excilys.formation.cdb.mapper.ComputerMapper;
+import com.excilys.formation.cdb.util.WebServiceUtils;
 
-@ContextConfiguration("/testApplicationContext.xml")
+@ContextConfiguration("/bindingApplicationContext.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestCmd {
-
 	@Autowired
-	private IComputerService computerService/*
-											 * =Utils.context
-											 * .getBean(IComputerService.class)
-											 */;
-
-	@Autowired
-	private ICompanyService companyService/*
-										 * = Utils.context
-										 * .getBean(ICompanyService.class)
-										 */;
-
-	@BeforeClass
-	public static void setUp() throws IOException {
-		new Utils().loadDatabase();
-	}
-
-	@Before
-	public void before() {
-		CLI.context = Utils.context;
-	}
-
-	@AfterClass
-	public static void reset() throws IOException {
-		new Utils().unloadDatabase();
-	}
+	private ComputerMapper computerMapper;
 
 	@Test
 	public void ListComputerTest() {
@@ -66,30 +34,39 @@ public class TestCmd {
 
 	@Test
 	public void ShowComputerTest() {
-		List<Computer> l = computerService.findAll();
-		ICommand cmd = new ComputerDetailsCmd(l.get(
-				(int) (Math.random() * l.size())).getId());
+		ICommand cmd = new ComputerDetailsCmd(17l);
 		cmd.execute();
 	}
 
 	@Test
 	public void CreateUpdateDeleteComputerTest() {
-		ICommand cmd1 = new CreateComputerCmd(new Computer("Joxit", null, null,
-				companyService.find(17l)));
+		CompanyDTO company = WebServiceUtils.getCompany(17l);
+		ICommand cmd1 = new CreateComputerCmd(new ComputerDTO(null, "Joxit",
+				null, null, company != null ? company.getId() : null,
+				company != null ? company.getName() : null));
 		cmd1.execute();
 		System.err.println("before");
-		Computer computer = computerService.find(c -> (c.getName() != null)
-				&& c.getName().equals("Joxit"));
-		System.out.println(computerService.findAll());
+		ComputerDTO computer = WebServiceUtils
+				.findAllComputer()
+				.stream()
+				.filter(c -> (c.getName() != null)
+						&& c.getName().equals("Joxit")).findFirst()
+				.orElse(null);
 		assertNotNull(computer);
 		computer.setName("Joxit42");
 		ICommand cmd2 = new UpdateComputerCmd(computer);
 		cmd2.execute();
-		assertNotNull(computerService.find(c -> c.getName().equals("Joxit42")));
-		assertNull(computerService.find(c -> c.getName().equals("Joxit")));
+		assertNotNull(WebServiceUtils.findAllComputer().stream()
+				.filter(c -> c.getName().equals("Joxit42")).findFirst()
+				.orElse(null));
+		assertNull(WebServiceUtils.findAllComputer().stream()
+				.filter(c -> c.getName().equals("Joxit")).findFirst()
+				.orElse(null));
 		ICommand cmd3 = new DeleteComputerCmd(computer.getId());
 		cmd3.execute();
-		assertNull(computerService.find(c -> c.getName().equals("Joxit42")));
+		assertNull(WebServiceUtils.findAllComputer().stream()
+				.filter(c -> c.getName().equals("Joxit42")).findFirst()
+				.orElse(null));
 	}
 
 	@Test

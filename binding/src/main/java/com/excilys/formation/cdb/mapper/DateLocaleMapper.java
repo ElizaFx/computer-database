@@ -28,7 +28,7 @@ public class DateLocaleMapper {
 	}
 
 	public LocalDate toLocalDate(String s) {
-		if (s.isEmpty() || (s == null)) {
+		if ((s == null) || s.isEmpty()) {
 			return null;
 		}
 		String format = messageSource.getMessage("global.datePattern", null,

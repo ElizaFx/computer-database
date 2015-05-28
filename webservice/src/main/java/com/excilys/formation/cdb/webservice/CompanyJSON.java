@@ -2,6 +2,8 @@ package com.excilys.formation.cdb.webservice;
 
 import java.util.List;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -34,5 +36,12 @@ public class CompanyJSON {
 	@Produces(MediaType.APPLICATION_JSON)
 	public CompanyDTO find(@PathParam("id") Long id) {
 		return CompanyMapper.toDTO(companyService.find(id));
+	}
+
+	@DELETE
+	@Path("remove")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void remove(Long id) {
+		companyService.remove(id);
 	}
 }

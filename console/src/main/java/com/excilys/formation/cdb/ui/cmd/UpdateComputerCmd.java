@@ -1,33 +1,33 @@
 package com.excilys.formation.cdb.ui.cmd;
 
-import java.time.LocalDate;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.service.IComputerService;
-import com.excilys.formation.cdb.ui.CLI;
+import com.excilys.formation.cdb.dto.ComputerDTO;
+import com.excilys.formation.cdb.util.WebServiceUtils;
 
 public class UpdateComputerCmd implements ICommand {
-	private IComputerService computerService = (IComputerService) CLI.context
-			.getBean("computerService");
-	private final Computer computer;
+	private final ComputerDTO computer;
 
-	public UpdateComputerCmd(Computer computer) {
+	public UpdateComputerCmd(ComputerDTO computer) {
 		this.computer = computer;
-	}
-
-	public UpdateComputerCmd(Long id, String name, LocalDate introduced,
-			LocalDate discontinued, Company company) {
-		this(new Computer(id, name, introduced, discontinued, company));
 	}
 
 	@Override
 	public void execute() {
 		if (computer == null) {
 			System.out.println("Update failed : Computer is null");
+			return;
 		}
-		computerService.update(computer);
-		System.out.println("Entry updated." + computer);
+		Response response = WebServiceUtils.putComputerResponse(computer,
+				MediaType.APPLICATION_JSON_TYPE);
+		if (response.getStatus() == 200) {
+			System.out.println("Entry updated. "
+					+ response.readEntity(ComputerDTO.class));
+		} else {
+			System.out.println("Sorry, something goes wrong. Status: "
+					+ response.getStatus());
+		}
 
 	}
 }

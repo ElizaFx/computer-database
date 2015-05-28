@@ -6,7 +6,5 @@
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<import resource="classpath:applicationContext.xml" />
-	<import resource="classpath:bindingApplicationContext.xml" />
-	<context:component-scan base-package="com.excilys.formation.cdb.service" />
+	<context:component-scan base-package="com.excilys.formation.cdb.mapper" />
 </beans>

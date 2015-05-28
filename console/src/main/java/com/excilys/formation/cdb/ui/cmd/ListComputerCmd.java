@@ -5,13 +5,12 @@ import java.util.Arrays;
 import javax.ws.rs.core.Response;
 
 import com.excilys.formation.cdb.dto.ComputerDTO;
-import com.excilys.formation.cdb.ui.CLI;
+import com.excilys.formation.cdb.util.WebServiceUtils;
 
 public class ListComputerCmd implements ICommand {
 	@Override
 	public void execute() {
-		Response response = CLI.getWebTarget().path("computers/findAll")
-				.request().get();
+		Response response = WebServiceUtils.getFindAllComputerResponse();
 		System.out.println("Début de la liste des elements :");
 		if (response.getStatus() == 200) {
 			Arrays.stream(response.readEntity(ComputerDTO[].class)).forEach(

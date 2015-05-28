@@ -1,24 +1,17 @@
 package com.excilys.formation.cdb.ui.requests;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.exception.RequestNotFoundException;
-import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.service.ICompanyService;
-import com.excilys.formation.cdb.service.IComputerService;
-import com.excilys.formation.cdb.ui.CLI;
 import com.excilys.formation.cdb.ui.cmd.ICommand;
 import com.excilys.formation.cdb.ui.cmd.UpdateComputerCmd;
 import com.excilys.formation.cdb.util.Util;
+import com.excilys.formation.cdb.util.WebServiceUtils;
 
 public class MVRequest implements IRequest {
-	private IComputerService computerService = (IComputerService) CLI.context
-			.getBean("computerService");
-	private ICompanyService companyService = (ICompanyService) CLI.context
-			.getBean("companyService");
 	private final List<String> request;
 
 	public final static String CMD = "mv";
@@ -44,8 +37,8 @@ public class MVRequest implements IRequest {
 	public ICommand processCommand() throws RequestNotFoundException {
 		Long id = null;
 		String name = null;
-		LocalDate introduced = null;
-		LocalDate discontinued = null;
+		String introduced = null;
+		String discontinued = null;
 		Long companyId = null;
 		boolean hasChanges = false;
 		for (int i = 1; i < (request.size() - 1); i++) {
@@ -62,16 +55,16 @@ public class MVRequest implements IRequest {
 						break;
 					}
 					case INTRODUCED: {
-						introduced = Util.parseDate(request.get(i + 1));
-						if (introduced == null) {
+						introduced = request.get(i + 1);
+						if (!Util.isDate(introduced)) {
 							throw new RequestNotFoundException(
 									"Introduced date malformed!");
 						}
 						break;
 					}
 					case DISCONTINUED: {
-						discontinued = Util.parseDate(request.get(i + 1));
-						if (discontinued == null) {
+						discontinued = request.get(i + 1);
+						if (!Util.isDate(discontinued)) {
 							throw new RequestNotFoundException(
 									"Discontinued date malformed!");
 						}
@@ -94,7 +87,7 @@ public class MVRequest implements IRequest {
 		if (id == null) {
 			throw new RequestNotFoundException("UPDATE ERROR id not found");
 		}
-		Computer computer = computerService.find(id);
+		ComputerDTO computer = WebServiceUtils.getComputer(id);
 		if (computer == null) {
 			throw new RequestNotFoundException(
 					"UPDATE ERROR no computer for this id");
@@ -112,7 +105,7 @@ public class MVRequest implements IRequest {
 			hasChanges = true;
 		}
 		if ((companyId != null) && (companyId != 0)) {
-			computer.setCompany(companyService.find(companyId));
+			computer.setCompanyId(companyId);
 			hasChanges = true;
 		}
 		if (hasChanges) {

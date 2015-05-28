@@ -1,21 +1,16 @@
 package com.excilys.formation.cdb.ui.requests;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.excilys.formation.cdb.dto.CompanyDTO;
 import com.excilys.formation.cdb.exception.RequestNotFoundException;
-import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.service.ICompanyService;
-import com.excilys.formation.cdb.ui.CLI;
 import com.excilys.formation.cdb.ui.cmd.CreateComputerCmd;
 import com.excilys.formation.cdb.ui.cmd.ICommand;
 import com.excilys.formation.cdb.util.Util;
 
 public class MKRequest implements IRequest {
-	private ICompanyService companyService = (ICompanyService) CLI.context
-			.getBean("companyService");
 	private final List<String> request;
 
 	public final static String CMD = "mk";
@@ -40,9 +35,9 @@ public class MKRequest implements IRequest {
 	@Override
 	public ICommand processCommand() throws RequestNotFoundException {
 		String name = null;
-		LocalDate introduced = null;
-		LocalDate discontinued = null;
-		Company company = null;
+		String introduced = null;
+		String discontinued = null;
+		CompanyDTO company = null;
 		for (int i = 0; i < (request.size() - 1); i++) {
 			if (MK_ARGS.contains(request.get(i))) {
 				switch (request.get(i)) {
@@ -51,16 +46,16 @@ public class MKRequest implements IRequest {
 						break;
 					}
 					case INTRODUCED: {
-						introduced = Util.parseDate(request.get(i + 1));
-						if (introduced == null) {
+						introduced = request.get(i + 1);
+						if (!Util.isDate(introduced)) {
 							throw new RequestNotFoundException(
 									"Introduced date malformed!");
 						}
 						break;
 					}
 					case DISCONTINUED: {
-						discontinued = Util.parseDate(request.get(i + 1));
-						if (discontinued == null) {
+						discontinued = request.get(i + 1);
+						if (!Util.isDate(discontinued)) {
 							throw new RequestNotFoundException(
 									"Discontinued date malformed!");
 						}
@@ -69,7 +64,7 @@ public class MKRequest implements IRequest {
 					case COMPANY_ID: {
 						if (Util.isNumeric(request.get(i + 1))) {
 							Long companyId = Long.parseLong(request.get(i + 1));
-							company = companyService.find(companyId);
+							company = new CompanyDTO(companyId, null);
 						} else {
 							throw new RequestNotFoundException(
 									"Company id malformed");
