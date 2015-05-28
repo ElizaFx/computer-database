@@ -27,6 +27,9 @@ public class ComputerMapper {
 	}
 
 	public ComputerDTO toDTO(Computer computer) {
+		if (computer == null) {
+			return null;
+		}
 		return ComputerDTO
 				.build()
 				.id(computer.getId())
@@ -43,6 +46,9 @@ public class ComputerMapper {
 	}
 
 	public Computer toModel(ComputerDTO dto) {
+		if (dto == null) {
+			return null;
+		}
 		Computer computer = Computer
 				.build()
 				.id(dto.getId())

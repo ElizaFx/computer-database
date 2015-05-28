@@ -64,7 +64,10 @@ public class ComputerDAO implements IComputerDAO {
 			LOGGER.error("Error param null in CompanyDAO.remove(computer)");
 			throw new DAOException("NullPointerException: Id null!");
 		}
-		em.remove(find(id));
+		Computer computer = find(id);
+		if (computer != null) {
+			em.remove(computer);
+		}
 	}
 
 	@Override

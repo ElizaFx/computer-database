@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
-import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.IComputerService;
 
 @RestController
@@ -30,31 +29,29 @@ public class ComputerJSON {
 	@RequestMapping(value = "findAll", method = RequestMethod.GET)
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<ComputerDTO> findAll() {
-		return computerMapper.toDTO(computerService.findAll());
+		return computerService.findAll();
 	}
 
 	@RequestMapping(value = "find/{id:[0-9]+}", method = RequestMethod.GET)
 	@Produces(MediaType.APPLICATION_JSON)
 	public ComputerDTO find(@PathVariable("id") Long id) {
-		return computerMapper.toDTO(computerService.find(id));
+		return computerService.find(id);
 	}
 
 	@RequestMapping(value = "create", method = RequestMethod.POST)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public ComputerDTO create(@RequestBody ComputerDTO computer) {
-		Computer c = computerMapper.toModel(computer);
-		computerService.insert(c);
-		return computerMapper.toDTO(c);
+		computerService.insert(computer);
+		return computer;
 	}
 
 	@RequestMapping(value = "edit", method = RequestMethod.PUT)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public ComputerDTO edit(@RequestBody ComputerDTO computer) {
-		Computer c = computerMapper.toModel(computer);
-		computerService.update(c);
-		return computerMapper.toDTO(c);
+		computerService.update(computer);
+		return computer;
 	}
 
 	@RequestMapping(value = "remove/{id:[0-9]+}", method = RequestMethod.DELETE)

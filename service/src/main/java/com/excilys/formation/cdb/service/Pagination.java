@@ -2,8 +2,6 @@ package com.excilys.formation.cdb.service;
 
 import java.util.List;
 
-import org.springframework.validation.Errors;
-
 import com.excilys.formation.cdb.persistence.IComputerDAO.OrderBy;
 
 public class Pagination<T> {
@@ -30,51 +28,6 @@ public class Pagination<T> {
 
 	public Pagination() {
 		mOrderBy = OrderBy.ID;
-	}
-
-	public Pagination(Paginable<T> paginable) {
-		this(paginable, "", 0, 1, 10, 5);
-	}
-
-	public Pagination(Paginable<T> paginable, int nbItems, int curPage,
-			int limit, int pageLimit) {
-		this(paginable, "", nbItems, curPage, limit, pageLimit);
-	}
-
-	public Pagination(Paginable<T> paginable, String search, int nbItems,
-			int curPage, int limit, int pageLimit) {
-		this(paginable, search, nbItems, curPage, limit, pageLimit, OrderBy.ID,
-				true);
-	}
-
-	public Pagination(Paginable<T> paginable, String search, int nbItems,
-			int curPage, int limit, int pageLimit, OrderBy ob, boolean asc) {
-		this.paginable = paginable;
-		this.nbItems = nbItems;
-		this.page = curPage;
-		this.limit = limit;
-		this.search = search == null ? "" : search;
-		this.mOrderBy = ob == null ? OrderBy.ID : ob;
-		this.asc = asc;
-		if (this.limit < 1) {
-			this.limit = 10;
-		}
-
-		if ((((this.page - 1) * this.limit) > this.nbItems) || (this.page < 1)) {
-			this.page = 1;
-		}
-
-		pageMax = (this.nbItems / this.limit)
-				+ ((this.nbItems % this.limit) == 0 ? 0 : 1);
-		firstPage = Integer.max(this.page - 2, 1);
-		lastPage = Integer.min(firstPage + (pageLimit - 1), pageMax);
-		firstPage = lastPage - (pageLimit - 1);
-		if (firstPage < 1) {
-			firstPage = 1;
-		}
-
-		previous = (this.page - 1) < 1 ? 1 : this.page - 1;
-		next = (this.page + 1) > pageMax ? pageMax : this.page + 1;
 	}
 
 	public int getNbItems() {
@@ -148,7 +101,7 @@ public class Pagination<T> {
 				+ asc + "]";
 	}
 
-	public void validate(Errors errors) {
+	public void validate() {
 		mOrderBy = OrderBy.map(orderBy);
 
 		if (limit < 1) {

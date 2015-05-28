@@ -10,13 +10,13 @@ public interface IComputerService extends Paginable<ComputerDTO> {
 	/**
 	 * @return all row of the table of Computer
 	 */
-	public List<Computer> findAll();
+	public List<ComputerDTO> findAll();
 
 	/**
 	 * @param predicate
 	 * @return element which satisfy predicate
 	 */
-	public Computer find(Predicate<? super Computer> predicate);
+	public ComputerDTO find(Predicate<? super Computer> predicate);
 
 	/**
 	 * Insert model in the table. Must call insertRequest with the right request
@@ -24,7 +24,7 @@ public interface IComputerService extends Paginable<ComputerDTO> {
 	 * @param model
 	 * @return the row count inserted
 	 */
-	public void insert(Computer model);
+	public void insert(ComputerDTO model);
 
 	/**
 	 * Remove model from the table. Must call removeRequest with the right
@@ -32,7 +32,7 @@ public interface IComputerService extends Paginable<ComputerDTO> {
 	 *
 	 * @param id
 	 */
-	public void remove(Computer id);
+	public void remove(ComputerDTO id);
 
 	/**
 	 * Update model from the table. Must call updateRequest with the right id
@@ -40,14 +40,14 @@ public interface IComputerService extends Paginable<ComputerDTO> {
 	 *
 	 * @param model
 	 */
-	public void update(Computer model);
+	public void update(ComputerDTO model);
 
 	/**
 	 * @param id
 	 *            of T model
 	 * @return element with this id
 	 */
-	public Computer find(Long id);
+	public ComputerDTO find(Long id);
 
 	/**
 	 * 
@@ -63,9 +63,6 @@ public interface IComputerService extends Paginable<ComputerDTO> {
 	@Override
 	public int count(String search);
 
-	public Pagination<ComputerDTO> getPage(String search, String limit,
-			String curPage, String orderBy, String asc);
-
 	/**
 	 * 
 	 * @param ids
@@ -79,5 +76,5 @@ public interface IComputerService extends Paginable<ComputerDTO> {
 	 * @param companyId
 	 * @return list of all computers from this company
 	 */
-	public List<Computer> findAllByCompany(Long companyId);
+	public List<ComputerDTO> findAllByCompany(Long companyId);
 }

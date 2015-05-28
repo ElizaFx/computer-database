@@ -17,8 +17,7 @@ public class ComputerDetailsCmd implements ICommand {
 
 	@Override
 	public void execute() {
-		Response response = WebServiceUtils.getWebTarget("computer/find/" + id)
-				.get();
+		Response response = WebServiceUtils.getFindComputerResponse(id);
 
 		if (response.getStatus() != 200) {
 			System.out.println("Computer not found");
@@ -27,6 +26,10 @@ public class ComputerDetailsCmd implements ICommand {
 		}
 		ComputerDTO computer = response.readEntity(ComputerDTO.class);
 		response.close();
+		if (computer == null) {
+			System.out.println("Computer not found");
+			return;
+		}
 
 		System.out.println("The choosen computer is : " + computer.getName());
 		System.out.println("Its id is : " + computer.getId());

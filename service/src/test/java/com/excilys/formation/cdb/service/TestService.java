@@ -16,10 +16,9 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.util.Util;
 import com.excilys.formation.util.Utils;
 
 @ContextConfiguration("/testApplicationContext.xml")
@@ -57,23 +56,23 @@ public class TestService {
 
 	@Test
 	public void findComputer() throws ParseException {
-		Computer elfII = new Computer();
+		ComputerDTO elfII = new ComputerDTO();
 		elfII.setId(20l);
 		elfII.setName("ELF II");
-		elfII.setIntroduced(Util.parseDate("1977-01-01"));
-		Company netronics = new Company();
-		netronics.setId(4l);
-		netronics.setName("Netronics");
-		elfII.setCompany(netronics);
-		Computer computer = computerService.find(20l);
+		elfII.setIntroduced("01/01/1977");
+		elfII.setDiscontinued("");
+		elfII.setCompanyId(4l);
+		elfII.setCompanyName("Netronics");
+		ComputerDTO computer = computerService.find(20l);
 		assertNotNull(computer);
+		System.out.println(computer);
+		System.out.println(elfII);
 		assertTrue(computer.equals(elfII));
 		assertNull(computerService.find(-1l));
 	}
 
 	@Test
 	public void findCompany() {
-
 		Company sony = new Company();
 		sony.setId(17l);
 		sony.setName("Sony");
@@ -87,26 +86,28 @@ public class TestService {
 
 	@Test
 	public void createUpdateRemoveComputer() {
-		computerService.insert(new Computer("Joxit", null, null, companyService
-				.find(17l)));
-
-		Computer jox = computerService.find(c -> (c.getName() != null)
+		{
+			Company company = companyService.find(17l);
+			computerService.insert(ComputerDTO.build().name("Joxit")
+					.companyId(company.getId()).companyName(company.getName())
+					.create());
+		}
+		ComputerDTO jox = computerService.find(c -> (c.getName() != null)
 				&& c.getName().equals("Joxit"));
 
 		assertNotNull(jox);
 		assertNull(computerService.find(c -> c.getName().equals("Joxit42")));
 		jox.setName("Joxit42");
 		computerService.update(jox);
-		assertNotNull(computerService.find(c -> c.equals(jox)));
+		assertNotNull(computerService.find(c -> c.getName().equals("Joxit42")));
 
 		computerService.remove(jox);
-		assertNull(computerService.find(c -> c.equals(jox)));
 		assertNull(computerService.find(c -> c.getName().equals("Joxit")));
 	}
 
 	@Test
 	public void deleteCompany() {
-		List<Computer> computers = computerService.findAllByCompany(1l);
+		List<ComputerDTO> computers = computerService.findAllByCompany(1l);
 		assertTrue(computers.stream().allMatch(
 				c -> computerService.find(c.getId()) != null));
 		assertNotNull(companyService.find(1l));
@@ -138,7 +139,7 @@ public class TestService {
 
 	@Test(expected = DAOException.class)
 	public void invalidRemove() {
-		computerService.remove((Computer) null);
+		computerService.remove((ComputerDTO) null);
 	}
 
 }

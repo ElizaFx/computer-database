@@ -15,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
-import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.ICompanyService;
 import com.excilys.formation.cdb.service.IComputerService;
 
@@ -48,10 +47,8 @@ public class AddAndEditComputer {
 	private ModelAndView processGet(String path, Long id, ModelMap model) {
 		ComputerDTO dto = null;
 		if ("editComputer".equals(path)) {
-			Computer computer = id == null ? null : computerService.find(id);
-			if (computer != null) {
-				dto = computerMapper.toDTO(computer);
-			} else {
+			dto = id == null ? null : computerService.find(id);
+			if (dto == null) {
 				dto = new ComputerDTO();
 				model.addAttribute("danger", "error.unknownComputer");
 			}
@@ -86,11 +83,11 @@ public class AddAndEditComputer {
 				|| (computerService.find(computer.getId()) != null);
 		if (!hasErrors && process) {
 			if (addComputer) {
-				computerService.insert(computerMapper.toModel(computer));
+				computerService.insert(computer);
 				model.put("computer", new ComputerDTO());
 				model.addAttribute("computerName", computer.getComputerName());
 			} else {
-				computerService.update(computerMapper.toModel(computer));
+				computerService.update(computer);
 			}
 			model.addAttribute("success", path + ".success");
 		} else {

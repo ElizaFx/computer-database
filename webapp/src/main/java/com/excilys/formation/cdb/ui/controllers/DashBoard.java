@@ -28,7 +28,7 @@ public class DashBoard {
 			BindingResult result, ModelMap model) {
 		mPage.setPaginable(computerService);
 
-		mPage.validate(result);
+		mPage.validate();
 		model.addAttribute("pagined", mPage);
 		return "dashboard";
 	}
