@@ -24,9 +24,15 @@
 		<logout logout-success-url="/login?logout" />
 		<csrf disabled="true" />
 	</http>
-
+  <beans:bean id="encoder" 
+	class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+	<beans:constructor-arg name="strength" value="11" />
+  </beans:bean>
+  
 	<authentication-manager>
-		<authentication-provider user-service-ref="userService" />
+		<authentication-provider user-service-ref="userService">
+			<password-encoder ref="encoder" />
+		</authentication-provider>
 	</authentication-manager>
 
 	<!-- Enable annotation-based security @Secured -->

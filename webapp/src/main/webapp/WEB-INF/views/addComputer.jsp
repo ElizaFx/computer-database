@@ -94,7 +94,7 @@
 						<div class="actions pull-right">
 							<spring:message code="global.add" var="addMessage" />
 							<input type="submit" value="${addMessage}"
-								class="btn btn-primary">
+								class="btn btn-success">
 							<spring:message code="global.or" />
 							<a href="dashboard" class="btn btn-default"><spring:message
 									code="global.cancel" /></a>

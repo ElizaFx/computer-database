@@ -16,8 +16,8 @@
 	
   create unique index ix_auth_username on authorities (username,authority);
   
-  insert into users values ('joxit', 'test', true);
-  insert into users values ('admin', 'test', true);
+  insert into users values ('joxit', '$2a$11$kOxsREwa7IFniCu44aJoxuyU97LpdQuEXumbvrXmsrRI5qSmEvbgO', true);
+  insert into users values ('admin', '$2a$11$kOxsREwa7IFniCu44aJoxuyU97LpdQuEXumbvrXmsrRI5qSmEvbgO', true);
   insert into authorities values('joxit', 'ROLE_USER');
   insert into authorities values('admin', 'ROLE_USER');
   insert into authorities values('admin', 'ROLE_ADMIN');

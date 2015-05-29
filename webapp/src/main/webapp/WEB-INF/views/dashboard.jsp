@@ -61,13 +61,15 @@
 						<sec:authorize access="hasRole('ROLE_ADMIN')">
 							<spring:message code="dashboard.confirmDeletion"
 								var="confirmDeletionMessage" />
+							<spring:message code="global.ok" var="okMessage" />
+							<spring:message code="global.cancel" var="cancelMessage" />
 							<!-- Variable declarations for passing labels as parameters -->
 							<!-- Table header for Computer Name -->
 							<th class="editMode" style="width: 60px; height: 22px;"><input
 								type="checkbox" id="selectall" /> <span
 								style="vertical-align: top;"> - <a href="#"
 									id="deleteSelected"
-									onclick="$.fn.deleteSelected('${confirmDeletionMessage}');">
+									onclick="$.fn.deleteSelected('${confirmDeletionMessage}', '${okMessage}', '${cancelMessage}');">
 										<i class="fa fa-trash-o fa-lg"></i>
 								</a>
 							</span></th>
@@ -103,7 +105,7 @@
 							<td><sec:authorize access="hasRole('ROLE_ADMIN')">
 									<a href="editComputer?id=${computer.getId()}" onclick=""><c:out
 											value='${computer.getName()}' /></a>
-								</sec:authorize><sec:authorize access="not hasRole('ROLE_ADMIN')">
+								</sec:authorize> <sec:authorize access="not hasRole('ROLE_ADMIN')">
 									<c:out value='${computer.getName()}' />
 								</sec:authorize></td>
 							<td>${computer.getIntroduced()}</td>
@@ -122,6 +124,7 @@
 			pagemax="${pagined.getPageMax()}" orderBy="${pagined.getObName()}"
 			asc="${pagined.isAsc()}" />
 	</footer>
+
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/dashboard.js"></script>
