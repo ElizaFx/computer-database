@@ -13,6 +13,8 @@
 			<artifactId>binding</artifactId>
 			<scope>compile</scope>
 		</dependency>
+		
+		<!-- Jersey and Jackson for JSON rest and webservice -->
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-client</artifactId>

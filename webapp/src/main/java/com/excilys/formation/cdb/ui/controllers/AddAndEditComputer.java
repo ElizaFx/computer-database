@@ -32,6 +32,13 @@ public class AddAndEditComputer {
 	@Autowired
 	private ComputerMapper computerMapper;
 
+	/**
+	 * @param id
+	 *            of computer to edit
+	 * @param model
+	 * @return ModelAndView of computerDTO of this id and editComputer.jsp as
+	 *         view
+	 */
 	@RequestMapping(value = "/editComputer", method = RequestMethod.GET)
 	protected ModelAndView doEditGet(
 			@RequestParam(value = "id", required = false) Long id,
@@ -39,20 +46,34 @@ public class AddAndEditComputer {
 		return processGet("editComputer", id, model);
 	}
 
+	/**
+	 * @param model
+	 * @return ModelAndView with empty computerDTO and addComputer as view
+	 */
 	@RequestMapping(value = "/addComputer", method = RequestMethod.GET)
 	protected ModelAndView doAddGet(ModelMap model) {
 		return processGet("addComputer", null, model);
 	}
 
+	/**
+	 * Process for both addComputer and editComputer controller
+	 * 
+	 * @param path
+	 *            view to send
+	 * @param id
+	 *            of computer if we need (for editComputer)
+	 * @param model
+	 * @return ModelAndView with path as view
+	 */
 	private ModelAndView processGet(String path, Long id, ModelMap model) {
 		ComputerDTO dto = null;
-		if ("editComputer".equals(path)) {
+		if ("editComputer".equals(path)) { // editComputer processing
 			dto = id == null ? null : computerService.find(id);
 			if (dto == null) {
 				dto = new ComputerDTO();
 				model.addAttribute("danger", "error.unknownComputer");
 			}
-		} else {
+		} else { // addComputer processing
 			dto = new ComputerDTO();
 		}
 
@@ -61,6 +82,14 @@ public class AddAndEditComputer {
 		return new ModelAndView(path, "computer", dto);
 	}
 
+	/**
+	 * 
+	 * @param computer
+	 *            completed by the user and validated
+	 * @param result
+	 * @param model
+	 * @return editComputer view
+	 */
 	@RequestMapping(value = "/editComputer", method = RequestMethod.POST)
 	protected String doEditPost(
 			@Valid @ModelAttribute("computer") ComputerDTO computer,
@@ -68,6 +97,14 @@ public class AddAndEditComputer {
 		return processPost("editComputer", computer, result, model);
 	}
 
+	/**
+	 * 
+	 * @param computer
+	 *            completed by the user and validated
+	 * @param result
+	 * @param model
+	 * @return addComputer view
+	 */
 	@RequestMapping(value = "/addComputer", method = RequestMethod.POST)
 	protected String doAddPost(
 			@Valid @ModelAttribute("computer") ComputerDTO computer,
@@ -75,6 +112,17 @@ public class AddAndEditComputer {
 		return processPost("addComputer", computer, result, model);
 	}
 
+	/**
+	 * Process for both addComputer and editComputer controller
+	 * 
+	 * @param path
+	 *            view to send
+	 * @param computer
+	 *            completed by the user and validated
+	 * @param result
+	 * @param model
+	 * @return ModelAndView with path as view
+	 */
 	private String processPost(String path, ComputerDTO computer,
 			BindingResult result, ModelMap model) {
 		boolean hasErrors = result.hasErrors();
@@ -95,8 +143,9 @@ public class AddAndEditComputer {
 		}
 
 		if (process && (!addComputer || hasErrors)) {
+			// editComputer or addComputer with error
 			model.addAttribute("computer", computer);
-		} else if (!addComputer) {
+		} else if (!addComputer) { // editComputer
 			model.addAttribute("danger", "error.unknownComputer");
 		}
 		model.addAttribute("errors", result);

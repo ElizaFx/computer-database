@@ -37,7 +37,7 @@ public interface IComputerDAO {
 			} else if (COMPANY.name().equalsIgnoreCase(s)) {
 				return COMPANY;
 			}
-			return ID;
+			return NAME;
 		}
 
 		public Path<Object> toOrder(Join<Computer, Company> join) {
@@ -54,7 +54,8 @@ public interface IComputerDAO {
 	public List<Computer> findAll();
 
 	/**
-	 * @return all row of the table Computer where has this company
+	 * @param companyId
+	 * @return all row of the table Computer which has this company
 	 */
 	public List<Computer> findAllByCompany(Long companyId);
 
@@ -65,72 +66,43 @@ public interface IComputerDAO {
 	public Computer find(Predicate<? super Computer> predicate);
 
 	/**
-	 * Insert model in the table. Must call insertRequest with the right request
+	 * Insert model in the table. Model is also updated
 	 *
 	 * @param model
-	 * @return the row count inserted
 	 */
 	public void insert(Computer model);
 
 	/**
-	 * Remove model from the table. Must call removeRequest with the right
-	 * request
+	 * Remove model from the table.
 	 *
-	 * @param model
-	 * @return the row count removed
+	 * @param id
 	 */
-	public void remove(Long model);
+	public void remove(Long id);
 
 	/**
-	 * Update model from the table. Must call updateRequest with the right id
-	 * and request
+	 * Update model from the table.
 	 *
 	 * @param model
-	 * @return the row count updated
 	 */
 	public void update(Computer model);
 
 	/**
 	 * @param id
-	 *            of T model
-	 * @return element with this id
+	 * @return computer with this id
 	 */
 	public Computer find(Long id);
 
 	/**
-	 * 
 	 * @return count the number of computers
 	 */
 	public int count();
 
 	/**
 	 * @param search
-	 *            name of the computer to search
+	 *            name of the computer or company to search
 	 * @return count the number of computers
 	 */
-	int count(String search);
-
-	/**
-	 * 
-	 * @param limit
-	 *            number of elements
-	 * @param offset
-	 *            first element
-	 * @return list of limit element started by offset
-	 */
-	public List<Computer> pagination(int limit, int offset);
-
-	/**
-	 * 
-	 * @param search
-	 *            name of the computer to search
-	 * @param limit
-	 *            number of elements
-	 * @param offset
-	 *            first element
-	 * @return list of limit element started by offset
-	 */
-	public List<Computer> pagination(String search, int limit, int offset);
+	public int count(String search);
 
 	/**
 	 * 
@@ -150,19 +122,8 @@ public interface IComputerDAO {
 			OrderBy ob, boolean asc);
 
 	/**
-	 * 
-	 * @param limit
-	 *            number of elements
-	 * @param offset
-	 *            first element
-	 * @param ob
-	 *            order by
-	 * @param asc
-	 *            true for ascending order, false for descending order
-	 * @return list of limit element started by offset
+	 * @param companyId
+	 * @return remove all computer with this companyId
 	 */
-	public List<Computer> pagination(int limit, int offset, OrderBy ob,
-			boolean asc);
-
 	public int removeByCompany(Long companyId);
 }

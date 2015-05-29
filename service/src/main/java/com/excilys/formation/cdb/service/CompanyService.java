@@ -25,28 +25,16 @@ public class CompanyService implements ICompanyService {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(CompanyService.class);
 
-	/**
-	 * @return all row of the table of T
-	 */
 	@Override
 	public List<Company> findAll() {
 		return companyDAO.findAll();
 	}
 
-	/**
-	 * @param predicate
-	 * @return element which satisfy predicate
-	 */
 	@Override
 	public Company find(Predicate<? super Company> predicate) {
 		return companyDAO.find(predicate);
 	}
 
-	/**
-	 * @param id
-	 *            of T model
-	 * @return element with this id
-	 */
 	@Override
 	public Company find(Long id) {
 		return companyDAO.find(id);

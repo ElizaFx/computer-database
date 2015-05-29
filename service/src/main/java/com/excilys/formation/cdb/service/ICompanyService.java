@@ -7,7 +7,7 @@ import com.excilys.formation.cdb.model.Company;
 
 public interface ICompanyService {
 	/**
-	 * @return all row of the table of T
+	 * @return all row of company table
 	 */
 	public List<Company> findAll();
 
@@ -19,22 +19,22 @@ public interface ICompanyService {
 
 	/**
 	 * @param id
-	 *            of Company
-	 * @return element with this id
+	 *            of company
+	 * @return company or null
 	 */
 	public Company find(Long id);
 
 	/**
-	 * 
 	 * @return count the number of companies
 	 */
 	public int count();
 
 	/**
-	 * 
+	 * Remove company from the table
+	 *
 	 * @param id
-	 *            of Company
-	 * @return -1 if something wrong
+	 *            of the company
+	 * @return number of computer deleted
 	 */
 	public int remove(Long id);
 }

@@ -9,6 +9,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class Login {
+	/**
+	 * @param error
+	 * @param logout
+	 * @return ModelAndView login
+	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	protected ModelAndView doLoginGet(
 			@RequestParam(value = "error", required = false) String error,
@@ -28,6 +33,11 @@ public class Login {
 
 	}
 
+	/**
+	 * @param error
+	 * @param logout
+	 * @return ModelAndView login
+	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	protected ModelAndView doLoginPost(
 			@RequestParam(value = "error", required = false) String error,

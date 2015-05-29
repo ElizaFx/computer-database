@@ -19,24 +19,21 @@ public interface IComputerService extends Paginable<ComputerDTO> {
 	public ComputerDTO find(Predicate<? super Computer> predicate);
 
 	/**
-	 * Insert model in the table. Must call insertRequest with the right request
+	 * Insert model in the table. Model is also updated
 	 *
 	 * @param model
-	 * @return the row count inserted
 	 */
 	public void insert(ComputerDTO model);
 
 	/**
-	 * Remove model from the table. Must call removeRequest with the right
-	 * request
+	 * Remove model from the table.
 	 *
 	 * @param id
 	 */
 	public void remove(ComputerDTO id);
 
 	/**
-	 * Update model from the table. Must call updateRequest with the right id
-	 * and request
+	 * Update model from the table.
 	 *
 	 * @param model
 	 */
@@ -44,20 +41,18 @@ public interface IComputerService extends Paginable<ComputerDTO> {
 
 	/**
 	 * @param id
-	 *            of T model
-	 * @return element with this id
+	 * @return computer with this id
 	 */
 	public ComputerDTO find(Long id);
 
 	/**
-	 * 
 	 * @return count the number of computers
 	 */
 	public int count();
 
 	/**
 	 * @param search
-	 *            name of the computer to search
+	 *            name of the computer or company to search
 	 * @return count the number of computers
 	 */
 	@Override

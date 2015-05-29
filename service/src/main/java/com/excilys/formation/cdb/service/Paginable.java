@@ -23,6 +23,11 @@ public interface Paginable<T> {
 	public List<T> pagination(String search, int limit, int offset, OrderBy ob,
 			boolean asc);
 
+	/**
+	 * @param search
+	 *            name of the computer or company to search
+	 * @return count the number of computers
+	 */
 	public int count(String search);
 
 }

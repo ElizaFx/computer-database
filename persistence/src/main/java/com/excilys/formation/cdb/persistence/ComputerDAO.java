@@ -122,22 +122,6 @@ public class ComputerDAO implements IComputerDAO {
 	}
 
 	@Override
-	public List<Computer> pagination(int limit, int offset) {
-		return pagination("", limit, offset);
-	}
-
-	@Override
-	public List<Computer> pagination(int limit, int offset, OrderBy ob,
-			boolean asc) {
-		return pagination("", limit, offset, ob, asc);
-	}
-
-	@Override
-	public List<Computer> pagination(String search, int limit, int offset) {
-		return pagination(search, limit, offset, OrderBy.ID, true);
-	}
-
-	@Override
 	public List<Computer> pagination(String search, int limit, int offset,
 			OrderBy ob, boolean asc) {
 		search = search == null ? "%" : "%" + search + "%";

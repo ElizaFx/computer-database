@@ -23,6 +23,13 @@ public class DashBoard {
 	@Autowired
 	private IComputerService computerService;
 
+	/**
+	 * @param mPage
+	 *            validated for pagination
+	 * @param result
+	 * @param model
+	 * @return dashboard
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	protected String doGet(@ModelAttribute Pagination<ComputerDTO> mPage,
 			BindingResult result, ModelMap model) {
@@ -33,6 +40,16 @@ public class DashBoard {
 		return "dashboard";
 	}
 
+	/**
+	 * 
+	 * @param selection
+	 *            of computer to delete
+	 * @param mPage
+	 *            validated for pagination
+	 * @param result
+	 * @param model
+	 * @return dashboard
+	 */
 	@RequestMapping(method = RequestMethod.POST)
 	protected String doPost(
 			@RequestParam(value = "selection", required = true) String selection,

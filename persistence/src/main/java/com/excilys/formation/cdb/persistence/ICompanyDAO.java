@@ -6,8 +6,9 @@ import java.util.function.Predicate;
 import com.excilys.formation.cdb.model.Company;
 
 public interface ICompanyDAO {
+
 	/**
-	 * @return all row of the table of T
+	 * @return all row of company table
 	 */
 	public List<Company> findAll();
 
@@ -19,23 +20,21 @@ public interface ICompanyDAO {
 
 	/**
 	 * @param id
-	 *            of T model
-	 * @return element with this id
+	 *            of company
+	 * @return company or null
 	 */
 	public Company find(Long id);
 
 	/**
-	 * 
 	 * @return count the number of companies
 	 */
 	public int count();
 
 	/**
-	 * Remove model from the table. Use a transaction connection
+	 * Remove company from the table
 	 *
-	 * @param connection
-	 *            for a transaction
-	 * @param model
+	 * @param id
+	 *            of the company
 	 */
-	public void remove(Long model);
+	public void remove(Long id);
 }

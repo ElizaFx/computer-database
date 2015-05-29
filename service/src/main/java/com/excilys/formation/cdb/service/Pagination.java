@@ -19,15 +19,15 @@ public class Pagination<T> {
 	private OrderBy mOrderBy;
 	private String orderBy;
 	private int pageLimit = 5;
-
-	public void setPageLimit(int pageLimit) {
-		this.pageLimit = pageLimit;
-	}
-
 	private boolean asc;
 
 	public Pagination() {
-		mOrderBy = OrderBy.ID;
+		mOrderBy = OrderBy.NAME;
+		asc = true;
+	}
+
+	public void setPageLimit(int pageLimit) {
+		this.pageLimit = pageLimit;
 	}
 
 	public int getNbItems() {
