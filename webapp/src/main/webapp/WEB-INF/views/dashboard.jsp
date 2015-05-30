@@ -14,8 +14,18 @@
 	<section id="main">
 		<div class="container">
 			<h1 id="homeTitle">
-				<spring:message code="dashboard.homeTitle"
-					arguments="${pagined.getNbItems() }" />
+				<c:choose>
+					<c:when test="${pagined.getNbItems()  == 0}">
+						<spring:message code="dashboard.homeTitleEmpty" />
+					</c:when>
+					<c:when test="${pagined.getNbItems()  == 1}">
+						<spring:message code="dashboard.homeTitleAlone" />
+					</c:when>
+					<c:otherwise>
+						<spring:message code="dashboard.homeTitle"
+							arguments="${pagined.getNbItems() }" />
+					</c:otherwise>
+				</c:choose>
 			</h1>
 			<c:if test="${success != null}">
 				<div class="alert alert-success" role="alert">${success}</div>
