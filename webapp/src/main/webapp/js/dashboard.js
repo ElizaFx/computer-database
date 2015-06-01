@@ -56,39 +56,46 @@ $(function() {
 
 }(jQuery));
 
+var deleteSelection = function() {
+	$('#deleteForm input[name=selection]').setCheckboxValues('selection', 'cb');
+	$('#deleteForm').submit();
+	removeCustomAlert();
+	return false;
+};
+
 // Function delete selected: Asks for confirmation to delete selected computers,
 // then submits it to the deleteForm
 (function($) {
 	$.fn.deleteSelected = function(msg, okTxt, cancelTxt) {
-		createCustomAlert(function() {
-			$('#deleteForm input[name=selection]').setCheckboxValues(
-					'selection', 'cb');
-			$('#deleteForm').submit();
-			removeCustomAlert();
-			return false;
-		}, msg, okTxt, cancelTxt)
+		createCustomAlert(deleteSelection,
+				strings['dashboard.confirmDeletion'], strings['global.ok'],
+				strings['global.cancel'])
 	};
 }(jQuery));
 
 // Event handling
 // Onkeydown
-$(document).keydown(function(e) {
+$(document).keydown(
+		function(e) {
 
-	switch (e.keyCode) {
-	// DEL key
-	case 46:
-		if ($(".editMode").is(":visible") && $(".cb:checked").length != 0) {
-			$.fn.deleteSelected();
-		}
-		break;
-	// E key (CTRL+E will switch to edit mode)
-	case 69:
-		if (e.ctrlKey) {
-			$.fn.toggleEditMode();
-		}
-		break;
-	}
-});
+			switch (e.keyCode) {
+			// DEL key
+			case 46:
+				if ($(".editMode").is(":visible")
+						&& $(".cb:checked").length != 0) {
+					$.fn.deleteSelected(deleteSelection,
+							strings['dashboard.confirmDeletion'],
+							strings['global.ok'], strings['global.cancel']);
+				}
+				break;
+			// E key (CTRL+E will switch to edit mode)
+			case 69:
+				if (e.ctrlKey) {
+					$.fn.toggleEditMode();
+				}
+				break;
+			}
+		});
 
 var ALERT_BUTTON_TEXT = "Ok";
 

@@ -107,6 +107,10 @@
 			</div>
 		</div>
 	</section>
+	<script type="text/javascript">
+		var strings = new Array();
+		strings['global.datePattern'] = "<spring:message code='global.datePattern' javaScriptEscape='true' />";
+	</script>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/computerValidator.js"></script>

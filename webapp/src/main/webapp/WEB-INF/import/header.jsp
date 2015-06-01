@@ -12,8 +12,12 @@
 		<div class="navbar-right">
 			<mylib:lang id="${param.id }" />
 			<sec:authorize access="not isAnonymous()">
-				<form class="navbar-brand" method="get" action="<c:url value="/logout" />">
-					<input class="btn btn-primary btn-sm" type="submit" value="Log out" />
+				<form class="navbar-brand" method="get"
+					action="<c:url value="/logout" />">
+					<button class="btn btn-danger btn-sm" type="submit">
+						<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+						<spring:message code="global.logout" />
+					</button>
 					<input type="hidden" name="${_csrf.parameterName}"
 						value="${_csrf.token}" />
 				</form>

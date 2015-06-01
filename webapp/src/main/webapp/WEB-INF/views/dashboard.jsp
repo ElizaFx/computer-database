@@ -41,9 +41,10 @@
 							class="form-control"
 							placeholder="<spring:message code='dashboard.searchName'/>"
 							value="<c:out value='${pagined.getSearch()}'/>" />
-						<input type="submit" id="searchsubmit"
-							value="<spring:message code='dashboard.filterByName'/>"
-							class="btn btn-primary" />
+						<button type="submit" id="searchsubmit" class="btn btn-primary">
+							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+							<spring:message code='dashboard.filterByName' />
+						</button>
 					</form:form>
 				</div>
 				<sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -134,7 +135,13 @@
 			pagemax="${pagined.getPageMax()}" orderBy="${pagined.getObName()}"
 			asc="${pagined.isAsc()}" />
 	</footer>
-
+	<script type="text/javascript">
+		var strings = new Array();
+		strings['dashboard.confirmDeletion'] = "<spring:message code='dashboard.confirmDeletion' javaScriptEscape='true' />";
+		strings['global.ok'] = "<spring:message code='global.ok' javaScriptEscape='true' />";
+		strings['global.cancel'] = "<spring:message code='global.cancel' javaScriptEscape='true' />";
+		strings['global.cancel'] = "<spring:message code='global.cancel' javaScriptEscape='true' />";
+	</script>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/dashboard.js"></script>

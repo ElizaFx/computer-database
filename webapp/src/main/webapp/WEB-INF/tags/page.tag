@@ -15,7 +15,9 @@
 				disabled="${begin >= current}" limit="${limit}" search="${search}"
 				orderBy="${orderBy}" asc="${asc}" label="First Page">
 				<span aria-hidden="true">&laquo;</span>
-			</mylib:link> <mylib:link disabled="${begin >= current}" page="${current - 1}"
+			</mylib:link></li>
+		<li <c:if test="${begin >= current}">class="disabled"</c:if>><mylib:link
+				disabled="${begin >= current}" page="${current - 1}"
 				limit="${limit}" search="${search}" orderBy="${orderBy}"
 				asc="${asc}" label="Previous">
 				<span aria-hidden="true">&lsaquo;</span>
@@ -29,9 +31,11 @@
 				disabled="${end <= current}" page="${current + 1}" limit="${limit}"
 				search="${search}" label="Next" orderBy="${orderBy}" asc="${asc}">
 				<span aria-hidden="true">&rsaquo;</span>
-			</mylib:link> <mylib:link disabled="${end <= current}" page="${pagemax}"
-				limit="${limit}" search="${search}" label="Last Page"
-				orderBy="${orderBy}" asc="${asc}">
+			</mylib:link></li>
+		<li <c:if test="${end <= current}">class="disabled"</c:if>><mylib:link
+				disabled="${end <= current}" page="${pagemax}" limit="${limit}"
+				search="${search}" label="Last Page" orderBy="${orderBy}"
+				asc="${asc}">
 				<span aria-hidden="true">&raquo;</span>
 			</mylib:link></li>
 	</ul>
