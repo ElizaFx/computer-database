@@ -79,6 +79,7 @@ public class DateFieldValidator implements
 
 	private int toInt(String[] dateSplited, String[] patternSplited,
 			String match) {
+		// TODO use Matcher instead of for
 		for (int i = 0; i < patternSplited.length; i++) {
 			if (patternSplited[i].equalsIgnoreCase(match)) {
 				return Integer.parseInt(dateSplited[i]);

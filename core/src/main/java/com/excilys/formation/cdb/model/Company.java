@@ -120,7 +120,7 @@ public class Company implements Serializable {
 		return true;
 	}
 
-	public final static CompanyBuilder build() {
+	public final static CompanyBuilder builder() {
 		return new CompanyBuilder();
 	}
 
@@ -141,7 +141,7 @@ public class Company implements Serializable {
 			return this;
 		}
 
-		public Company create() {
+		public Company build() {
 			return company;
 		}
 

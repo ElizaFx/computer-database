@@ -14,7 +14,7 @@ import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.util.WebServiceUtils;
 
-@ContextConfiguration("/bindingApplicationContext.xml")
+@ContextConfiguration("/binding-application-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestCmd {
 	@Autowired

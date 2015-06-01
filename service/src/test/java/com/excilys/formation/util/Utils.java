@@ -12,12 +12,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration("/testApplicationContext.xml")
+@ContextConfiguration("/test-application-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class Utils {
 
 	public static ApplicationContext context = new ClassPathXmlApplicationContext(
-			"testApplicationContext.xml");
+			"test-application-context.xml");
 
 	@Autowired
 	private static JdbcTemplate jdbcTemplate = context

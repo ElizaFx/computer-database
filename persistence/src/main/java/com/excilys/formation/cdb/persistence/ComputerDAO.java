@@ -38,7 +38,7 @@ public class ComputerDAO implements IComputerDAO {
 	@Override
 	public Computer find(Long id) {
 		if (id == null) {
-			LOGGER.error("Error param null in ComputerDAO.find(id)");
+			LOGGER.warn("Error param null in ComputerDAO.find(id)");
 			throw new DAOException("NullPointerException: ID null!");
 		}
 		return em.find(Computer.class, id);
@@ -48,7 +48,7 @@ public class ComputerDAO implements IComputerDAO {
 	@Transactional(readOnly = false)
 	public void insert(Computer computer) {
 		if (computer == null) {
-			LOGGER.error("Error param null in CompanyDAO.insert(computer)");
+			LOGGER.warn("Error param null in CompanyDAO.insert(computer)");
 			throw new DAOException("NullPointerException: Id null!");
 		}
 		/* merge fix detached entity passed to persist */
@@ -61,7 +61,7 @@ public class ComputerDAO implements IComputerDAO {
 	@Transactional(readOnly = false)
 	public void remove(Long id) {
 		if (id == null) {
-			LOGGER.error("Error param null in CompanyDAO.remove(computer)");
+			LOGGER.warn("Error param null in CompanyDAO.remove(computer)");
 			throw new DAOException("NullPointerException: Id null!");
 		}
 		Computer computer = find(id);
@@ -74,7 +74,7 @@ public class ComputerDAO implements IComputerDAO {
 	@Transactional(readOnly = false)
 	public void update(Computer computer) {
 		if (computer == null) {
-			LOGGER.error("Error param null in CompanyDAO.update(model)");
+			LOGGER.warn("Error param null in CompanyDAO.update(model)");
 			throw new DAOException("NullPointerException: Model null!");
 		}
 		em.merge(computer);
@@ -91,7 +91,7 @@ public class ComputerDAO implements IComputerDAO {
 	@Override
 	public Computer find(Predicate<? super Computer> predicate) {
 		if (predicate == null) {
-			LOGGER.error("Error param null in CompanyDAO.find(predicate)");
+			LOGGER.warn("Error param null in CompanyDAO.find(predicate)");
 			throw new DAOException("NullPointerException: Predicate null!");
 		}
 		return findAll().stream().filter(predicate).findFirst().orElse(null);
@@ -143,7 +143,7 @@ public class ComputerDAO implements IComputerDAO {
 	@Override
 	public List<Computer> findAllByCompany(Long companyId) {
 		if (companyId == null) {
-			LOGGER.error("Error param null in CompanyDAO.remove(id)");
+			LOGGER.warn("Error param null in CompanyDAO.remove(id)");
 			throw new DAOException("NullPointerException: Id null!");
 		}
 
@@ -162,7 +162,7 @@ public class ComputerDAO implements IComputerDAO {
 	@Transactional(readOnly = false)
 	public int removeByCompany(Long companyId) {
 		if (companyId == null) {
-			LOGGER.error("Error param null in CompanyDAO.remove(id)");
+			LOGGER.warn("Error param null in CompanyDAO.remove(id)");
 			throw new DAOException("NullPointerException: Id null!");
 		}
 		CriteriaBuilder cb = em.getCriteriaBuilder();

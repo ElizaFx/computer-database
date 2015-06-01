@@ -85,7 +85,7 @@ public class ComputerDTO {
 		this.companyName = companyName;
 	}
 
-	public final static ComputerDTOBuilder build() {
+	public final static ComputerDTOBuilder builder() {
 		ComputerDTOBuilder res = new ComputerDTO.ComputerDTOBuilder();
 		return res;
 	}
@@ -209,7 +209,7 @@ public class ComputerDTO {
 			return this;
 		}
 
-		public ComputerDTO create() {
+		public ComputerDTO build() {
 			return computer;
 		}
 	}

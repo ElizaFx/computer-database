@@ -230,7 +230,7 @@ public class Computer implements Serializable {
 		return true;
 	}
 
-	public final static ComputerBuilder build() {
+	public final static ComputerBuilder builder() {
 		return new ComputerBuilder();
 	}
 
@@ -266,7 +266,7 @@ public class Computer implements Serializable {
 			return this;
 		}
 
-		public Computer create() {
+		public Computer build() {
 			return computer;
 		}
 	}

@@ -9,8 +9,8 @@ import com.excilys.formation.cdb.model.Company;
 public class CompanyMapper {
 
 	public static CompanyDTO toDTO(Company company) {
-		return CompanyDTO.build().id(company.getId()).name(company.getName())
-				.create();
+		return CompanyDTO.builder().id(company.getId()).name(company.getName())
+				.builder();
 	}
 
 	public static List<CompanyDTO> toDTO(List<Company> companies) {
@@ -19,7 +19,7 @@ public class CompanyMapper {
 	}
 
 	public static Company toModel(CompanyDTO dto) {
-		return Company.build().id(dto.getId()).name(dto.getName()).create();
+		return Company.builder().id(dto.getId()).name(dto.getName()).build();
 	}
 
 	public static List<Company> toModel(List<CompanyDTO> companies) {

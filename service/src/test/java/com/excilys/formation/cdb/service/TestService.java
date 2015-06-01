@@ -21,7 +21,7 @@ import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.util.Utils;
 
-@ContextConfiguration("/testApplicationContext.xml")
+@ContextConfiguration("/test-application-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestService {
 
@@ -88,9 +88,9 @@ public class TestService {
 	public void createUpdateRemoveComputer() {
 		{
 			Company company = companyService.find(17l);
-			computerService.insert(ComputerDTO.build().name("Joxit")
+			computerService.insert(ComputerDTO.builder().name("Joxit")
 					.companyId(company.getId()).companyName(company.getName())
-					.create());
+					.build());
 		}
 		ComputerDTO jox = computerService.find(c -> (c.getName() != null)
 				&& c.getName().equals("Joxit"));

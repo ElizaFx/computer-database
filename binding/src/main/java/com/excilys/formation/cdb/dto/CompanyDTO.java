@@ -67,7 +67,7 @@ public class CompanyDTO {
 		return "CompanyDTO [id=" + id + ", name=" + name + "]";
 	}
 
-	public final static CompanyDTOBuilder build() {
+	public final static CompanyDTOBuilder builder() {
 		return new CompanyDTOBuilder();
 	}
 
@@ -88,7 +88,7 @@ public class CompanyDTO {
 			return this;
 		}
 
-		public CompanyDTO create() {
+		public CompanyDTO builder() {
 			return company;
 		}
 

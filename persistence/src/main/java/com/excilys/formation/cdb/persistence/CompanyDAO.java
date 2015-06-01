@@ -32,7 +32,7 @@ public class CompanyDAO implements ICompanyDAO {
 	@Override
 	public Company find(Long id) {
 		if (id == null) {
-			LOGGER.error("Error param null in CompanyDAO.find(id)");
+			LOGGER.warn("Error param null in CompanyDAO.find(id)");
 			throw new DAOException("NullPointerException: Id null!");
 		}
 		return em.find(Company.class, id);
@@ -49,7 +49,7 @@ public class CompanyDAO implements ICompanyDAO {
 	@Override
 	public Company find(Predicate<? super Company> predicate) {
 		if (predicate == null) {
-			LOGGER.error("Error param null in CompanyDAO.find(predicate)");
+			LOGGER.warn("Error param null in CompanyDAO.find(predicate)");
 			throw new DAOException("NullPointerException: Predicate null!");
 		}
 		return findAll().stream().filter(predicate).findFirst().orElse(null);
@@ -67,7 +67,7 @@ public class CompanyDAO implements ICompanyDAO {
 	@Transactional(readOnly = false)
 	public void remove(Long id) {
 		if (id == null) {
-			LOGGER.error("Error param null in CompanyDAO.remove(id)");
+			LOGGER.warn("Error param null in CompanyDAO.remove(id)");
 			throw new DAOException("NullPointerException: Id null!");
 		}
 		em.remove(find(id));

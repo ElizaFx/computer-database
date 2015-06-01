@@ -24,7 +24,7 @@ import com.excilys.formation.cdb.ui.requests.RMRequest;
 import com.excilys.formation.cdb.ui.requests.Request;
 import com.excilys.formation.cdb.util.WebServiceUtils;
 
-@ContextConfiguration("/bindingApplicationContext.xml")
+@ContextConfiguration("/binding-application-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestRequests {
 

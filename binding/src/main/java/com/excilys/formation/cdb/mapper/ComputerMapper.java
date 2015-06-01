@@ -31,14 +31,14 @@ public class ComputerMapper {
 			return null;
 		}
 		return ComputerDTO
-				.build()
+				.builder()
 				.id(computer.getId())
 				.name(computer.getName())
 				.introduced(dateLocaleMapper.toString(computer.getIntroduced()))
 				.discontinued(
 						dateLocaleMapper.toString(computer.getDiscontinued()))
 				.companyId(getCompanyId(computer))
-				.companyName(getCompanyName(computer)).create();
+				.companyName(getCompanyName(computer)).build();
 	}
 
 	public List<ComputerDTO> toDTO(List<Computer> computers) {
@@ -50,16 +50,16 @@ public class ComputerMapper {
 			return null;
 		}
 		Computer computer = Computer
-				.build()
+				.builder()
 				.id(dto.getId())
 				.name(dto.getName())
 				.introduced(dateLocaleMapper.toLocalDate(dto.getIntroduced()))
 				.discontinued(
 						dateLocaleMapper.toLocalDate(dto.getDiscontinued()))
-				.create();
+				.build();
 		if ((dto.getCompanyId() != null) && (dto.getCompanyId() != 0l)) {
-			computer.setCompany(CompanyMapper.toModel(CompanyDTO.build()
-					.id(dto.getCompanyId()).name(dto.getCompanyName()).create()));
+			computer.setCompany(CompanyMapper.toModel(CompanyDTO.builder()
+					.id(dto.getCompanyId()).name(dto.getCompanyName()).builder()));
 		}
 		return computer;
 	}

@@ -27,7 +27,7 @@ import com.excilys.formation.util.Utils;
  *
  * @author Joxit
  */
-@ContextConfiguration("/testApplicationContext.xml")
+@ContextConfiguration("/test-application-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestDAO {
 

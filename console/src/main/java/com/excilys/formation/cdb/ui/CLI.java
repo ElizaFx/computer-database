@@ -21,7 +21,7 @@ public class CLI {
 	}
 
 	public static ApplicationContext context = new ClassPathXmlApplicationContext(
-			"bindingApplicationContext.xml");
+			"binding-application-context.xml");
 
 	public static void main(String[] args) throws IOException {
 		CLI cli = new CLI();
