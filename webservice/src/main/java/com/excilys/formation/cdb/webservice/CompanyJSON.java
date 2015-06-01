@@ -17,25 +17,25 @@ import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.service.ICompanyService;
 
 @RestController
-@RequestMapping("/json/company")
+@RequestMapping("/companies")
 public class CompanyJSON {
 
 	@Autowired
 	private ICompanyService companyService;
 
-	@RequestMapping(value = "findAll", method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<CompanyDTO> findAll() {
 		return CompanyMapper.toDTO(companyService.findAll());
 	}
 
-	@RequestMapping(value = "find/{id:[0-9]+}", method = RequestMethod.GET)
+	@RequestMapping(value = "{id:[0-9]+}", method = RequestMethod.GET)
 	@Produces(MediaType.APPLICATION_JSON)
 	public CompanyDTO find(@PathParam("id") Long id) {
 		return CompanyMapper.toDTO(companyService.find(id));
 	}
 
-	@RequestMapping(value = "remove/{id:[0-9]+}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "{id:[0-9]+}", method = RequestMethod.DELETE)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void remove(Long id) {
 		companyService.remove(id);

@@ -17,8 +17,8 @@ import com.excilys.formation.cdb.dto.CompanyDTO;
 import com.excilys.formation.cdb.dto.ComputerDTO;
 
 public class WebServiceUtils {
-	public final static String computerPath = "computer/";
-	public final static String companyPath = "company/";
+	public final static String computerPath = "computers/";
+	public final static String companyPath = "companies/";
 	public final static Client CLIENT;
 	static {
 		CLIENT = ClientBuilder
@@ -30,44 +30,44 @@ public class WebServiceUtils {
 	}
 
 	public static Response getFindComputerResponse(Long id) {
-		return getWebTarget(computerPath + "find/" + id).get();
+		return getWebTarget(computerPath + id).get();
 	}
 
 	public static Response getFindCompanyResponse(Long id) {
-		return getWebTarget(companyPath + "find/" + id).get();
+		return getWebTarget(companyPath + id).get();
 	}
 
 	public static Response getFindAllComputerResponse() {
-		return getWebTarget(computerPath + "findAll").get();
+		return getWebTarget(computerPath).get();
 	}
 
 	public static Response getFindAllCompanyResponse() {
-		return getWebTarget(companyPath + "findAll").get();
+		return getWebTarget(companyPath).get();
 	}
 
 	public static Response deleteComputerResponse(Long id) {
-		return getWebTarget(computerPath + "remove/" + id).delete();
+		return getWebTarget(computerPath + id).delete();
 	}
 
 	public static Response deleteCompanyResponse(Long id) {
-		return getWebTarget(companyPath + "remove/" + id).delete();
+		return getWebTarget(companyPath + id).delete();
 	}
 
 	public static Response postComputerResponse(ComputerDTO computer,
 			MediaType mediatType) {
-		return getWebTarget(computerPath + "create").post(
+		return getWebTarget(computerPath).post(
 				Entity.entity(computer, mediatType));
 	}
 
 	public static Response putComputerResponse(ComputerDTO computer,
 			MediaType mediatType) {
-		return getWebTarget(computerPath + "edit").put(
+		return getWebTarget(computerPath).put(
 				Entity.entity(computer, mediatType));
 	}
 
 	public static Builder getWebTarget(String path) {
-		return CLIENT.target("http://localhost:8080/webservice/json")
-				.path(path).request().cookie("computerDatabaseLocale", "fr");
+		return CLIENT.target("http://localhost:8080/webservice/").path(path)
+				.request().cookie("computerDatabaseLocale", "fr");
 	}
 
 	public static ComputerDTO getComputer(Long id) {

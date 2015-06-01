@@ -18,7 +18,7 @@ import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.service.IComputerService;
 
 @RestController
-@RequestMapping("/json/computer")
+@RequestMapping("/computers")
 public class ComputerJSON {
 
 	@Autowired
@@ -26,19 +26,19 @@ public class ComputerJSON {
 	@Autowired
 	private ComputerMapper computerMapper;
 
-	@RequestMapping(value = "findAll", method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<ComputerDTO> findAll() {
 		return computerService.findAll();
 	}
 
-	@RequestMapping(value = "find/{id:[0-9]+}", method = RequestMethod.GET)
+	@RequestMapping(value = "{id:[0-9]+}", method = RequestMethod.GET)
 	@Produces(MediaType.APPLICATION_JSON)
 	public ComputerDTO find(@PathVariable("id") Long id) {
 		return computerService.find(id);
 	}
 
-	@RequestMapping(value = "create", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public ComputerDTO create(@RequestBody ComputerDTO computer) {
@@ -46,7 +46,7 @@ public class ComputerJSON {
 		return computer;
 	}
 
-	@RequestMapping(value = "edit", method = RequestMethod.PUT)
+	@RequestMapping(method = RequestMethod.PUT)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public ComputerDTO edit(@RequestBody ComputerDTO computer) {
@@ -54,7 +54,7 @@ public class ComputerJSON {
 		return computer;
 	}
 
-	@RequestMapping(value = "remove/{id:[0-9]+}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "{id:[0-9]+}", method = RequestMethod.DELETE)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void remove(@PathVariable("id") Long id) {
 		computerService.remove(computerService.find(id));
