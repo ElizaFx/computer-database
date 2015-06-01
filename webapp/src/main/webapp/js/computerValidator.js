@@ -4,6 +4,7 @@ $("#computerName").keyup(function(e) {
 	if (elt.val().trim().length != 0) {
 		if (parent.hasClass("has-error")) {
 			parent.removeClass("has-error")
+			parent.find(".glyphicon").remove();
 		}
 	} else {
 		if (!parent.hasClass("has-error")) {
@@ -20,6 +21,7 @@ function validateDate(elt) {
 			if (!parent.hasClass("has-success")) {
 				parent.removeClass("has-error").addClass("has-success")
 			}
+			parent.find(".glyphicon").remove();
 		} else if (!parent.hasClass("has-error")) {
 			parent.removeClass("has-success").addClass("has-error")
 		}
@@ -54,3 +56,26 @@ $("#discontinued").change(function(e) {
 }).keyup(function(e) {
 	validateDate($(this));
 });
+
+$('select').selectpicker();
+
+$(document).ready(
+		function() {
+			var dateFormat = strings['global.datePattern'].toLowerCase()
+					.replace("yyyy", "yy");
+			var datePickerConfigEn = {
+				firstDay : 1,
+				minDate : new Date(1970, 1 - 1, 2),
+				maxDate : new Date(2038, 1 - 1, 19),
+				changeMonth : true,
+				changeYear : true,
+				yearRange : "1970:2038",
+				duration : "normal",
+				dateFormat : dateFormat
+			};
+			// Datepicker
+			$(function() {
+				$("#introduced").datepicker(datePickerConfigEn);
+				$("#discontinued").datepicker(datePickerConfigEn);
+			});
+		});

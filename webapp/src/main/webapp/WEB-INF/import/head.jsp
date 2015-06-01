@@ -10,4 +10,8 @@
 	rel="stylesheet" media="screen">
 <link href="${pageContext.request.contextPath}/css/main.css"
 	rel="stylesheet" media="screen">
+<link href="${pageContext.request.contextPath}/css/datepicker.css"
+	rel="stylesheet" media="screen">
+<link href="${pageContext.request.contextPath}/css/bootstrap-select.min.css"
+	rel="stylesheet" media="screen">
 </head>

@@ -18,8 +18,9 @@
 					</h1>
 					<c:if test="${success != null}">
 						<div class="alert alert-success" role="alert">
-							<spring:message code="${success}" arguments="${computer.name}" var="successMessage"/>
-							<c:out value='${successMessage}'/>
+							<spring:message code="${success}" arguments="${computer.name}"
+								var="successMessage" />
+							<c:out value='${successMessage}' />
 						</div>
 					</c:if>
 					<c:if test="${danger != null}">
@@ -32,9 +33,9 @@
 						<form:input path="id" id="id" type="hidden" value="${computer.id}" />
 						<fieldset>
 							<div
-								class="form-group <c:if
+								class="form-group has-feedback <c:if
 										test="${errors.hasFieldErrors('name')}">has-error</c:if>">
-								<form:label path="computerName">
+								<form:label path="computerName" class="control-label">
 									<spring:message code="global.computerName" />
 								</form:label>
 								<spring:message code="global.computerName"
@@ -43,43 +44,56 @@
 									id="computerName" name="computerName"
 									placeholder="${computerNameMessage}" value="${computer.name}"
 									required="true" />
-								<span class="help-block"><spring:message code="global.required" /> <br /> <form:errors
+								<c:if test="${errors.hasFieldErrors('name')}">
+									<span class="glyphicon glyphicon-remove form-control-feedback"
+										aria-hidden="true"></span>
+								</c:if>
+								<span class="help-block"><spring:message
+										code="global.required" /> <br /> <form:errors
 										path="computerName" /></span>
 							</div>
 							<div
-								class="form-group <c:if
+								class="form-group has-feedback <c:if
 										test="${errors.hasFieldErrors('introduced')}">has-error</c:if>">
-								<form:label path="introduced">
+								<form:label path="introduced" class="control-label">
 									<spring:message code="global.introducedDate" />
 								</form:label>
 								<spring:message code="global.introducedDate"
 									var="introducedDateMessage" />
-								<form:input path="introduced" type="date" class="form-control"
+								<form:input path="introduced" class="form-control"
 									id="introduced" name="introduced"
 									placeholder="${introducedDateMessage}"
 									value="${computer.introduced}" />
+								<c:if test="${errors.hasFieldErrors('introduced')}">
+									<span class="glyphicon glyphicon-remove form-control-feedback"
+										aria-hidden="true"></span>
+								</c:if>
 								<span class="help-block"><form:errors path="introduced" />
 								</span>
 							</div>
 							<div
-								class="form-group <c:if
+								class="form-group has-feedback <c:if
 										test="${errors.hasFieldErrors('discontinued')}">has-error</c:if>">
-								<form:label path="discontinued">
+								<form:label path="discontinued" class="control-label">
 									<spring:message code="global.discontinuedDate" />
 								</form:label>
 								<spring:message code="global.discontinuedDate"
 									var="discontinuedDateMessage" />
-								<form:input path="discontinued" type="date" class="form-control"
+								<form:input path="discontinued" class="form-control"
 									id="discontinued" name="discontinued"
 									placeholder='${discontinuedDateMessage}'
 									value="${computer.discontinued}" />
+								<c:if test="${errors.hasFieldErrors('discontinued')}">
+									<span class="glyphicon glyphicon-remove form-control-feedback"
+										aria-hidden="true"></span>
+								</c:if>
 								<span class="help-block"><form:errors path="discontinued" />
 								</span>
 							</div>
 							<div
 								class="form-group <c:if
 										test="${errors.hasFieldErrors('company')}">has-error</c:if>">
-								<form:label path="companyId">
+								<form:label path="companyId" class="control-label">
 									<spring:message code="global.company" />
 								</form:label>
 								<form:select path="companyId" class="form-control"
@@ -112,7 +126,9 @@
 		strings['global.datePattern'] = "<spring:message code='global.datePattern' javaScriptEscape='true' />";
 	</script>
 	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<script src="js/bootstrap-select.min.js"></script>
 	<script src="js/computerValidator.js"></script>
 </body>
 </html>
