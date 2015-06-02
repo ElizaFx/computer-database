@@ -2,10 +2,7 @@ package com.excilys.formation.cdb.webservice;
 
 import java.util.List;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,19 +21,16 @@ public class CompanyJSON {
 	private ICompanyService companyService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	@Produces(MediaType.APPLICATION_JSON)
 	public List<CompanyDTO> findAll() {
 		return CompanyMapper.toDTO(companyService.findAll());
 	}
 
 	@RequestMapping(value = "{id:[0-9]+}", method = RequestMethod.GET)
-	@Produces(MediaType.APPLICATION_JSON)
 	public CompanyDTO find(@PathParam("id") Long id) {
 		return CompanyMapper.toDTO(companyService.find(id));
 	}
 
 	@RequestMapping(value = "{id:[0-9]+}", method = RequestMethod.DELETE)
-	@Consumes(MediaType.APPLICATION_JSON)
 	public void remove(Long id) {
 		companyService.remove(id);
 	}

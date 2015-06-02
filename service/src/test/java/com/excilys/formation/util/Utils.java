@@ -31,7 +31,6 @@ public class Utils {
 		BufferedReader f = new BufferedReader(new InputStreamReader(Utils.class
 				.getClassLoader().getResourceAsStream("db/3-ENTRIES.sql"),
 				"UTF-8"));
-		System.out.println(jdbcTemplate.getDataSource());
 		f.lines().forEach(l -> {
 			if (!l.isEmpty()) {
 				jdbcTemplate.execute(l);

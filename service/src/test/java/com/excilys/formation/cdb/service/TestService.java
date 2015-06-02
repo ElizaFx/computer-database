@@ -65,8 +65,6 @@ public class TestService {
 		elfII.setCompanyName("Netronics");
 		ComputerDTO computer = computerService.find(20l);
 		assertNotNull(computer);
-		System.out.println(computer);
-		System.out.println(elfII);
 		assertTrue(computer.equals(elfII));
 		assertNull(computerService.find(-1l));
 	}

@@ -1,8 +1,9 @@
-package com.excilys.formation.cdb.service;
+package com.excilys.formation.cdb.service.impl;
 
 import java.util.List;
 
 import com.excilys.formation.cdb.persistence.IComputerDAO.OrderBy;
+import com.excilys.formation.cdb.service.Paginable;
 
 public class Pagination<T> {
 	private Paginable<T> paginable;

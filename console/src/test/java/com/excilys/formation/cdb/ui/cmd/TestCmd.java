@@ -3,6 +3,8 @@ package com.excilys.formation.cdb.ui.cmd;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +47,11 @@ public class TestCmd {
 				null, null, company != null ? company.getId() : null,
 				company != null ? company.getName() : null));
 		cmd1.execute();
-		System.err.println("before");
-		ComputerDTO computer = WebServiceUtils
-				.findAllComputer()
+
+		List<ComputerDTO> computers = WebServiceUtils.findAllComputer();
+		assertNotNull(computers);
+
+		ComputerDTO computer = computers
 				.stream()
 				.filter(c -> (c.getName() != null)
 						&& c.getName().equals("Joxit")).findFirst()

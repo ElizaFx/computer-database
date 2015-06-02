@@ -154,6 +154,6 @@ public class TestDAO {
 
 	@Test
 	public void securityTest() {
-		System.out.println(userDAO.find("joxit"));
+		assertNotNull(userDAO.find("joxit"));
 	}
 }

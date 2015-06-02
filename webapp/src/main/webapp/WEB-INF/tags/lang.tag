@@ -6,15 +6,25 @@
 <spring:message code="global.localeName" var="localeName" />
 <c:choose>
 	<c:when test="${id != null}">
-	<div class="dropdown navbar-brand">
+		<div class="dropdown navbar-brand">
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown"
 				role="button" aria-expanded="false"><img class="img-rounded"
-				alt="${localeName}" src="${pageContext.request.contextPath}/flags/${localeCode}.svg"><span
+				alt="${localeName}"
+				src="${pageContext.request.contextPath}/flags/${localeCode}.svg"><span
 				class="caret"></span></a>
 			<ul class="dropdown-menu" role="menu">
-				<li><a href="editComputer?id=${id }&locale=en">English (UK)</a></li>
-				<li><a href="editComputer?id=${id }&locale=en_US">English (US)</a></li>
-				<li><a href="editComputer?id=${id }&locale=fr">Français</a></li>
+
+				<c:if test="${localeCode != 'en'}">
+					<li><a href="editComputer?id=${id }&locale=en">English
+							(UK)</a></li>
+				</c:if>
+				<c:if test="${localeCode != 'en_US'}">
+					<li><a href="editComputer?id=${id }&locale=en_US">English
+							(US)</a></li>
+				</c:if>
+				<c:if test="${localeCode != 'fr'}">
+					<li><a href="editComputer?id=${id }&locale=fr">Français</a></li>
+				</c:if>
 			</ul>
 		</div>
 	</c:when>
@@ -22,12 +32,19 @@
 		<div class="dropdown navbar-brand">
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown"
 				role="button" aria-expanded="false"><img class="img-rounded"
-				alt="${localeName}" src="${pageContext.request.contextPath}/flags/${localeCode}.svg"><span
+				alt="${localeName}"
+				src="${pageContext.request.contextPath}/flags/${localeCode}.svg"><span
 				class="caret"></span></a>
 			<ul class="dropdown-menu" role="menu">
-				<li><a href="?locale=en">English (UK)</a></li>
-				<li><a href="?locale=en_US">English (US)</a></li>
-				<li><a href="?locale=fr">Français</a></li>
+				<c:if test="${localeCode != 'en'}">
+					<li><a href="?locale=en">English (UK)</a></li>
+				</c:if>
+				<c:if test="${localeCode != 'en_US'}">
+					<li><a href="?locale=en_US">English (US)</a></li>
+				</c:if>
+				<c:if test="${localeCode != 'fr'}">
+					<li><a href="?locale=fr">Français</a></li>
+				</c:if>
 			</ul>
 		</div>
 	</c:otherwise>

@@ -12,7 +12,7 @@
 		<div class="navbar-right">
 			<mylib:lang id="${param.id }" />
 			<sec:authorize access="not isAnonymous()">
-				<form class="navbar-brand" method="get"
+				<form class="navbar-brand" method="post"
 					action="<c:url value="/logout" />">
 					<button class="btn btn-danger btn-sm" type="submit">
 						<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>

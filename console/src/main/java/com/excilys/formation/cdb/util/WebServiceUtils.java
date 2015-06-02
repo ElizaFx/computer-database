@@ -92,7 +92,6 @@ public class WebServiceUtils {
 	public static List<ComputerDTO> findAllComputer() {
 		Response response = getFindAllComputerResponse();
 		if ((response.getStatus() != 200) || !response.hasEntity()) {
-			System.out.println(response);
 			response.close();
 			return null;
 		}

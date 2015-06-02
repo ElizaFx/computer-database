@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.service.IComputerService;
-import com.excilys.formation.cdb.service.Pagination;
+import com.excilys.formation.cdb.service.impl.Pagination;
 import com.excilys.formation.cdb.validation.LongSelectionValidator;
 
 /**

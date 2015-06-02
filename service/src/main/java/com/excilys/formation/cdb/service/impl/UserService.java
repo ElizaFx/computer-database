@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.service;
+package com.excilys.formation.cdb.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.excilys.formation.cdb.persistence.IUserDAO;
+import com.excilys.formation.cdb.service.IUserService;
 
 @Service
 public class UserService implements IUserService {
@@ -44,7 +45,6 @@ public class UserService implements IUserService {
 					"JdbcDaoImpl.noAuthority", new Object[] { username },
 					"User {0} has no GrantedAuthority"));
 		}
-		System.out.println(user);
 		return user;
 	}
 

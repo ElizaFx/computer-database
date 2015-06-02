@@ -49,13 +49,11 @@
 				</div>
 				<sec:authorize access="hasRole('ROLE_ADMIN')">
 					<div class="pull-right">
-						<spring:message code='global.edit' var="editMessage" />
-						<spring:message code='global.view' var="viewMessage" />
 						<a class="btn btn-success" id="addComputer" href="addComputer"><spring:message
 								code="dashboard.addComputer" /></a> <a class="btn btn-default"
 							id="editComputer" href="#"
-							onclick="$.fn.toggleEditMode('${editMessage}', '${viewMessage}');"><spring:message
-								code="global.edit" /></a>
+							onclick="$.fn.toggleEditMode();"><spring:message
+								code="global.delete" /></a>
 					</div>
 				</sec:authorize>
 			</div>
@@ -70,17 +68,13 @@
 				<thead>
 					<tr>
 						<sec:authorize access="hasRole('ROLE_ADMIN')">
-							<spring:message code="dashboard.confirmDeletion"
-								var="confirmDeletionMessage" />
-							<spring:message code="global.ok" var="okMessage" />
-							<spring:message code="global.cancel" var="cancelMessage" />
 							<!-- Variable declarations for passing labels as parameters -->
 							<!-- Table header for Computer Name -->
 							<th class="editMode" style="width: 60px; height: 22px;"><input
 								type="checkbox" id="selectall" /> <span
 								style="vertical-align: top;"> - <a href="#"
 									id="deleteSelected"
-									onclick="$.fn.deleteSelected('${confirmDeletionMessage}', '${okMessage}', '${cancelMessage}');">
+									onclick="$.fn.deleteSelected();">
 										<i class="fa fa-trash-o fa-lg"></i>
 								</a>
 							</span></th>
@@ -140,7 +134,8 @@
 		strings['dashboard.confirmDeletion'] = "<spring:message code='dashboard.confirmDeletion' javaScriptEscape='true' />";
 		strings['global.ok'] = "<spring:message code='global.ok' javaScriptEscape='true' />";
 		strings['global.cancel'] = "<spring:message code='global.cancel' javaScriptEscape='true' />";
-		strings['global.cancel'] = "<spring:message code='global.cancel' javaScriptEscape='true' />";
+		strings['global.delete'] = "<spring:message code='global.delete' javaScriptEscape='true' />";
+		strings['global.back'] = "<spring:message code='global.back' javaScriptEscape='true' />";
 	</script>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

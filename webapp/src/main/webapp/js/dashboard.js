@@ -43,13 +43,13 @@ $(function() {
 // Function toggleEditMode
 (function($) {
 
-	$.fn.toggleEditMode = function(editText, viewText) {
+	$.fn.toggleEditMode = function() {
 		if ($(".editMode").is(":visible")) {
 			$(".editMode").hide();
-			$("#editComputer").text(editText);
+			$("#editComputer").text(strings['global.delete']);
 		} else {
 			$(".editMode").show();
-			$("#editComputer").text(viewText);
+			$("#editComputer").text(strings['global.back']);
 		}
 		return this;
 	};
@@ -66,7 +66,7 @@ var deleteSelection = function() {
 // Function delete selected: Asks for confirmation to delete selected computers,
 // then submits it to the deleteForm
 (function($) {
-	$.fn.deleteSelected = function(msg, okTxt, cancelTxt) {
+	$.fn.deleteSelected = function() {
 		createCustomAlert(deleteSelection,
 				strings['dashboard.confirmDeletion'], strings['global.ok'],
 				strings['global.cancel'])

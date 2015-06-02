@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.service;
+package com.excilys.formation.cdb.service.impl;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -13,6 +13,7 @@ import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.IComputerDAO;
 import com.excilys.formation.cdb.persistence.IComputerDAO.OrderBy;
+import com.excilys.formation.cdb.service.IComputerService;
 
 @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 @Service

@@ -61,13 +61,14 @@ public class TestRequests {
 		cmd = new Request(sCmd1).processCommand();
 		cmd.execute();
 
-		ComputerDTO computer = WebServiceUtils
-				.findAllComputer()
+		List<ComputerDTO> computers = WebServiceUtils.findAllComputer();
+		assertNotNull(computers);
+
+		ComputerDTO computer = computers
 				.stream()
 				.filter(c -> (c.getName() != null)
 						&& c.getName().equals("Joxit")).findFirst()
 				.orElse(null);
-		System.out.println(computer + " " + WebServiceUtils.findAllComputer());
 		assertNotNull(computer);
 
 		String sCmd2 = MVRequest.CMD + " " + computer.getId() + " "
@@ -77,7 +78,7 @@ public class TestRequests {
 		ICommand cmd2;
 		cmd2 = new Request(sCmd2).processCommand();
 		cmd2.execute();
-		List<ComputerDTO> computers = WebServiceUtils.findAllComputer();
+		computers = WebServiceUtils.findAllComputer();
 		assertTrue(computers.stream().anyMatch(
 				c -> "Joxit 42".equals(c.getName())));
 		assertFalse(computers.stream().anyMatch(

@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.persistence;
+package com.excilys.formation.cdb.persistence.impl;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.formation.cdb.exception.DAOException;
 import com.excilys.formation.cdb.model.Company;
+import com.excilys.formation.cdb.persistence.ICompanyDAO;
 
 /**
  *

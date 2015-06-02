@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.service;
+package com.excilys.formation.cdb.service.impl;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.persistence.ICompanyDAO;
 import com.excilys.formation.cdb.persistence.IComputerDAO;
+import com.excilys.formation.cdb.service.ICompanyService;
 
 @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 @Service

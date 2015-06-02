@@ -31,7 +31,7 @@ public class ComputerDetailsCmd implements ICommand {
 			return;
 		}
 
-		System.out.println("The choosen computer is : " + computer.getName());
+		System.out.println("The chosen computer is : " + computer.getName());
 		System.out.println("Its id is : " + computer.getId());
 		if (computer.getCompanyName() != null) {
 			System.out.println("The vendor is : " + computer.getCompanyName());

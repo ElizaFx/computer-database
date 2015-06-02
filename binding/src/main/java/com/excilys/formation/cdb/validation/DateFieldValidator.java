@@ -1,20 +1,18 @@
 package com.excilys.formation.cdb.validation;
 
 import java.time.chrono.IsoChronology;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 public class DateFieldValidator implements
 		ConstraintValidator<DateField, String> {
-	private static Logger LOGGER = LoggerFactory
-			.getLogger(DateFieldValidator.class);
 	@Autowired
 	private MessageSource messageSource;
 
@@ -29,23 +27,15 @@ public class DateFieldValidator implements
 		if ((field == null) || field.trim().isEmpty()) {
 			return true;
 		}
-		String trimed = field.trim();
-		if (!trimed.matches("^\\d{2}([/.-])\\d{2}\\1\\d{4}$")) {
-			return false;
-		}
-		System.out.println("dfv" + messageSource);
 		String pattern = messageSource.getMessage("global.datePattern", null,
 				LocaleContextHolder.getLocale());
-		System.out.println(pattern);
-		String[] dateSplited = trimed.split("[/.-]");
-		String[] patternSplited = pattern.split("[/.-]");
-		if (patternSplited.length < 3) {
-			LOGGER.error("{} is a bad date pattern", pattern);
-			throw new RuntimeException("Bat date pattern");
+		String trimed = field.trim();
+		if (!trimed.matches(pattern.replaceAll("[-./]", "\\\\1")
+				.replaceFirst("\\\\1", "([-./])").replaceAll("[dyM]", "[0-9]"))) {
+			return false;
 		}
-		return isCorrectDate(toInt(dateSplited, patternSplited, "yyyy"),
-				toInt(dateSplited, patternSplited, "MM"),
-				toInt(dateSplited, patternSplited, "dd"));
+		return isCorrectDate(toInt(trimed, pattern, "yyyy"),
+				toInt(trimed, pattern, "MM"), toInt(trimed, pattern, "dd"));
 	}
 
 	private boolean isCorrectDate(int year, int month, int dayOfMonth) {
@@ -77,15 +67,13 @@ public class DateFieldValidator implements
 		return true;
 	}
 
-	private int toInt(String[] dateSplited, String[] patternSplited,
-			String match) {
-		// TODO use Matcher instead of for
-		for (int i = 0; i < patternSplited.length; i++) {
-			if (patternSplited[i].equalsIgnoreCase(match)) {
-				return Integer.parseInt(dateSplited[i]);
-			}
+	private int toInt(String date, String pattern, String match) {
+		Pattern p = Pattern.compile(match);
+		Matcher m = p.matcher(pattern);
+		if (m.find()) {
+			return Integer.parseInt(date.substring(m.start(), m.end()));
 		}
 
-		return 0;
+		return -1;
 	}
 }
