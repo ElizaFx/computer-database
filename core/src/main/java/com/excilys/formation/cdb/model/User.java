@@ -10,11 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.springframework.security.core.userdetails.UserDetails;
-
 @Entity
 @Table(name = "users")
-public class User implements UserDetails, Serializable {
+public class User implements Serializable {
 	private static final long serialVersionUID = -6072037844916439885L;
 	@Id
 	private String username;
@@ -43,37 +41,30 @@ public class User implements UserDetails, Serializable {
 		this.authorities = authorities;
 	}
 
-	@Override
 	public Collection<Authority> getAuthorities() {
 		return authorities;
 	}
 
-	@Override
 	public String getPassword() {
 		return password;
 	}
 
-	@Override
 	public String getUsername() {
 		return username;
 	}
 
-	@Override
 	public boolean isAccountNonExpired() {
 		return enabled;
 	}
 
-	@Override
 	public boolean isAccountNonLocked() {
 		return enabled;
 	}
 
-	@Override
 	public boolean isCredentialsNonExpired() {
 		return enabled;
 	}
 
-	@Override
 	public boolean isEnabled() {
 		return enabled;
 	}
