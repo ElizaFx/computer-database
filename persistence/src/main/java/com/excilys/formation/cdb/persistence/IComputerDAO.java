@@ -80,6 +80,13 @@ public interface IComputerDAO {
 	public void remove(Long id);
 
 	/**
+	 * Remove a list of computers from the table.
+	 *
+	 * @param ids
+	 */
+	public void remove(List<Long> ids);
+
+	/**
 	 * Update model from the table.
 	 *
 	 * @param model

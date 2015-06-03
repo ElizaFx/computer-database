@@ -23,8 +23,6 @@
 		</repository>
 	</repositories>
 	<properties>
-		<project.groupId>com.excilys</project.groupId>
-		<project.version>1.5.0-SNAPSHOT</project.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<maven.compiler.plugin.version>3.1</maven.compiler.plugin.version>

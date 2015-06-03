@@ -94,12 +94,13 @@ public class Pagination<T> {
 
 	@Override
 	public String toString() {
-		return "Page [paginable=" + paginable + ", nbItems=" + nbItems
-				+ ", curPage=" + page + ", limit=" + limit + ", previous="
+		return "Pagination [paginable=" + paginable + ", nbItems=" + nbItems
+				+ ", page=" + page + ", limit=" + limit + ", previous="
 				+ previous + ", next=" + next + ", pageMax=" + pageMax
 				+ ", firstPage=" + firstPage + ", lastPage=" + lastPage
-				+ ", search=" + search + ", orderBy=" + mOrderBy + ", asc="
-				+ asc + "]";
+				+ ", search=" + search + ", mOrderBy=" + mOrderBy
+				+ ", orderBy=" + orderBy + ", pageLimit=" + pageLimit
+				+ ", asc=" + asc + "]";
 	}
 
 	public void validate() {

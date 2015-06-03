@@ -2,9 +2,8 @@ package com.excilys.formation.cdb.webservice;
 
 import java.util.List;
 
-import javax.ws.rs.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +14,7 @@ import com.excilys.formation.cdb.service.ICompanyService;
 
 @RestController
 @RequestMapping("/companies")
-public class CompanyJSON {
+public class CompanyController {
 
 	@Autowired
 	private ICompanyService companyService;
@@ -26,12 +25,12 @@ public class CompanyJSON {
 	}
 
 	@RequestMapping(value = "{id:[0-9]+}", method = RequestMethod.GET)
-	public CompanyDTO find(@PathParam("id") Long id) {
+	public CompanyDTO find(@PathVariable("id") Long id) {
 		return CompanyMapper.toDTO(companyService.find(id));
 	}
 
 	@RequestMapping(value = "{id:[0-9]+}", method = RequestMethod.DELETE)
-	public void remove(Long id) {
+	public void remove(@PathVariable("id") Long id) {
 		companyService.remove(id);
 	}
 }

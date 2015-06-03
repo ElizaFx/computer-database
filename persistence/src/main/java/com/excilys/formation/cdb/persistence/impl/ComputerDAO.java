@@ -173,4 +173,19 @@ public class ComputerDAO implements IComputerDAO {
 		cq.where(cb.equal(rt.get("company").get("id"), companyId));
 		return em.createQuery(cq).executeUpdate();
 	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void remove(List<Long> ids) {
+		if (ids == null) {
+			LOGGER.warn("Error param null in CompanyDAO.remove(id)");
+			throw new DAOException("NullPointerException: Id null!");
+		}
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaDelete<Computer> cq = cb.createCriteriaDelete(Computer.class);
+		Root<Computer> rt = cq.from(Computer.class);
+
+		cq.where(rt.get("id").in(ids));
+		em.createQuery(cq).executeUpdate();
+	}
 }

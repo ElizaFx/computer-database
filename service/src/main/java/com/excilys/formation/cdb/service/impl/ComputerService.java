@@ -93,9 +93,9 @@ public class ComputerService implements IComputerService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void remove(List<Long> output) {
-		if (output != null) {
-			output.stream().forEach(computerDAO::remove);
+	public void remove(List<Long> ids) {
+		if (ids != null) {
+			computerDAO.remove(ids);
 		}
 	}
 

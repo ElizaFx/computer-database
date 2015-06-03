@@ -29,13 +29,13 @@ public class DateFieldValidator implements
 		}
 		String pattern = messageSource.getMessage("global.datePattern", null,
 				LocaleContextHolder.getLocale());
-		String trimed = field.trim();
-		if (!trimed.matches(pattern.replaceAll("[-./]", "\\\\1")
+		String date = field.trim();
+		if (!date.matches(pattern.replaceAll("[-./]", "\\\\1")
 				.replaceFirst("\\\\1", "([-./])").replaceAll("[dyM]", "[0-9]"))) {
 			return false;
 		}
-		return isCorrectDate(toInt(trimed, pattern, "yyyy"),
-				toInt(trimed, pattern, "MM"), toInt(trimed, pattern, "dd"));
+		return isCorrectDate(toInt(date, pattern, "yyyy"),
+				toInt(date, pattern, "MM"), toInt(date, pattern, "dd"));
 	}
 
 	private boolean isCorrectDate(int year, int month, int dayOfMonth) {
@@ -58,18 +58,14 @@ public class DateFieldValidator implements
 		} else if (dayOfMonth < 0) {
 			return false;
 		}
-		if ((month < 0) || (month > 12)) {
-			return false;
-		}
-		if ((year < 1971) || (year > 2037)) {
+		if ((month < 0) || (month > 12) || (year < 1971) || (year > 2037)) {
 			return false;
 		}
 		return true;
 	}
 
 	private int toInt(String date, String pattern, String match) {
-		Pattern p = Pattern.compile(match);
-		Matcher m = p.matcher(pattern);
+		Matcher m = Pattern.compile(match).matcher(pattern);
 		if (m.find()) {
 			return Integer.parseInt(date.substring(m.start(), m.end()));
 		}

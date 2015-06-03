@@ -1,5 +1,7 @@
 package com.excilys.formation.cdb.ui.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.service.IComputerService;
 import com.excilys.formation.cdb.service.impl.Pagination;
-import com.excilys.formation.cdb.validation.LongSelectionValidator;
 
 /**
  * Servlet implementation class Servlet
@@ -52,17 +53,12 @@ public class DashBoard {
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	protected String doPost(
-			@RequestParam(value = "selection", required = true) String selection,
+			@RequestParam(value = "selection", required = true) List<Long> selection,
 			@ModelAttribute Pagination<ComputerDTO> mPage,
 			BindingResult result, ModelMap model) {
-		LongSelectionValidator ids = new LongSelectionValidator(selection);
+		computerService.remove(selection);
+		model.addAttribute("success", "Computers deleted");
 
-		if (ids.isValid()) {
-			computerService.remove(ids.getOutput());
-			model.addAttribute("success", "Computers deleted");
-		} else {
-			model.addAttribute("danger", "Error: " + ids.getMsg());
-		}
 		return doGet(mPage, result, model);
 	}
 }

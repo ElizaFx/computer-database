@@ -136,7 +136,7 @@ public class TestDAO {
 
 	@Test(expected = DAOException.class)
 	public void invalidRemove() {
-		computerDAO.remove(null);
+		computerDAO.remove((Long) null);
 	}
 
 	@Test(expected = DAOException.class)

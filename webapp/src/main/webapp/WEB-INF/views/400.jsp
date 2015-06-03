@@ -4,10 +4,9 @@
 <%@page isErrorPage="true"%>
 <!DOCTYPE html>
 <html>
-<%@include file="/WEB-INF/import/head.jsp" %>
+<%@include file="/WEB-INF/import/head.jsp"%>
 <body>
-<%@include file="/WEB-INF/import/header.jsp" %>
-
+	<%@include file="/WEB-INF/import/header.jsp"%>
 	<section id="main">
 		<div class="container">
 			<div class="alert alert-danger">

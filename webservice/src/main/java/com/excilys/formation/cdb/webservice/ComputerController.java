@@ -15,7 +15,7 @@ import com.excilys.formation.cdb.service.IComputerService;
 
 @RestController
 @RequestMapping("/computers")
-public class ComputerJSON {
+public class ComputerController {
 
 	@Autowired
 	private IComputerService computerService;
