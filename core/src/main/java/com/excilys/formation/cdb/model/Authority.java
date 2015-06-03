@@ -6,11 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.springframework.security.core.GrantedAuthority;
-
 @Entity
 @Table(name = "authorities")
-public class Authority implements GrantedAuthority, Serializable {
+public class Authority implements Serializable {
 	private static final long serialVersionUID = -5544776056252103678L;
 	@Id
 	private String username;
@@ -29,7 +27,6 @@ public class Authority implements GrantedAuthority, Serializable {
 		this.authority = authority;
 	}
 
-	@Override
 	public String getAuthority() {
 		return authority;
 	}
