@@ -58,7 +58,7 @@ public class DateFieldValidator implements
 		} else if (dayOfMonth < 0) {
 			return false;
 		}
-		if ((month < 0) || (month > 12) || (year < 1971) || (year > 2037)) {
+		if ((month < 0) || (month > 12) || (year < 1970) || (year > 2037)) {
 			return false;
 		}
 		return true;
