@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
 import org.slf4j.Logger;
@@ -44,6 +45,15 @@ public class CompanyDAO implements ICompanyDAO {
 		CriteriaQuery<Company> cq = em.getCriteriaBuilder().createQuery(
 				Company.class);
 		cq.select(cq.from(Company.class));
+		return em.createQuery(cq).getResultList();
+	}
+
+	@Override
+	public List<Company> findAllOrderByName() {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Company> cq = cb.createQuery(Company.class);
+		cq.select(cq.from(Company.class));
+		cq.orderBy(cb.asc(cq.from(Company.class).get("name")));
 		return em.createQuery(cq).getResultList();
 	}
 

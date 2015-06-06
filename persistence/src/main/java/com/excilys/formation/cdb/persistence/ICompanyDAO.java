@@ -37,4 +37,9 @@ public interface ICompanyDAO {
 	 *            of the company
 	 */
 	public void remove(Long id);
+
+	/**
+	 * @return all row of company table ordored by name
+	 */
+	public List<Company> findAllOrderByName();
 }
