@@ -12,6 +12,11 @@ public interface ICompanyService {
 	public List<Company> findAll();
 
 	/**
+	 * @return all row of company table ordered by name
+	 */
+	public List<Company> findAllOrderByName();
+
+	/**
 	 * @param predicate
 	 * @return element which satisfy predicate
 	 */

@@ -32,6 +32,11 @@ public class CompanyService implements ICompanyService {
 	}
 
 	@Override
+	public List<Company> findAllOrderByName() {
+		return companyDAO.findAllOrderByName();
+	}
+
+	@Override
 	public Company find(Predicate<? super Company> predicate) {
 		return companyDAO.find(predicate);
 	}
