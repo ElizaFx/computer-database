@@ -39,7 +39,7 @@ public interface ICompanyDAO {
 	public void remove(Long id);
 
 	/**
-	 * @return all row of company table ordored by name
+	 * @return all row of company table ordered by name
 	 */
 	public List<Company> findAllOrderByName();
 }

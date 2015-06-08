@@ -150,7 +150,7 @@ public class AddAndEditComputer {
 		}
 		model.addAttribute("errors", result);
 		model.addAttribute("lCompanies",
-				CompanyMapper.toDTO(companyService.findAll()));
+				CompanyMapper.toDTO(companyService.findAllOrderByName()));
 		return path;
 	}
 }
