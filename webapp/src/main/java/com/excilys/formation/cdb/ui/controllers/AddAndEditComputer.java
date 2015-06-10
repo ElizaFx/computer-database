@@ -78,7 +78,7 @@ public class AddAndEditComputer {
 		}
 
 		model.addAttribute("lCompanies",
-				CompanyMapper.toDTO(companyService.findAll()));
+				CompanyMapper.toDTO(companyService.findAllOrderByName()));
 		return new ModelAndView(path, "computer", dto);
 	}
 
