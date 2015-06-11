@@ -10,6 +10,7 @@ import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
 import org.slf4j.Logger;
@@ -135,8 +136,11 @@ public class ComputerDAO implements IComputerDAO {
 		cq.select(leftJoin.getParent()).where(
 				cb.or(cb.like(leftJoin.get("name"), search),
 						cb.like(leftJoin.getParent().get("name"), search)));
-		cq.orderBy(asc ? cb.asc(ob.toOrder(leftJoin)) : cb.desc(ob
-				.toOrder(leftJoin)));
+
+		Path<Object> path = ob.toOrder(leftJoin);
+
+		cq.orderBy(cb.asc(cb.selectCase().when(path.isNull(), 1).otherwise(0)),
+				asc ? cb.asc(path) : cb.desc(path));
 		return em.createQuery(cq).setFirstResult(offset).setMaxResults(limit)
 				.getResultList();
 	}
