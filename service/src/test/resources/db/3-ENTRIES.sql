@@ -314,3 +314,6 @@ insert into computer (id,name,introduced,discontinued,company_id) values (270,'E
 insert into computer (id,name,introduced,discontinued,company_id) values (271,'Commodore VIC-20','1980-01-01',null,6);
 insert into computer (id,name,introduced,discontinued,company_id) values (272,'PowerBook 150',null,null,null);
 insert into computer (id,name,introduced,discontinued,company_id) values (273,'MacBook Air','2008-01-15',null,1);
+
+update computer set introduced = null where introduced = '0000-00-00 00:00:00';
+update computer set discontinued = null where discontinued = '0000-00-00 00:00:00';
